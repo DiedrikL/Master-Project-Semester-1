@@ -2,7 +2,7 @@
 % omega values
 
 % Clear memory and set format for output to screen
-clear all
+clear
 format short e
 
 % Parameter size and resolution

@@ -8,7 +8,7 @@ learning = 1e-2;
 
 % Determines if momentum is used, and how much.
 % Must be 0 =< Beta < 1
-Beta = 1.4;
+Beta = 0.5;
 
-[epsilon, omega] = GradientDescent(epsilon, omega, learning)
+[epsilon, omega] = GradientDescent(epsilon, omega, learning, Beta)
 difference = MeasureDiff(epsilon, omega)
