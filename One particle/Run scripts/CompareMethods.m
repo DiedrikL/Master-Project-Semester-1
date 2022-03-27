@@ -2,7 +2,7 @@
 % and compares it with ode45 
 
 % Clear memory and set format for output to screen
-clear vars
+clear
 format short e
 zoom reset
 
