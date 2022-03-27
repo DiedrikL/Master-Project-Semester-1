@@ -1,5 +1,8 @@
 % Runs the gradient descent function, with preset parameters
-% 
+
+% Clear memory and set format for output to screen
+clear
+format short e
 
 % Parameters
 epsilon = 0.54;

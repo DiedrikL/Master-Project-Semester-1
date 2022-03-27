@@ -2,7 +2,7 @@
 % Hamiltonian
 
 % Clear memory and set format for output to screen
-clear vars
+clear
 format short e
 
 % Parametre and start value

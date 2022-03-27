@@ -1,5 +1,6 @@
 function [Gradients] = CalculateGradients(epsilon, omega)
-% Function that takes tre parameters and takes a step 
+% Function that takes tre parameters and finds the gradient for the gate
+% selected in MeasureDiff
 h = 1e-3;
 
 Gradients(1) = (MeasureDiff(epsilon+h, omega) ...
