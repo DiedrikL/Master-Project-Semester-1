@@ -2,7 +2,7 @@
 % omega values
 
 % Clear memory and set format for output to screen
-clear all
+clear
 format short e
 
 % Parameter size and resolution
@@ -12,26 +12,34 @@ N = 20;
 % Setup space
 x = linspace(0,L,N);    
 
-[epsilon,omega,omegaImag]=meshgrid(x,x,x);
+epsilon = x;
+omega = x;
+omegaImag = x;
 omegaImag = omegaImag*1i;
 
-V = zeros(size(epsilon));
+V = zeros(N);
 
-for m = 1:length(x)
-   for n = 1:length(x)
-       for o = 1:length(x)
-           V(m,n,o) = MeasureDiff(epsilon(m,n,o), omega(m,n,o)+omegaImag(m,n,o));
+% Finds the distance to the gate selected in MeasureDiff for three
+% variables
+for m = 1:N
+    m %#ok<NOPTS>
+   for n = 1:N
+       for o = 1:N
+           V(m,n,o) = MeasureDiff(epsilon(m), omega(n)+omegaImag(o));
                   
        end
    end
 end
 
+% Sets the slices visible
 xSlice = [0 2];
 ySlice = 4;
 zSlice = [0 2];
 
+% Plots the slices
+figure
 slice(epsilon, omega, abs(omegaImag), V, xSlice, ySlice, zSlice);
-view(-34,24)
+view(34,24)
 
 cb = colorbar;
 

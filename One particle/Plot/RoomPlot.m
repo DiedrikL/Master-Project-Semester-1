@@ -2,7 +2,7 @@
 % omega values
 
 % Clear memory and set format for output to screen
-clear all
+clear
 format short e
 
 % Parameter size and resolution
@@ -12,19 +12,20 @@ N = 50;
 % Setup space
 x = linspace(0,L,N);    
 
-%[epsilon,omega]=meshgrid(x,x);
-%omega=omega+1;
-epsilon = x;
-omega = x;
+epsilon = 5.5621;
+omegaX = x;
+omegaY = 1i*x;
 
 Z = zeros(N,N);
 
-for n = 1:length(epsilon)
-    n
-   for m = 1:length(omega)
-      Z(n,m) = MeasureDiff(5.5621, omega(m) + 1i*epsilon(n));
+% Finds the distance to the gate selected in MeasureDiff
+% Only two variables can be arrays
+for n = 1:N
+    n %#ok<NOPTS>
+   for m = 1:N
+      Z(n,m) = MeasureDiff(epsilon, omegaX(n) + omegaY(m));
        
    end
 end
 
-pcolor(epsilon, abs(omega), Z)
+pcolor(omegaX, abs(omegaY), Z)
