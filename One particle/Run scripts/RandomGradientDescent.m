@@ -20,7 +20,7 @@ Results = zeros(iters,3);
 for n = 1:iters
     % Initialize the random variables
     epsilon = 12*rand;
-    omega = 12*rand+12i*rand;
+    omega = 12*rand-12i*rand;
     
     [epsilon, omega] = GradientDescent(epsilon, omega, learning, Beta)
     difference = MeasureDiff(epsilon, omega)

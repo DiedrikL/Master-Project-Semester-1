@@ -16,7 +16,7 @@ end
 Psi = psi0;
 
 % Set timelength
-T = 4*pi/gamma;
+T = 2*pi/gamma;
 dt = T/1000;
 tVector = 0:dt:T;
 tVector(end) = [];
