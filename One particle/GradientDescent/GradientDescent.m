@@ -14,7 +14,7 @@ arguments
 end
 
 % Max intervals
-maxIt = 200;
+maxIt = 2000;
 
 % Initialise momentum vector
 V = zeros(1,3);
@@ -25,6 +25,10 @@ for iter = 1:maxIt
 
     epsilon = epsilon-learning*V(1);
     omega = omega-learning*(V(2)+V(3));
+    
+    if mod(iter,100) == 0
+       MeasureDiff(epsilon, omega) 
+    end
     
 %     if(MeasureDiff(newEpsilon, newOmega) < MeasureDiff(epsilon,omega))
 %         epsilon = newEpsilon;

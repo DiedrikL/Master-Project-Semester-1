@@ -6,26 +6,26 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 10;
-N = 50;
+L = 12;
+N = 40;
 
 % Setup space
-x = linspace(0,L,N);    
+x = linspace(-L/2,L/2,N);    
 
-epsilon = 5.5621;
-omegaX = x;
-omegaY = 1i*x;
+epsilon = x;
+omegaX = 0;
+omegaY = linspace(8, 12, N);
 
 Z = zeros(N,N);
 
 % Finds the distance to the gate selected in MeasureDiff
 % Only two variables can be arrays
 for n = 1:N
-    n %#ok<NOPTS>
+    n %#ok<NOPTS>5
    for m = 1:N
-      Z(n,m) = MeasureDiff(epsilon, omegaX(n) + omegaY(m));
+      Z(n,m) = MeasureDiff(epsilon(n), omegaX - 1i*omegaY(m));
        
    end
 end
 
-pcolor(omegaX, abs(omegaY), Z)
+pcolor(epsilon, omegaY, Z)
