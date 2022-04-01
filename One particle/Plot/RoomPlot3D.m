@@ -13,9 +13,8 @@ N = 20;
 x = linspace(0,L,N);    
 
 epsilon = x;
-omega = x;
-omegaImag = x;
-omegaImag = omegaImag*1i;
+omegaX = x;
+omegaY = x;
 
 V = zeros(N);
 
@@ -25,7 +24,7 @@ for m = 1:N
     m %#ok<NOPTS>
    for n = 1:N
        for o = 1:N
-           V(m,n,o) = MeasureDiff(epsilon(m), omega(n)+omegaImag(o));
+           V(m,n,o) = MeasureDiff(epsilon(m), omega(n), omegaY(o));
                   
        end
    end
@@ -38,7 +37,7 @@ zSlice = [0 2];
 
 % Plots the slices
 figure
-slice(epsilon, omega, abs(omegaImag), V, xSlice, ySlice, zSlice);
+slice(epsilon, omega, omegaY, V, xSlice, ySlice, zSlice);
 view(34,24)
 
 cb = colorbar;

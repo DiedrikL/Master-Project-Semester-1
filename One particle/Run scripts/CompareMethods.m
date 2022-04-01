@@ -9,7 +9,8 @@ zoom reset
 
 % Parametre and start value
 epsilon = 1;
-omega = 0.6;
+omegaX = 0.6;
+omegaY = 0;
 gamma = 1.1;
 psi0 = [1; 0];
 
@@ -18,8 +19,9 @@ psi0 = [1; 0];
 T = 4*pi/gamma;
 
 % Solve the schrödinger equation
-[Time1, Psi1] = ode45(@(t,y)odefun(t,y,epsilon,omega,gamma), [0 T], psi0);
-[Time2, Psi2] = SolveTDSE(epsilon, omega, psi0, gamma);
+[Time1, Psi1] = ode45(@(t,y)odefun(t,y,epsilon,omegaX, omegaY,gamma),...
+    [0 T], psi0);
+[Time2, Psi2] = SolveTDSE(epsilon, omegaX, omegaY, psi0, gamma);
 
 % Extracting values
 a = abs(Psi1(:,1)).^2;
@@ -53,9 +55,10 @@ legend('ode45','STDSE')
 
 
 % Function for the derivate
-function dydt = odefun(t,y,epsilon,omega,gamma)
+function dydt = odefun(t,y,epsilon,omegaX, omegaY,gamma)
+omega = (omegaX-1i*omegaY);
 H = [-epsilon/2                omega*sin(gamma*t);...
-         conj(omega)*sin(gamma*t)  epsilon/2];
+     conj(omega)*sin(gamma*t)  epsilon/2];
 dydt = (-1i)*H*y;
 dydt = dydt(:);
 end

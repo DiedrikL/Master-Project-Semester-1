@@ -1,4 +1,4 @@
-function Diff = MeasureDiff(epsilon, omega)
+function Diff = MeasureDiff(epsilon, omegaX, omegaY)
 
 % Compare distance for a gate U with a given gate
 
@@ -7,8 +7,8 @@ psi0 = [1;0];
 psi1 = [0;1];
 
 % Getting the solution for the start positions
-[~, Psi1] = SolveTDSE(epsilon, omega, psi0);
-[~, Psi2] = SolveTDSE(epsilon, omega, psi1);
+[~, Psi1] = SolveTDSE(epsilon, omegaX, omegaY, psi0);
+[~, Psi2] = SolveTDSE(epsilon, omegaX, omegaY, psi1);
 
 % Creating the gate
 U1 = [Psi1(1, end); Psi1(2, end)];
