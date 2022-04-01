@@ -6,12 +6,13 @@ format short e
 
 % Parameters
 epsilon = 5.5621;
-omega = 0.53043-9.1722i;
+omegaX = 0.53043;
+omegaY = 9.1722;
 learning = 1e-5;
 
 % Determines if momentum is used, and how much.
 % Must be 0 =< Beta < 1
-Beta = 0;
+Beta = 0.1;
 
-[epsilon, omega] = GradientDescent(epsilon, omega, learning, Beta)
-difference = MeasureDiff(epsilon, omega)
+[epsilon, omegaX, omegaY] = GradientDescent(epsilon, omegaX, omegaY, learning, Beta)
+difference = MeasureDiff(epsilon, omegaX, omegaY)

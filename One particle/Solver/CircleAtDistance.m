@@ -11,12 +11,13 @@ end
 % Parameters
 L=500;
 xVector = linspace(0,2*pi,L);
-omega = distance*(cos(xVector) - 1i*sin(xVector));
+omegaX = distance*cos(xVector);
+omegaY = distance*sin(xVector);
 Y=zeros(1,L);
 
 % Finding values
 for n=1:length(xVector)
-   Y(n) = MeasureDiff(epsilon, omega(n));
+   Y(n) = MeasureDiff(epsilon, omegaX(n), omegaY(n));
 end
 
 

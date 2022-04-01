@@ -1,4 +1,4 @@
-function [epsilon, omega] = GradientDescent(epsilon, omega, learning, Beta)
+function [epsilon, omegaX, omegaY] = GradientDescent(epsilon, omegaX, omegaY, learning, Beta)
 % Gradient descent function, that takes two parameters. There are two 
 % optional parameters to determine learning rate and the option of running
 % gradient descent with momentum if Beta is > 0. 
@@ -8,26 +8,28 @@ function [epsilon, omega] = GradientDescent(epsilon, omega, learning, Beta)
 % Input validation and default values
 arguments
    epsilon(1,:) double
-   omega(1,:) double
+   omegaX(1,:) double
+   omegaY(1,:) double
    learning double = 1e-3;
-   Beta double {mustBeInRange(Beta,0,1,"exclude-upper")}  = 0;
+   Beta double {mustBeInRange(Beta,0,1,"exclude-upper")} = 0;
 end
 
 % Max intervals
-maxIt = 2000;
+maxIt = 100;
 
 % Initialise momentum vector
 V = zeros(1,3);
 
 for iter = 1:maxIt
     
-    V = Beta*V + (1-Beta)*CalculateGradients(epsilon, omega);
+    V = Beta*V + (1-Beta)*CalculateGradients(epsilon, omegaX, omegaY);
 
     epsilon = epsilon-learning*V(1);
-    omega = omega-learning*(V(2)+V(3));
+    omegaX = omegaX-learning*V(2);
+    omegaY = omegaY-learning*V(3);
     
     if mod(iter,100) == 0
-       MeasureDiff(epsilon, omega) 
+       MeasureDiff(epsilon, omegaX, omegaY) 
     end
     
 %     if(MeasureDiff(newEpsilon, newOmega) < MeasureDiff(epsilon,omega))

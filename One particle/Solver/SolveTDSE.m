@@ -1,4 +1,4 @@
-function [tVector, Solution] = SolveTDSE(epsilon, omega, psi0, gamma)
+function [tVector, Solution] = SolveTDSE(epsilon, omegaX, omegaY, psi0, gamma)
 
 % Solves the schrödinger equation with Crank Nicolson for a specified 
 % Hamiltonian with provided parameters and startvalue. Gamma is an optional
@@ -7,13 +7,16 @@ function [tVector, Solution] = SolveTDSE(epsilon, omega, psi0, gamma)
 % Input validation and default values
 arguments
    epsilon(1,:) double
-   omega(1,:) double
+   omegaX(1,:) double
+   omegaY(1,:) double
    psi0 (2,1) double
    gamma double {mustBeNonzero} = 1;
 end
 
 % Parameters and start value
 Psi = psi0;
+omega = omegaX - 1i*omegaY;
+
 
 % Set timelength
 T = 2*pi/gamma;

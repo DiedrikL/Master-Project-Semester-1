@@ -23,7 +23,7 @@ Z = zeros(N,N);
 for n = 1:N
     n %#ok<NOPTS>5
    for m = 1:N
-      Z(n,m) = MeasureDiff(epsilon(n), omegaX - 1i*omegaY(m));
+      Z(n,m) = MeasureDiff(epsilon(n), omegaX, omegaY(m));
        
    end
 end
