@@ -7,7 +7,7 @@ format short e
 
 % Parameter size and resolution
 L = 12;
-N = 20;
+N = 40;
 
 % Setup space
 x = linspace(-L/2,L/2,N);    
