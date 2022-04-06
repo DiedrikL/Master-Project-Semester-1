@@ -9,7 +9,7 @@ arguments
 end
 
 % Parameters
-L=500;
+L=80;
 xVector = linspace(0,2*pi,L);
 omegaX = distance*cos(xVector);
 omegaY = distance*sin(xVector);
