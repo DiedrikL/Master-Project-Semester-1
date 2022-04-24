@@ -6,9 +6,9 @@ function [tVector, Solution] = SolveTDSE(epsilon, omegaX, omegaY, psi0, gamma)
 
 % Input validation and default values
 arguments
-   epsilon(1,:) double
-   omegaX(1,:) double
-   omegaY(1,:) double
+   epsilon(1,1) double
+   omegaX(1,1) double
+   omegaY(1,1) double
    psi0 (2,1) double
    gamma double {mustBeNonzero} = 1;
 end
