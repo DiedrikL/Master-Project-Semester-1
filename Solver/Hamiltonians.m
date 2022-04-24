@@ -89,7 +89,7 @@ classdef Hamiltonians
             % Setup the parameters for the Hamiltonian
             B1 = @(t) 2*omegaX/(exp(s*(abs(t)-(T/2)))+1);
             B2 = @(t) 2*omegaY/(exp(s*(abs(t)-(T/2)))+1);
-            B3 = @(t) epsilon/(exp(s*(abs(t)-(T/2)))+1);
+            B3 = @(t) -epsilon/(exp(s*(abs(t)-(T/2)))+1);
             
             % Creating the Hamiltonian
             H = Hamiltonians.pauliRotations(B1,B2,B3);
