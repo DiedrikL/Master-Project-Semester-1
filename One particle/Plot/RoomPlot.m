@@ -14,7 +14,7 @@ x = linspace(-L/2,L/2,N);
 
 epsilon = x;
 omegaX = 0;
-omegaY = linspace(8, 12, N);
+omegaY = x;
 
 Z = zeros(N,N);
 
@@ -28,4 +28,13 @@ for n = 1:N
    end
 end
 
+% Plot room
 pcolor(epsilon, omegaY, Z)
+
+% Finds and prints lowest value with parameters
+[M, I] = min(Z,[],'all','linear');
+[row, col] = ind2sub(N,I);
+LowestEpsilon = epsilon(row)
+LowestOmegaX = omegaX
+LowestOmegaY = omegaY(col)
+LowestValue = MeasureDiff(epsilon(row), omegaX, omegaY(col))
