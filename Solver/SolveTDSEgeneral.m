@@ -4,6 +4,10 @@ function [tVector, Solution] = SolveTDSEgeneral(Psi, Hamiltonian, options)
 % Hamiltonian with a startvalue. Gamma is an optional value that must not
 % be zero. Time can optionally be set with a specified start, end and
 % number of steps.
+%
+% T is time period, default 2*pi
+% Tstart is start point, default 0;
+% Tsize is number of points, default 500
 
 % Input validation and default values
 arguments
