@@ -14,12 +14,12 @@ psi0 = [1; 0];
 
 
 % Solve the schrödinger equation
-H = Hamiltonians.smoothedHamiltonianSimple(epsilon, omegaX, omegaY, scale=100);
-H2 = Hamiltonians.smoothedHamiltonian(epsilon, omegaX, omegaY, scale=1000);
+H1 = Hamiltonians.smoothedHamiltonianSimple(epsilon, omegaX, omegaY, scale=5);
+H2 = Hamiltonians.smoothedHamiltonian(epsilon, omegaX, omegaY, scale=5);
 
 
 
-Diff = MeasureDiffGeneral(H)
+Diff = MeasureDiffGeneral(H1)
 
 Diff2 = MeasureDiffGeneral(H2)
 

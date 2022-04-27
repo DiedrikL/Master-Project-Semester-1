@@ -35,7 +35,7 @@ U = [U1, U2];
 
 gate = gates.gate;
 
-U = gates.rotate(U);
+U = gates.rotation(U);
 
 
 
