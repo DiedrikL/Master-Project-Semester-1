@@ -65,9 +65,9 @@ classdef Hamiltonians
 
         
         
-        function H = smoothedHamiltonian(epsilon, omegaX, omegaY, options)
+        function H = smoothedHamiltonianSimple(epsilon, omegaX, omegaY, options)
             % A Hamiltonian that simulates the smoothness of real magnetic
-            % waves from a device.
+            % waves from a device. 
             % 
             % scale is how sharp the drop off is, must be a real double
             % default value is 5.
@@ -90,6 +90,36 @@ classdef Hamiltonians
             B1 = @(t) 2*omegaX/(exp(s*(abs(t)-(T/2)))+1);
             B2 = @(t) 2*omegaY/(exp(s*(abs(t)-(T/2)))+1);
             B3 = @(t) -epsilon/(exp(s*(abs(t)-(T/2)))+1);
+            
+            % Creating the Hamiltonian
+            H = Hamiltonians.pauliRotations(B1,B2,B3);
+        end
+        
+        function H = smoothedHamiltonian(epsilon, omegaX, omegaY, options)
+            % A Hamiltonian that simulates the smoothness of real magnetic
+            % waves from a device. 
+            % 
+            % scale is how sharp the drop off is, must be a real double
+            % default value is 5.
+            %
+            % Time is the time period, default is 2*pi
+            
+            
+            % Input validation and default values
+            arguments
+               epsilon(1,1) double
+               omegaX(1,1) double
+               omegaY(1,1) double
+               options.scale(1,1) double {mustBeReal} = 5;
+               options.Time(1,1) double {mustBeReal} = 2*pi;
+            end
+            s = options.scale;
+            T = options.Time;
+           
+            % Setup the parameters for the Hamiltonian
+            B1 = @(t) omegaX/(exp(s*(abs(t)-(T/2)))+1);
+            B2 = @(t) omegaY/(exp(s*(abs(t)-(T/2)))+1);
+            B3 = @(t) epsilon/(exp(s*(abs(t)-(T/2)))+1);
             
             % Creating the Hamiltonian
             H = Hamiltonians.pauliRotations(B1,B2,B3);

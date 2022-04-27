@@ -10,7 +10,7 @@ function Diff = MeasureDiffGeneral(H, gates, options)
 
 arguments
     H function_handle
-    gates function_handle = @Gates.Hadamard;
+    gates GateInterface = Hadamard;
     options.T(1,1) double = 2*pi;
     options.Tstart(1,1) double = 0;
     options.Tsize(1,1) double = 100;
@@ -33,7 +33,10 @@ U1 = [Psi1(1, end); Psi1(2, end)];
 U2 = [Psi2(1, end); Psi2(2, end)];
 U = [U1, U2];
 
-[gate, U] = gates(U);
+gate = gates.gate;
+
+U = gates.rotate(U);
+
 
 
 % Measuring distance
