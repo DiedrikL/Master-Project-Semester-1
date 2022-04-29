@@ -20,7 +20,7 @@ omega = omegaX - 1i*omegaY;
 
 % Set timelength
 T = 2*pi/gamma;
-dt = T/1000;
+dt = T/500;
 tVector = 0:dt:T;
 tVector(end) = [];
 leng = length(tVector);

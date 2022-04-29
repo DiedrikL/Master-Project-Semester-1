@@ -13,7 +13,7 @@ arguments
     gates GateInterface = Hadamard;
     options.T(1,1) double = 2*pi;
     options.Tstart(1,1) double = 0;
-    options.Tsize(1,1) double = 100;
+    options.Tsize(1,1) double = 500;
 end
 
 % Compare distance for a gate U with a given gate
