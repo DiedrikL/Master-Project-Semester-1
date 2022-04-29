@@ -1,4 +1,4 @@
-classdef Ygate < GateInterface
+classdef Ygate < Gates.GateInterface
     % The gate and rotation for the Y gate
     
     methods(Access = public, Static)

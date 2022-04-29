@@ -1,4 +1,4 @@
-classdef Identity < GateInterface
+classdef Xgate < Gates.GateInterface
     % The gate and rotation for the Hadamard gate
     
     methods(Access = public, Static)
@@ -11,8 +11,8 @@ classdef Identity < GateInterface
             rotate = exp(-1i*phi)*U;
         end
     end
-
+    
     properties(Constant)
-        gate = 1/sqrt(2)*[1 1 ; 1 -1];
+        gate = [0 1;1 0];
     end
 end

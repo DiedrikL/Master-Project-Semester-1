@@ -1,4 +1,4 @@
-classdef Zgate < GateInterface
+classdef Zgate < Gates.GateInterface
     % The gate and rotation for the Z gate
     
     methods(Access = public, Static)

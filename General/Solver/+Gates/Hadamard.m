@@ -1,4 +1,4 @@
-classdef Hadamard < GateInterface
+classdef Hadamard < Gates.GateInterface
     % The gate and rotation for the Hadamard gate
     
     methods(Access = public, Static)
