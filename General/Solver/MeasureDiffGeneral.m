@@ -1,4 +1,4 @@
-function Diff = MeasureDiffGeneral(H, gates, options)
+function Diff = MeasureDiffGeneral(H, solutionGate, options)
 % Function that measures the difference from a given gate for the
 % Hamiltonian. 
 %
@@ -7,14 +7,14 @@ function Diff = MeasureDiffGeneral(H, gates, options)
 % gate the gate to compare to, default Hadamard
 %
 % rotation the rotation to be done to remove the global phase
-
 arguments
     H function_handle
-    gates GateInterface = Hadamard;
+    solutionGate Gates.GateInterface = Gates.Hadamard;
     options.T(1,1) double = 2*pi;
     options.Tstart(1,1) double = 0;
     options.Tsize(1,1) double = 500;
 end
+
 
 % Compare distance for a gate U with a given gate
 
@@ -33,9 +33,9 @@ U1 = [Psi1(1, end); Psi1(2, end)];
 U2 = [Psi2(1, end); Psi2(2, end)];
 U = [U1, U2];
 
-gate = gates.gate;
+gate = solutionGate.gate;
 
-U = gates.rotation(U);
+U = solutionGate.rotation(U);
 
 
 

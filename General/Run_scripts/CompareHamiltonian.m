@@ -1,5 +1,5 @@
 % Solves the schrödinger equation with Crank Nicolson 
-% and compares it with ode45 
+% and compares different hamiltonians effect on the solution
 
 % Clear memory and set format for output to screen
 clear
@@ -19,11 +19,12 @@ psi0 = [1; 0];
 T = 2*pi/gamma;
 
 % Solve the schrödinger equation
+parameters = [epsilon, omegaX, omegaY];
 
 [Time1, Psi1] = SolveTDSE(epsilon, omegaX, omegaY, psi0, gamma);
 
-Hamiltonian1 = Hamiltonians.simpleHamiltonian(epsilon, omegaX, omegaY, gamma);
-Hamiltonian2 = Hamiltonians.smoothedHamiltonian(epsilon, omegaX, omegaY);
+Hamiltonian1 = Hamiltonians.SimpleHamiltonian.createHamiltonian(parameters, gamma=gamma);
+Hamiltonian2 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters);
 
 
 [Time2, Psi2] = SolveTDSEgeneral(psi0, Hamiltonian1, T=T, Tsize=50);
@@ -42,7 +43,6 @@ norm2 = c+d;
 norm3 = e+f;
 
 % Plot the result from the different methods
-figure
 hold on
 plot(Time1, a)
 plot(Time2, c)

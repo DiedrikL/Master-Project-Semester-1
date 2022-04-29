@@ -1,5 +1,6 @@
 % Test function to see difference with a smoothed out Hamiltonian
 
+
 % Parametre and start value
 epsilon = 2.4210e+00;
 omegaX = 0;
@@ -13,12 +14,13 @@ Time = 2*pi;
 
 psi0 = [1; 0];
 
+parameters = [epsilon, omegaX, omegaY];
 
 
 % Solve the schrödinger equation
-H1 = Hamiltonians.simpleHamiltonian(epsilon, omegaX, omegaY);
-H2 = Hamiltonians.smoothedHamiltonianSimple(epsilon, omegaX, omegaY, scale=5);
-H3 = Hamiltonians.smoothedHamiltonian(epsilon, omegaX, omegaY, scale=5);
+H1 = Hamiltonians.SimpleHamiltonian.createHamiltonian(parameters);
+H2 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters, scale=5);
+H3 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters, scale=5);
 
 DiffNormal = MeasureDiff(epsilon, omegaX, omegaY)
 
