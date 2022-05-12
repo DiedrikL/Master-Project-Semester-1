@@ -1,7 +1,13 @@
-classdef HamiltonianInterface
-    methods(Abstract, Static)
-        createHamiltonian(parameters, options)
+classdef (Abstract) HamiltonianInterface
+    properties(Abstract)
+       Time TimeOptions
     end
+    
+    methods(Abstract)
+        createHamiltonian(parameters)
+    end
+    
+
     
     methods(Static, Sealed)
         function H = pauliRotations(B1,B2,B3)
