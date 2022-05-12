@@ -1,4 +1,4 @@
-function [tVector, Solution] = SolveTDSEgeneral(Psi, Hamiltonian, options)
+function [tVector, Solution] = SolveTDSEgeneral(Psi, Hamiltonian, Time)
 
 % Solves the schrödinger equation with Crank Nicolson for a specified
 % Hamiltonian with a startvalue. Gamma is an optional value that must not
@@ -11,18 +11,16 @@ function [tVector, Solution] = SolveTDSEgeneral(Psi, Hamiltonian, options)
 
 % Input validation and default values
 arguments
-   Psi (:,1) double
-   Hamiltonian function_handle;
-   options.T(1,1) double = 2*pi;
-   options.Tstart(1,1) double = 0;
-   options.Tsize(1,1) double = 500;
+    Psi (:,1) double
+    Hamiltonian function_handle;
+    Time TimeOptions = TimeOptions;
 end
 
 
 % Set timelength
-dt = (options.T-options.Tstart)/options.Tsize;
+dt = (Time.Tend-Time.Tstart)/Time.Tsize;
 mustBeReal(dt);
-tVector = (options.Tstart):dt:(options.T);
+tVector = (Time.Tstart):dt:(Time.Tend);
 tVector(end) = [];
 
 % Find sizes
