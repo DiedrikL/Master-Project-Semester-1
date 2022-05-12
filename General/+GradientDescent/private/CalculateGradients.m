@@ -1,33 +1,41 @@
-function [Gradients] = CalculateGradients(parameters, Hamiltonian, gate, h, options)
-    % Function that takes four inputs
+function [Gradients] = CalculateGradients(parameters, Hamiltonian, Gate, options)
+    % Function that takes four inputs and optional inputs
     %
-    % parameters the variables
+    % parameters the variables the function should find the gradients to
     %
-    % Hamiltonian a hamiltonian as a HamiltonianInterface
+    % Hamiltonian a hamiltonian of the type HamiltonianInterface
     %
-    % gate a gate to compare to as a GateInterface
+    % gate is a gate to compare to of the type GateInterface
     %
+    % Time is a TimeOptions that specifies time period and scale.
     %
+    % It has an optional input h with a default value that is how far the
+    parameters should deviate from the input
 
+    % Validate input
     arguments
         parameters(1,:) double
         Hamiltonian Hamiltonians.HamiltonianInterface
-        gate Gates.GateInterface
-        h(1,1) double = 1e-3;
-        options.?SolveTDSEgeneral
+        Gate Gates.GateInterface
+        options.h(1,1) double = 1e-3;
     end
-
-
+    
+    h = options.h;
+    
+    % Extract time
+    Time = Hamiltonian.Time;
+    
+    % initialize vector
     vectorLength = length(parameters);
     Gradients = zeros(1,vectorLength);
        
+    % For each parameter, find it's gradient
     for n = 1:vectorLength
         [plussVector, minusVector] = CalculateVectors(parameters, h, n);
-        Hpluss = Hamiltonian.createHamiltonian(plussVector, options)
-        Hminus = Hamiltonian.createHamiltonian(minusVector, options)
-        
-        Gradients(n) = (MeasureDiffGeneral(Hpluss, gate, options) ...
-            - MeasureDiffGeneral(Hminus, gate, options))/(2*h);
+        Hpluss = Hamiltonian.createHamiltonian(plussVector);
+        Hminus = Hamiltonian.createHamiltonian(minusVector);
+        Gradients(n) = (MeasureDiffGeneral(Hpluss, Gate=Gate, Time=Time)...
+            - MeasureDiffGeneral(Hminus, Gate=Gate, Time=Time))/(2*h);
         
     end
 end
