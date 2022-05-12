@@ -13,6 +13,7 @@ omegaX = 0.6;
 omegaY = 0;
 gamma = 1;
 psi0 = [1; 0];
+parameters = [epsilon, omegaX, omegaY];
 
 
 % Set timelength
@@ -21,20 +22,18 @@ TimePara1 = TimeOptions(Tend = T, Tsize = 50);
 TimePara2 = TimeOptions(Tstart = -T, Tend = T, Tsize = 200);
 
 
+% Set up the hamiltonians
+Hamiltonian1 = Hamiltonians.SimpleHamiltonian(Gamma = gamma, Time = TimePara1);
+Hamiltonian2 = Hamiltonians.SmoothHamiltonian(Time = TimePara2);
+
+H1 = Hamiltonian1.createHamiltonian(parameters);
+H2 = Hamiltonian2.createHamiltonian(parameters);
+
 % Solve the schrödinger equation
-parameters = [epsilon, omegaX, omegaY];
-
-
 [Time1, Psi1] = SolveTDSE(epsilon, omegaX, omegaY, psi0, gamma);
 
-Hamiltonian1 = Hamiltonians.SimpleHamiltonian.createHamiltonian(parameters, gamma=gamma);
-Hamiltonian2 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters, TimePara2);
-
-
-
-
-[Time2, Psi2] = SolveTDSEgeneral(psi0, Hamiltonian1, TimePara1);
-[Time3, Psi3] = SolveTDSEgeneral(psi0, Hamiltonian2, TimePara2);
+[Time2, Psi2] = SolveTDSEgeneral(psi0, H1, TimePara1);
+[Time3, Psi3] = SolveTDSEgeneral(psi0, H2, TimePara2);
 
 % Extracting values
 a = abs(Psi1(1,:)).^2;

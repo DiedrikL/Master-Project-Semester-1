@@ -19,11 +19,14 @@ psi0 = [1; 0];
 
 parameters = [epsilon, omegaX, omegaY];
 
+Hamiltonian1 = Hamiltonians.SimpleHamiltonian(Time=SimpleTime);
+Hamiltonian2 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime);
+Hamiltonian3 = Hamiltonians.SmoothHamiltonian(Time=DoubleTime);
 
 % Solve the schrödinger equation
-H1 = Hamiltonians.SimpleHamiltonian.createHamiltonian(parameters);
-H2 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters, scale=5);
-H3 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters, scale=5);
+H1 = Hamiltonian1.createHamiltonian(parameters);
+H2 = Hamiltonian2.createHamiltonian(parameters);
+H3 = Hamiltonian3.createHamiltonian(parameters);
 
 DiffNormal = MeasureDiff(epsilon, omegaX, omegaY)
 
