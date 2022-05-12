@@ -6,7 +6,10 @@ epsilon = 2.4210e+00;
 omegaX = 0;
 omegaY = 1.6971e+00;
 
-Time = 2*pi;
+Period = 2*pi;
+
+SimpleTime = TimeOptions(Tend = Period, Tsize = 1000);
+DoubleTime = TimeOptions(Tstart = -Period, Tend = Period);
 
 % epsilon = 2;
 % omegaX = 1;
@@ -24,9 +27,9 @@ H3 = Hamiltonians.SmoothHamiltonian.createHamiltonian(parameters, scale=5);
 
 DiffNormal = MeasureDiff(epsilon, omegaX, omegaY)
 
-Dif1 = MeasureDiffGeneral(H1, T = Time, Tsize=1000)
+Dif1 = MeasureDiffGeneral(H1, Time=SimpleTime)
 
-Dif2 = MeasureDiffGeneral(H2, T = Time, Tstart = -Time)
+Dif2 = MeasureDiffGeneral(H2, Time=DoubleTime)
 
-Diff3 = MeasureDiffGeneral(H3, T = Time, Tstart = -Time)
+Diff3 = MeasureDiffGeneral(H3, Time=DoubleTime)
 
