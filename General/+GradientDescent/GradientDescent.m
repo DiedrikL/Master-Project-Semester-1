@@ -1,35 +1,57 @@
-function [epsilon, omegaX, omegaY] = GradientDescent(epsilon, omegaX, omegaY, learning, Beta)
-% Gradient descent function, that takes two parameters. There are two 
-% optional parameters to determine learning rate and the option of running
-% gradient descent with momentum if Beta is > 0. 
-% Optimizes for epsilon and omega
-% Beta must >= 0 and <1
+function [para, distance] = GradientDescent(para, Hamiltonian, Gate, options)
+% Gradient descent function, that takes a tree parameters and some 
+% optional parameters, the function has the option of running
+% gradient descent with momentum if Beta is > 0. It optimizes for the
+% parameters that get it closest to the given gate.
+% 
+% para is the vector of parameters to be optimized with start values
+%
+% Hamiltonian must be asubclass of HamiltonianInterface that contains the
+% hamiltonian and it's settings.
+%
+% Gate is the target gate, it must be a subclass of GateInterface
+%
+% Beta is an optional parameter and must >= 0 and <1. Values above 0
+% gives the function momentum
+%
+% learning is an optional paramter that changes how fast the values of para
+% should change with respect to the gradient
+%
+% maxIter is the maximum number of iterations the function should do
 
 % Input validation and default values
 arguments
-   epsilon(1,:) double
-   omegaX(1,:) double
-   omegaY(1,:) double
-   learning double = 1e-3;
-   Beta double {mustBeInRange(Beta,0,1,"exclude-upper")} = 0;
+   para(1,:) double
+   Hamiltonian Hamiltonians.HamiltonianInterface
+   Gate Gates.GateInterface
+
+   options.learning double = 1e-3;
+   options.Beta double {mustBeInRange(options.Beta,0,1,"exclude-upper")} = 0;
+   options.maxIter = 100;
 end
 
+learning = options.learning;
+Beta = options.Beta;
+Time = Hamiltonian.Time;
+
 % Max intervals
-maxIt = 100;
+maxIt = options.maxIter;
 
 % Initialise momentum vector
-V = zeros(1,3);
+leng = length(para);
+V = zeros(1,leng);
 
 for iter = 1:maxIt
+        
+    V = Beta*V + (1-Beta)*CalculateGradients(para, Hamiltonian, Gate);
     
-    V = Beta*V + (1-Beta)*CalculateGradients(epsilon, omegaX, omegaY);
-
-    epsilon = epsilon-learning*V(1);
-    omegaX = omegaX-learning*V(2);
-    omegaY = omegaY-learning*V(3);
+    for n = 1:leng
+       para(n) = para(n) - learning*V(n);
+    end
     
     if mod(iter,100) == 0
-       MeasureDiff(epsilon, omegaX, omegaY) 
+        H = Hamiltonian.createHamiltonian(para);
+        MeasureDiffGeneral(H, Gate=Gate, Time=Time) 
     end
     
 %     if(MeasureDiff(newEpsilon, newOmega) < MeasureDiff(epsilon,omega))
@@ -45,3 +67,8 @@ for iter = 1:maxIt
     
     
 end
+
+H = Hamiltonian.createHamiltonian(para);
+
+distance = MeasureDiffGeneral(H, Gate=Gate, Time=Time);
+
