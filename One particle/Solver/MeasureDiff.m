@@ -46,5 +46,3 @@ gate = HAD;
 
 % Measuring distance
 Diff = norm(U-gate);
-
-

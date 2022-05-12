@@ -4,9 +4,9 @@ function Diff = MeasureDiffGeneral(H, options)
 %
 % H the hamiltonian function handle
 %
-% gate the gate to compare to, default Hadamard
-%
-% rotation the rotation to be done to remove the global phase
+% gate must be a subclass of GateInterface, and is the gate to compare to,
+% default Hadamard
+
 arguments
     H function_handle
     options.Gate Gates.GateInterface = Gates.Hadamard;
@@ -37,8 +37,5 @@ targetGate = Gate.gate;
 U = Gate.rotation(U);
 
 
-
 % Measuring distance
 Diff = norm(U-targetGate);
-
-

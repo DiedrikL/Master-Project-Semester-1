@@ -10,7 +10,7 @@ function [Gradients] = CalculateGradients(parameters, Hamiltonian, Gate, options
     % Time is a TimeOptions that specifies time period and scale.
     %
     % It has an optional input h with a default value that is how far the
-    parameters should deviate from the input
+    % parameters should deviate from the input
 
     % Validate input
     arguments
