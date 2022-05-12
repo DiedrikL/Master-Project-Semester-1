@@ -5,10 +5,15 @@ clear
 format short e
 
 % Parameters
-epsilon = 5.5621;
-omegaX = 0.53043;
-omegaY = 9.1722;
-learning = 1e-5;
+% epsilon = 5.5621;
+% omegaX = 0.53043;
+% omegaY = 9.1722;
+learning = 1e-3;
+epsilon = 1;
+omegaX = 0.6;
+omegaY = 0;
+
+
 
 % Determines if momentum is used, and how much.
 % Must be 0 =< Beta < 1
