@@ -1,10 +1,50 @@
 classdef (Abstract) HamiltonianInterface
     properties(Abstract)
        Time TimeOptions
+       Parameters double {mustBeReal}
+    end
+    
+    properties(Dependent)
+       TimeStep double 
+       TimeVector(1,:) double
+    end
+    
+    properties(Abstract, Dependent)
+        Period double
     end
     
     methods(Abstract)
-        createHamiltonian(parameters)
+        createHamiltonian(this)
+    end
+    
+    methods
+        
+        % Get functions for dependent variabels
+        function TimeStep = get.TimeStep(this)
+            arguments
+                this Hamiltonians.HamiltonianInterface
+            end
+            
+            TimeStep = this.Period/this.Time.Tsize;
+        end
+        
+        function TimeVector = get.TimeVector(this)
+            arguments
+                this Hamiltonians.HamiltonianInterface
+            end
+            
+            TimeStart = this.Time.Tstart + this.TimeOffset;
+            TimeEnd = this.Period + this.Time.Tstart;
+            
+            
+            TimeVector = (TimeStart):this.TimeStep:(TimeEnd);
+            TimeVector(end) = [];
+        end
+        
+        function TimeOffset = TimeOffset(~)
+           TimeOffset = 0;
+        end
+        
     end
     
 

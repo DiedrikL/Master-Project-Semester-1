@@ -1,8 +1,14 @@
 classdef SmoothHamiltonian < Hamiltonians.HamiltonianInterface
     properties
        Time TimeOptions
+       Parameters
        Scale(1,1) double {mustBeReal}
     end
+    
+    properties(Dependent)
+       Period
+    end
+    
     
     
     methods
@@ -26,32 +32,32 @@ classdef SmoothHamiltonian < Hamiltonians.HamiltonianInterface
             arguments
                 options.Time TimeOptions = TimeOptions;
                 options.Scale(1,1) double {mustBeReal} = 5;
+                options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
             end
             
             this.Time = options.Time;
             this.Scale = options.Scale;
-            
+            this.Parameters = options.Parameters;
         end
         
         
-        function H = createHamiltonian(this, Parameters)
+        function H = createHamiltonian(this)
             % creates the Hamiltonian with the parameters provided and
             % values in the properties in this instance of the class.
             
             
             % Input validation and default values
             arguments
-                this 
-                Parameters(1,3) double {mustBeReal}
+                this Hamiltonians.SmoothHamiltonian
             end
             
-            epsilon = Parameters(1,1);
-            omegaX = Parameters(1,2);
-            omegaY = Parameters(1,3);
+            epsilon = this.Parameters(1,1);
+            omegaX = this.Parameters(1,2);
+            omegaY = this.Parameters(1,3);
             
             s = this.Scale;
-            T = (this.Time.Tend - this.Time.Tstart)/4;
-            midpoint = (this.Time.Tstart + this.Time.Tend)/2;
+            T = this.Time.Tpulse/2;
+            midpoint = this.Time.Tstart + (this.Period/2);
            
             % Setup the parameters for the Hamiltonian
             B1 = @(t) omegaX/(exp(s*(abs(t-midpoint)-abs(T)))+1);
@@ -64,7 +70,28 @@ classdef SmoothHamiltonian < Hamiltonians.HamiltonianInterface
         end
         
         
+        
+        function Period = get.Period(this)
+            arguments
+                this Hamiltonians.SmoothHamiltonian
+            end
+            
+            Period =  2*this.Time.Tpulse;
+        end
+        
+        
         % Custom set functions with validation
+        function this = set.Parameters(this, para)
+            
+            arguments
+                this Hamiltonians.SmoothHamiltonian
+                para(1,3) double {mustBeReal}
+            end
+            
+            this.Parameters = para;
+        end
+        
+        
         function this = set.Time(this, Time)
             % Set the TimeOptions used by this hamiltonian
             arguments
