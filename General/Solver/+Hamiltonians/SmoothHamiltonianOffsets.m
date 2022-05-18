@@ -75,9 +75,9 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
             midpoint = this.Time.Tstart + ((this.Period + this.minOffset)/2);
            
             % Setup the parameters for the Hamiltonian
-            B1 = @(t) omegaX/(exp(s*(abs(t-midpoint-x)-abs(T)))+1);
-            B2 = @(t) omegaY/(exp(s*(abs(t-midpoint-y)-abs(T)))+1);
-            B3 = @(t) epsilon/(exp(s*(abs(t-midpoint-z)-abs(T)))+1);
+            B1 = @(t) 2*omegaX/(exp(s*(abs(t-midpoint-x)-abs(T)))+1);
+            B2 = @(t) 2*omegaY/(exp(s*(abs(t-midpoint-y)-abs(T)))+1);
+            B3 = @(t) 2*epsilon/(exp(s*(abs(t-midpoint-z)-abs(T)))+1);
                         
             
             % Creating the Hamiltonian
