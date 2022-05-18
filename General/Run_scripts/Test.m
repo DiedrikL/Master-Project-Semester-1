@@ -8,8 +8,8 @@ omegaY = 1.6971e+00;
 
 Period = 2*pi;
 
-SimpleTime = TimeOptions(Tend = Period, Tsize = 1000);
-DoubleTime = TimeOptions(Tstart = -Period, Tend = Period);
+SimpleTime = TimeOptions(Tpulse = Period, Tsize = 1000);
+DoubleTime = TimeOptions(Tstart = -Period, Tpulse = Period);
 
 % epsilon = 2;
 % omegaX = 1;
@@ -19,20 +19,17 @@ psi0 = [1; 0];
 
 parameters = [epsilon, omegaX, omegaY];
 
-Hamiltonian1 = Hamiltonians.SimpleHamiltonian(Time=SimpleTime);
-Hamiltonian2 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime);
-Hamiltonian3 = Hamiltonians.SmoothHamiltonian(Time=DoubleTime);
+H1 = Hamiltonians.SimpleHamiltonian(Time=SimpleTime, Parameters = parameters);
+H2 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = parameters);
+H3 = Hamiltonians.SmoothHamiltonian(Time=DoubleTime, Parameters = parameters);
 
 % Solve the schrödinger equation
-H1 = Hamiltonian1.createHamiltonian(parameters);
-H2 = Hamiltonian2.createHamiltonian(parameters);
-H3 = Hamiltonian3.createHamiltonian(parameters);
 
 DiffNormal = MeasureDiff(epsilon, omegaX, omegaY)
 
-Dif1 = MeasureDiffGeneral(H1, Time=SimpleTime)
+Dif1 = MeasureDiffGeneral(H1)
 
-Dif2 = MeasureDiffGeneral(H2, Time=DoubleTime)
+Dif2 = MeasureDiffGeneral(H2)
 
-Diff3 = MeasureDiffGeneral(H3, Time=DoubleTime)
+Diff3 = MeasureDiffGeneral(H3)
 
