@@ -31,7 +31,7 @@ DoubleTime = TimeOptions(Tpulse = Period, Tsize = 1000);
 
 
 % Set up the hamiltonians
-H1 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = para);
+H1 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = para, Scale = 100);
 H2 = Hamiltonians.SmoothHamiltonianOffsets(Time=SimpleTime, Parameters = offsetPara);
 %H3 = Hamiltonians.SmoothHamiltonianOffsets(Time=DoubleTime, Parameters = offsetPara);
 
@@ -59,7 +59,7 @@ hold on
 plot(Time1, a)
 plot(Time2, c)
 plot(Time3, e)
-legend('Simpl', 'Smoot', 'Offset')
+legend('STDSE', 'Smoot', 'Offset')
 
 pause
 clf
@@ -76,7 +76,4 @@ plot(Time1, norm1)
 plot(Time2, norm2)
 plot(Time3, norm3)
 
-zoom yon
 legend('STDSE', 'Smoot', 'Offset')
-pause
-zoom reset

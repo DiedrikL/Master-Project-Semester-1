@@ -66,6 +66,5 @@ plot(Time1, norm1)
 plot(Time2, norm2)
 plot(Time3, norm3)
 
-zoom yon
 legend('STDSE','50','Smoot')
 
