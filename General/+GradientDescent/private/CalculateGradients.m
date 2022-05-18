@@ -1,4 +1,4 @@
-function [Gradients] = CalculateGradients(parameters, Hamiltonian, Gate, options)
+function [Gradients] = CalculateGradients(Hamiltonian, Gate, options)
     % Function that takes four inputs and optional inputs
     %
     % parameters the variables the function should find the gradients to
@@ -14,7 +14,6 @@ function [Gradients] = CalculateGradients(parameters, Hamiltonian, Gate, options
 
     % Validate input
     arguments
-        parameters(1,:) double
         Hamiltonian Hamiltonians.HamiltonianInterface
         Gate Gates.GateInterface
         options.h(1,1) double = 1e-3;
@@ -22,20 +21,23 @@ function [Gradients] = CalculateGradients(parameters, Hamiltonian, Gate, options
     
     h = options.h;
     
-    % Extract time
-    Time = Hamiltonian.Time;
+    % Extract parameters
+    para = Hamiltonian.Parameters;
     
     % initialize vector
-    vectorLength = length(parameters);
+    vectorLength = length(para);
     Gradients = zeros(1,vectorLength);
        
     % For each parameter, find it's gradient
     for n = 1:vectorLength
-        [plussVector, minusVector] = CalculateVectors(parameters, h, n);
-        Hpluss = Hamiltonian.createHamiltonian(plussVector);
-        Hminus = Hamiltonian.createHamiltonian(minusVector);
-        Gradients(n) = (MeasureDiffGeneral(Hpluss, Gate=Gate, Time=Time)...
-            - MeasureDiffGeneral(Hminus, Gate=Gate, Time=Time))/(2*h);
+        [plussVector, minusVector] = CalculateVectors(para, h, n);
+        Hamiltonian.Parameters = plussVector;
+        Hpluss = MeasureDiffGeneral(Hamiltonian, Gate=Gate);
+        
+        Hamiltonian.Parameters = minusVector;
+        Hminus = MeasureDiffGeneral(Hamiltonian, Gate=Gate);
+        
+        Gradients(n) = (Hpluss - Hminus)/(2*h);
         
     end
 end

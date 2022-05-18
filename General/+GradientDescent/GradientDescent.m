@@ -1,4 +1,4 @@
-function [para, distance] = GradientDescent(para, Hamiltonian, Gate, options)
+function [para, distance] = GradientDescent(Hamiltonian, Gate, options)
 % Gradient descent function, that takes a tree parameters and some 
 % optional parameters, the function has the option of running
 % gradient descent with momentum if Beta is > 0. It optimizes for the
@@ -21,7 +21,6 @@ function [para, distance] = GradientDescent(para, Hamiltonian, Gate, options)
 
 % Input validation and default values
 arguments
-   para(1,:) double
    Hamiltonian Hamiltonians.HamiltonianInterface
    Gate Gates.GateInterface
 
@@ -32,26 +31,27 @@ end
 
 learning = options.learning;
 Beta = options.Beta;
-Time = Hamiltonian.Time;
 
 % Max intervals
 maxIt = options.maxIter;
 
 % Initialise momentum vector
+para = Hamiltonian.Parameters;
 leng = length(para);
 V = zeros(1,leng);
 
 for iter = 1:maxIt
         
-    V = Beta*V + (1-Beta)*CalculateGradients(para, Hamiltonian, Gate);
+    V = Beta*V + (1-Beta)*CalculateGradients(Hamiltonian, Gate);
     
     for n = 1:leng
        para(n) = para(n) - learning*V(n);
     end
     
+    Hamiltonian.Parameters = para;
+    
     if mod(iter,100) == 0
-        H = Hamiltonian.createHamiltonian(para);
-        MeasureDiffGeneral(H, Gate=Gate, Time=Time) 
+        MeasureDiffGeneral(Hamiltonian, Gate=Gate) 
     end
     
 %     if(MeasureDiff(newEpsilon, newOmega) < MeasureDiff(epsilon,omega))
@@ -68,7 +68,6 @@ for iter = 1:maxIt
     
 end
 
-H = Hamiltonian.createHamiltonian(para);
 
-distance = MeasureDiffGeneral(H, Gate=Gate, Time=Time);
+distance = MeasureDiffGeneral(Hamiltonian, Gate=Gate);
 
