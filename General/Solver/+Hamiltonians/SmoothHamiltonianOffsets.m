@@ -72,7 +72,7 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
             T = (this.Time.Tpulse)/2;
             
 
-            midpoint = this.Time.Tstart + ((this.Period + this.minOffset)/2);
+            midpoint = this.Time.Tstart + ((this.Period + this.minOffset - this.maxOffset)/2);
            
             % Setup the parameters for the Hamiltonian
             B1 = @(t) 2*omegaX/(exp(s*(abs(t-midpoint-x)-abs(T)))+1);
@@ -118,8 +118,8 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
             
             offset = max(this.Parameters(4:6));
 
-            if(offset < 0)
-               offset = abs(offset); 
+            if(offset > 0)
+               offset = abs(offset);
             else
                 offset = 0;
             end        
