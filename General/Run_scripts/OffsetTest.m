@@ -3,17 +3,23 @@
 
 
 % Parametre and start value
-epsilon = 2.4210e+00;
-omegaX = 0;
-omegaY = 1.6971e+00;
+% epsilon = 2.4210e+00;
+% omegaX = 0;
+% omegaY = 1.6971e+00;
+
+epsilon = 1;
+omegaX = 1;
+omegaY = 1;
+
+gamma = 1;
 
 psi0 = [1; 0];
 
 
 % offsets
-x = 5;
-y = -3;
-z = 1;
+x = -5;
+y = 5;
+z = 150;
 
 para = [epsilon, omegaX, omegaY];
 offsetPara = [epsilon, omegaX, omegaY, x, y, z];

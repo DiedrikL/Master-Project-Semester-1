@@ -7,7 +7,7 @@ classdef Xgate < Gates.GateInterface
                 U(2,2) double
             end
 
-            phi = angle(U(1,1));
+            phi = angle(U(1,2));
             rotate = exp(-1i*phi)*U;
         end
     end

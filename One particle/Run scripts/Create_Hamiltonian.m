@@ -7,9 +7,11 @@ format short e
 
 % Parametre and start value
 epsilon = 1;
-omega = 0.6;
-gamma = 1.1;
-Psi = [0 1];
+omega = 0;
+
+
+gamma = 1;
+Psi = [1 0];
 
 
 % Set timelength
