@@ -26,7 +26,7 @@ arguments
 
    options.learning double = 1e-3;
    options.Beta double {mustBeInRange(options.Beta,0,1,"exclude-upper")} = 0;
-   options.maxIter = 100;
+   options.maxIter = 500;
 end
 
 learning = options.learning;
