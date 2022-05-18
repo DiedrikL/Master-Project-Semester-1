@@ -8,9 +8,9 @@ zoom reset
 
 
 % Parametre and start value
-epsilon = 1;
-omegaX = 0.6;
-omegaY = 0;
+epsilon = 2.4210e+00;
+omegaX = 0;
+omegaY = 1.6971e+00;
 gamma = 1;
 psi0 = [1; 0];
 parameters = [epsilon, omegaX, omegaY];
