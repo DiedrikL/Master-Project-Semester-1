@@ -1,23 +1,22 @@
 classdef TimeOptions
     properties
-       Tstart;
-       Tend;
-       Tsize;
+       Tstart double;
+       Tpulse double;
+       Tsize double {mustBeGreaterThan(Tsize,0)};
     end
-    
+
     
     methods
         function Time = TimeOptions(options)
             arguments
                options.Tstart(1,1) double = 0;
-               options.Tend(1,1) double = 2*pi;
+               options.Tpulse(1,1) double = 2*pi;
                options.Tsize(1,1) double = 500;
             end
             
             Time.Tstart = options.Tstart;
-            Time.Tend = options.Tend;
+            Time.Tpulse = options.Tpulse;
             Time.Tsize = options.Tsize;
-            
         end
     end
 end

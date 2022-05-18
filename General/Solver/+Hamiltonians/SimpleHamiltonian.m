@@ -1,8 +1,14 @@
 classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
     properties
-        Time
-        Gamma
+        Time TimeOptions
+        Gamma double
+        Parameters
     end
+    
+    properties(Dependent)
+        Period
+    end
+
     
     methods
         function this = SimpleHamiltonian(options)
@@ -20,13 +26,15 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             arguments
                 options.Time TimeOptions = TimeOptions;
                 options.Gamma double {mustBeNonzero} = 1;
+                options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
             end
             
             this.Time = options.Time;
             this.Gamma = options.Gamma;
+            this.Parameters = options.Parameters;
         end
         
-        function H = createHamiltonian(this, parameters)
+        function H = createHamiltonian(this)
             % Creates a Hamiltonian with the parameters provided and the
             % values stored in this instance of the class
             %
@@ -38,12 +46,11 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             % Input validation
             arguments
                 this Hamiltonians.SimpleHamiltonian
-                parameters(1,3) double {mustBeReal}
             end
             
-            epsilon = parameters(1,1);
-            omegaX = parameters(1,2);
-            omegaY = parameters(1,3);
+            epsilon = this.Parameters(1,1);
+            omegaX = this.Parameters(1,2);
+            omegaY = this.Parameters(1,3);
             gamma = this.Gamma;
 
             % Setup parameters
@@ -55,8 +62,18 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             H = Hamiltonians.HamiltonianInterface.pauliRotations(B1,B2,B3); 
 
         end
+         
+
+        % Get function for dependent variable
+        function Period = get.Period(this)
+            arguments
+                this Hamiltonians.SimpleHamiltonian
+            end
+            
+            Period = this.Time.Tpulse;
+        end
         
-                % Custom set functions with validation
+        % Custom set functions with validation
         function this = set.Time(this, Time)
             % Set the TimeOptions used by this hamiltonian
             arguments
@@ -75,6 +92,16 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             end 
             
             this.Gamma = Gamma;
+        end
+        
+        function this = set.Parameters(this, para)
+            
+            arguments
+                this Hamiltonians.SimpleHamiltonian
+                para(1,3) double {mustBeReal}
+            end
+            
+            this.Parameters = para;
         end
     end
 end

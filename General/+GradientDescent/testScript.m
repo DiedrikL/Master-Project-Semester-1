@@ -1,6 +1,7 @@
-Hamilt = Hamiltonians.SimpleHamiltonian;
-HGate = Gates.Hadamard;
-
 para = [2,2,2];
 
-CalculateGradients(para, Hamilt, HGate)
+Hamilt = Hamiltonians.SimpleHamiltonian(Parameters=para);
+HGate = Gates.Hadamard;
+
+
+CalculateGradients(Hamilt, HGate)

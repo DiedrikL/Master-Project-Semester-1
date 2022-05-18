@@ -18,22 +18,19 @@ parameters = [epsilon, omegaX, omegaY];
 
 % Set timelength
 T = 2*pi/gamma;
-TimePara1 = TimeOptions(Tend = T, Tsize = 50);
-TimePara2 = TimeOptions(Tstart = -T, Tend = T, Tsize = 200);
+TimePara1 = TimeOptions(Tpulse = T, Tsize = 50);
+TimePara2 = TimeOptions(Tstart = -T, Tpulse = T, Tsize = 200);
 
 
 % Set up the hamiltonians
-Hamiltonian1 = Hamiltonians.SimpleHamiltonian(Gamma = gamma, Time = TimePara1);
-Hamiltonian2 = Hamiltonians.SmoothHamiltonian(Time = TimePara2);
-
-H1 = Hamiltonian1.createHamiltonian(parameters);
-H2 = Hamiltonian2.createHamiltonian(parameters);
+H1 = Hamiltonians.SimpleHamiltonian(Gamma = gamma, Time = TimePara1, Parameters = parameters);
+H2 = Hamiltonians.SmoothHamiltonian(Time = TimePara1, Parameters = parameters);
 
 % Solve the schrödinger equation
 [Time1, Psi1] = SolveTDSE(epsilon, omegaX, omegaY, psi0, gamma);
 
-[Time2, Psi2] = SolveTDSEgeneral(psi0, H1, TimePara1);
-[Time3, Psi3] = SolveTDSEgeneral(psi0, H2, TimePara2);
+[Time2, Psi2] = SolveTDSEgeneral(psi0, H1);
+[Time3, Psi3] = SolveTDSEgeneral(psi0, H2);
 
 % Extracting values
 a = abs(Psi1(1,:)).^2;
@@ -69,6 +66,5 @@ plot(Time1, norm1)
 plot(Time2, norm2)
 plot(Time3, norm3)
 
-zoom yon
 legend('STDSE','50','Smoot')
 
