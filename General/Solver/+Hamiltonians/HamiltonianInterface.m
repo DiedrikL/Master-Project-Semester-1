@@ -33,7 +33,7 @@ classdef (Abstract) HamiltonianInterface
                 this Hamiltonians.HamiltonianInterface
             end
             
-            TimeStart = this.Time.Tstart + this.TimeOffset;
+            TimeStart = this.Time.Tstart;
             TimeEnd = this.Period + this.Time.Tstart;
             
             
@@ -41,9 +41,6 @@ classdef (Abstract) HamiltonianInterface
             TimeVector(end) = [];
         end
         
-        function TimeOffset = TimeOffset(~)
-           TimeOffset = 0;
-        end
         
     end
     
