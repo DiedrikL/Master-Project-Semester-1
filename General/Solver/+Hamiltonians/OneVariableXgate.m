@@ -75,7 +75,7 @@ classdef OneVariableXgate < Hamiltonians.HamiltonianInterface
                 this Hamiltonians.OneVariableXgate
             end
             
-            Period =  2*this.Time.Tpulse;
+            Period =  3*this.Time.Tpulse;
         end
         
         

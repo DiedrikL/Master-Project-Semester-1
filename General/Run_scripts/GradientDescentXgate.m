@@ -8,17 +8,17 @@ Time = TimeOptions;
 
 Beta = 0.1;
 learning = 1e-4;
-maxIter = 100;
+maxIter = 300;
 psi0 = [1;0];
 Scale = 1000;
 
 
 % Create the hamiltonian
 Hamilt1 = Hamiltonians.OneVariableXgate(...
-    Time = Time, Parameters = T, Scale = Scale);
+    Time = Time, Parameters = T, Scale = 5);
 
 Hamilt2 = Hamiltonians.OneVariableXgate(...
-    Time = Time, Parameters = T, Scale = 5);
+    Time = Time, Parameters = T, Scale = 1000);
 
 % set target gate
 HGate = Gates.Xgate;
@@ -75,9 +75,9 @@ norm2 = c+d;
 
 % Plot the result
 hold off
-plot(Time1, a)
+plot(Time1, a,'--')
 hold on
-plot(Time1, c)
+plot(Time1, c,'--')
 plot(period, Y1)
 plot(period, Y2)
 legend('psi 1', 'psi 2', 'field 1', 'field 2')
