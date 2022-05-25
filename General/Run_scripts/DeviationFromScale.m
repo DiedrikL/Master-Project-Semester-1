@@ -12,11 +12,12 @@ Time = TimeOptions(Tpulse = T);
 
 Beta = 0.1;
 learning = 1e-4;
-maxIter = 100;
+maxIter = 300;
 psi0 = [1;0];
-startScale = 5;
-scaleStep = 5;
-scaleEnd = 100;
+startScale = 10;
+scaleStep = 1;
+scaleEnd = 18;
+iterChange = false;
 
 
 % Create the hamiltonian
@@ -33,6 +34,8 @@ leng = length(scaleVector);
 para = T;
 result = zeros(2,leng);
 
+
+
 % Run gradient descent
 for n = 1:leng
     Hamilt.Scale = scaleVector(n);
@@ -43,14 +46,18 @@ for n = 1:leng
     
     result(1,n) = para - T;
     result(2,n) = deviation;
+    
+    if(~iterChange)
+       maxIter = 200;
+       iterChange = true;
+    end
 end
 
-
+z
 %piPeriods = para/pi
 
 
 % Plot result of gradient descent
 plot(scaleVector, result(1,:))
-
-
-
+title('Difference from pi/2 with different values of scale')
+yline(0);
