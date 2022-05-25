@@ -97,5 +97,3 @@ clf
 hold on
 plot(Time1, norm1)
 plot(Time1, norm2)
-
-
