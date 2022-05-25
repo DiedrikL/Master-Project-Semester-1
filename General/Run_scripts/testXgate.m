@@ -22,8 +22,8 @@ psi0 = [1; 0];
 parameters = [epsilon, omegaX, omegaY];
 
 H1 = Hamiltonians.SimpleHamiltonian(Time=SimpleTime, Parameters = parameters);
-H2 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = parameters, Scale = 1);
-H3 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = parameters, Scale = 10);
+H2 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = parameters, Scale = 5);
+H3 = Hamiltonians.SmoothHamiltonian(Time=SimpleTime, Parameters = parameters, Scale = 100);
 
 % Solve the schrödinger equation
 
