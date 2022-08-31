@@ -14,5 +14,7 @@ classdef Identity < Gates.GateInterface
 
     properties(Constant)
         gate = eye(2);
+        Psi0 = [1, 0; 0 , 1]
+
     end
 end

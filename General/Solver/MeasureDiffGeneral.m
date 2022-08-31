@@ -18,17 +18,23 @@ Gate = options.Gate;
 % Compare distance for a gate U with a given gate
 
 % Start positions
+Psi0 = options.Gate.Psi0;
+
+% Setup matrices
+index = size(Psi0, 2);
+U = zeros(index);
+
+% Getting the solution for the start positions
+for n = 1:index
+    [~, Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
+    for m = 1:index
+        U(m,n) = Psi(m, end);
+    end
+end
+
 psi0 = [1;0];
 psi1 = [0;1];
 
-% Getting the solution for the start positions
-[~, Psi1] = SolveTDSEgeneral(psi0, Hamiltonian);
-[~, Psi2] = SolveTDSEgeneral(psi1, Hamiltonian);
-
-% Creating the gate
-U1 = [Psi1(1, end); Psi1(2, end)];
-U2 = [Psi2(1, end); Psi2(2, end)];
-U = [U1, U2];
 
 targetGate = Gate.gate;
 
