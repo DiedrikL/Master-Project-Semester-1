@@ -13,6 +13,6 @@ classdef Identity < Gates.GateInterface
     end
 
     properties(Constant)
-        gate = 1/sqrt(2)*[1 1 ; 1 -1];
+        gate = eye(2);
     end
 end
