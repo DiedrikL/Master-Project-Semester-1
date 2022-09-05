@@ -14,5 +14,6 @@ classdef Hadamard < Gates.GateInterface
     
     properties(Constant)
         gate = 1/sqrt(2)*[1 1 ; 1 -1];
+        Psi0 = [1, 0; 0 , 1]
     end
 end

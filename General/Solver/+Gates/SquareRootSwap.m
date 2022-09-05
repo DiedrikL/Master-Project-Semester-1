@@ -1,10 +1,10 @@
-classdef Identity < Gates.GateInterface
+classdef SquareRootSwap < Gates.GateInterface
     % The gate and rotation for the Hadamard gate
     
     methods(Access = public, Static)
         function rotate = rotation(U)
             arguments
-                U(2,2) double
+                U(4,4) double
             end
 
             phi = angle(U(1,1));
@@ -13,8 +13,9 @@ classdef Identity < Gates.GateInterface
     end
 
     properties(Constant)
-        gate = eye(2);
-        Psi0 = [1, 0; 0 , 1]
+        gate = [1 0 0 0; 0 0.5*(1+i) 0.5*(1-i) 0;...
+            0 0.5*(1-i) 0.5*(1+i) 0; 0 0 0 1];
+        Psi0 = eye(4);
 
     end
 end
