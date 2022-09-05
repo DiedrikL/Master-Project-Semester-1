@@ -25,12 +25,16 @@ arguments
    Gate Gates.GateInterface
 
    options.learning double = 1e-3;
-   options.Beta double {mustBeInRange(options.Beta,0,1,"exclude-upper")} = 0;
+   options.Beta1 double {mustBeInRange(options.Beta1,0,1,"exclude-upper")} = 0.9;
+   options.Beta2 double {mustBeInRange(options.Beta2,0,1,"exclude-upper")} = 0.999;
+   options.epsilon double {mustBePositive} = 1e-8;
    options.maxIter = 500;
 end
 
 learning = options.learning;
-Beta = options.Beta;
+Beta1 = options.Beta1;
+Beta2 = options.Beta2;
+epsilon = options.epsilon;
 
 % Max intervals
 maxIt = options.maxIter;
@@ -39,13 +43,22 @@ maxIt = options.maxIter;
 para = Hamiltonian.Parameters;
 leng = length(para);
 V = zeros(1,leng);
+U = zeros(1,leng);
 
 for iter = 1:maxIt
         
-    V = Beta*V + (1-Beta)*CalculateGradients(Hamiltonian, Gate);
+    grads = CalculateGradients(Hamiltonian, Gate);
+    V = Beta1*V + (1-Beta1)*grads;
+    U = Beta2*U + (1-Beta2)*grads.^2;
+    
+    % Compute bias-corrected first moment estimate
+    V_bias = V./(1-Beta1^iter);
+    U_bias = U./(1-Beta2^iter);
+
+
     
     for n = 1:leng
-       para(n) = para(n) - learning*V(n);
+       para(n) = para(n) - learning*V_bias(n)/(sqrt(U_bias(n))+epsilon);
     end
     
     Hamiltonian.Parameters = para;
@@ -54,16 +67,6 @@ for iter = 1:maxIt
         MeasureDiffGeneral(Hamiltonian, Gate=Gate) 
     end
     
-%     if(MeasureDiff(newEpsilon, newOmega) < MeasureDiff(epsilon,omega))
-%         epsilon = newEpsilon;
-%         omega = newOmega;
-%     elseif(learning > 1e-8)
-%         learning = learning/2;
-%     else
-%         disp("Number of iterations:")
-%         iter
-%         break;
-%     end
     
     
 end
