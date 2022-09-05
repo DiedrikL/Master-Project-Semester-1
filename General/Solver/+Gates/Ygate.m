@@ -14,5 +14,6 @@ classdef Ygate < Gates.GateInterface
     
     properties(Constant)
         gate = [0 -1i;1i 0];
+        Psi0 = [1, 0; 0 , 1]
     end
 end

@@ -5,5 +5,6 @@ classdef (Abstract) GateInterface
    
    properties(Abstract, Constant)
        gate
+       Psi0
    end
 end
