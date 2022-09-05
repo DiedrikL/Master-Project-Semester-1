@@ -19,7 +19,7 @@ z = 0;
 parameters = [epsilon, omegaX, omegaY];
 
 % Create the hamiltonian
-Hamilt = Hamiltonians.TwoParticlesHamiltonian(Time=SimpleTime, Parameters = parameters, U = u);
+Hamilt = Hamiltonians.TwoParticlesHamiltonian(Time=Time, Parameters = parameters, U = u);
 
 % set target gate
 HGate = Gates.SquareRootSwap;
@@ -29,7 +29,7 @@ HGate = Gates.SquareRootSwap;
 
 % Run gradient descent
 [para, result] = GradientDescent.GradientDescent(...
-    Hamilt, HGate, Beta=Beta, learning=learning)
+    Hamilt, HGate, learning=learning)
 
 
 % Plot result of gradient descent
@@ -38,7 +38,7 @@ HGate = Gates.SquareRootSwap;
 Hamilt.Parameters = para;
 psi0 = HGate.Psi0(:,1);
 
-[Time1, Psi1] = SolveTDSEgeneral(psi0, H1);
+[Time1, Psi1] = SolveTDSEgeneral(psi0, Hamilt);
 
 a = abs(Psi1(1,:)).^2;
 b = abs(Psi1(2,:)).^2;
