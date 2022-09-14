@@ -46,12 +46,13 @@ V = zeros(1,leng);
 U = zeros(1,leng);
 
 for iter = 1:maxIt
-        
+    
+    
     grads = CalculateGradients(Hamiltonian, Gate);
     V = Beta1*V + (1-Beta1)*grads;
     U = Beta2*U + (1-Beta2)*grads.^2;
     
-    % Compute bias-corrected first moment estimate
+    % Compute bias-corrected first and second moment estimate
     V_bias = V./(1-Beta1^iter);
     U_bias = U./(1-Beta2^iter);
 
