@@ -16,10 +16,10 @@ x = 0;
 y = 0;
 z = 0;
 
-parameters = [epsilon, omegaX, omegaY];
+parameters = [epsilon, omegaX, omegaY, u];
 
 % Create the hamiltonian
-Hamilt = Hamiltonians.TwoParticlesHamiltonian(Time=Time, Parameters = parameters, U = u);
+Hamilt = Hamiltonians.TwoParticlesHamiltonian(Time=Time, Parameters = parameters);
 
 % set target gate
 HGate = Gates.SquareRootSwap;
