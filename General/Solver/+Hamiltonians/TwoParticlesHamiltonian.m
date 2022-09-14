@@ -2,7 +2,6 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
         Gamma double
-        U double
         Parameters
     end
     
@@ -27,22 +26,20 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
             arguments
                 options.Time TimeOptions = TimeOptions;
                 options.Gamma double {mustBeNonzero} = 1;
-                options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
-                options.U double {mustBeReal} = 0.5;
+                options.Parameters(1,4) double {mustBeReal} = zeros(1,4);
             end
             
             this.Time = options.Time;
             this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
-            this.U = options.U;
         end
         
         function H = createHamiltonian(this)
             % Creates a Hamiltonian with the parameters provided and the
             % values stored in this instance of the class
-            %
-            % parameters must be in the form of a (1,3) double vector, with
-            % real numbers. It contain epsilon, omegaX and omegaY.
+            % parameters must be in the form of a (1,4) double vector, with
+            % real numbers. It contain epsilon, omegaX,, omegaY and the
+            % interaction u.
             %
 
 
@@ -55,7 +52,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
             omegaX = this.Parameters(1,2);
             omegaY = 1i*this.Parameters(1,3);
             gamma = this.Gamma;
-            u = this.U;
+            u = this.Parameters(1,4);
 
             % Setup parameters
             H = @(t) 1/2 * [2*epsilon+2*u (omegaX-omegaY)*sin(t) (omegaX-omegaY)*sin(t) 0; ...
@@ -118,7 +115,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
             
             arguments
                 this Hamiltonians.TwoParticlesHamiltonian
-                para(1,3) double {mustBeReal}
+                para(1,4) double {mustBeReal}
             end
             
             this.Parameters = para;
