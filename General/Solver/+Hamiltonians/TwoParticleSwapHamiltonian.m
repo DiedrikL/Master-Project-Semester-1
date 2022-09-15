@@ -1,4 +1,4 @@
-classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
+classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
         Gamma double
@@ -11,7 +11,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
 
     
     methods
-        function this = TwoParticlesHamiltonian(options)
+        function this = TwoParticleSwapHamiltonian(options)
             % A simple two particle hamiltonian, of the form:
             % H =   [-epsilon/2                 omega*sin(t*gamma)
             %        conj(omega)*sin(t*gamma)   epsilon/2]
@@ -26,7 +26,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
             arguments
                 options.Time TimeOptions = TimeOptions;
                 options.Gamma double {mustBeNonzero} = 1;
-                options.Parameters(1,4) double {mustBeReal} = zeros(1,4);
+                options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
             end
             
             this.Time = options.Time;
@@ -45,46 +45,47 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
 
             % Input validation
             arguments
-                this Hamiltonians.TwoParticlesHamiltonian
+                this Hamiltonians.TwoParticleSwapHamiltonian
             end
             
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
             omegaY = 1i*this.Parameters(1,3);
-            gamma = this.Gamma;
-            u = this.Parameters(1,4);
+            %gamma = this.Gamma;
+
+            % Interaction
+            inter = Interaction(this);
 
             % Setup parameters
-            H = @(t) 1/2 * [2*epsilon+2*u (omegaX-omegaY)*sin(t) (omegaX-omegaY)*sin(t) 0; ...
-                (omegaX+omegaY)*sin(t) 0 0 (omegaX-omegaY)*sin(t); ...
-                (omegaX+omegaY)*sin(t) 0 0 (omegaX-omegaY)*sin(t); ...
-                0 (omegaX+omegaY)*sin(t) (omegaX+omegaY)*sin(t) -2*epsilon+2*u];
+            H = @(t) inter;
 
         end
 
-        function H = twoParticlePauliRotations(B1, B2, B3)
-            % Creates an hamiltonian from pauli rotations with the provided
-            % parameters. B1, B2, B3 must be function handles taking one
-            % parameter
+        function Sigma = Interaction(this)
+            % Creates the interactions between particles with kron function
+
             arguments
-               B1(1,1) function_handle;
-               B2(1,1) function_handle;
-               B3(1,1) function_handle;
+                this Hamiltonians.TwoParticleSwapHamiltonian
             end
             
             PauliX = [0 1; 1 0];
             PauliY = [0 -1i; 1i 0];
             PauliZ = [1 0; 0 -1];
+
+            epsilon = this.Parameters(1,1);
+            omegaX = this.Parameters(1,2);
+            omegaY = 1i*this.Parameters(1,3);
+
             
-            Sigma = @(t) B1(t)*PauliX + B2(t)*PauliY + B3(t)*PauliZ;
-            H = @(t) (1/2)*Sigma(t);
+            Sigma = omegaX.*kron(PauliX, PauliX) + omegaY.*kron(PauliY, PauliY) ...
+                + epsilon.*kron(PauliZ, PauliZ);
         end
          
 
         % Get function for dependent variable
         function Period = get.Period(this)
             arguments
-                this Hamiltonians.TwoParticlesHamiltonian
+                this Hamiltonians.TwoParticleSwapHamiltonian
             end
             
             Period = this.Time.Tpulse;
@@ -94,7 +95,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Time(this, Time)
             % Set the TimeOptions used by this hamiltonian
             arguments
-                this Hamiltonians.TwoParticlesHamiltonian
+                this Hamiltonians.TwoParticleSwapHamiltonian
                 Time TimeOptions
             end
             
@@ -104,7 +105,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Gamma(this, Gamma)
             % Set the gamma used by this hamiltonian
             arguments
-                this Hamiltonians.TwoParticlesHamiltonian
+                this Hamiltonians.TwoParticleSwapHamiltonian
                 Gamma(1,1) double {mustBeReal}
             end 
             
@@ -114,8 +115,8 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Parameters(this, para)
             
             arguments
-                this Hamiltonians.TwoParticlesHamiltonian
-                para(1,4) double {mustBeReal}
+                this Hamiltonians.TwoParticleSwapHamiltonian
+                para(1,3) double {mustBeReal}
             end
             
             this.Parameters = para;

@@ -3,23 +3,24 @@
 Time = TimeOptions;
 
 % Setup parameters
-epsilon = 1;
-omegaX = 0.6;
-omegaY = 1;
-u = 0.5;
+epsilon = 9.4582;
+omegaX = 4.1754;
+omegaY = 4.4706;
+u = 0.0301;
+               
 
 Beta = 0.1;
-learning = 1e-2;
+learning = 1e-3;
 
 % offsets
 x = 0;
 y = 0;
 z = 0;
 
-parameters = [epsilon, omegaX, omegaY];
+parameters = [epsilon, omegaX, omegaY, u];
 
 % Create the hamiltonian
-Hamilt = Hamiltonians.TwoParticlesHamiltonian(Time=Time, Parameters = parameters, U = u);
+Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
 
 % set target gate
 HGate = Gates.SquareRootSwap;
