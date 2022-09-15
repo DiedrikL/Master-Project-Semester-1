@@ -3,12 +3,11 @@
 Time = TimeOptions;
 
 % Setup parameters
-epsilon = 9.4582;
-omegaX = 4.1754;
-omegaY = 4.4706;
-u = 0.0301;
+epsilon = 9.7661;
+omegaX = 9.8733;
+omegaY = 2.1526;
+u = 0.3129;
                
-
 Beta = 0.1;
 learning = 1e-3;
 
@@ -43,8 +42,10 @@ psi0 = HGate.Psi0(:,1);
 
 a = abs(Psi1(1,:)).^2;
 b = abs(Psi1(2,:)).^2;
+c = abs(Psi1(3,:)).^2;
+d = abs(Psi1(4,:)).^2;
 
-norm1 = a+b;
+norm1 = a+b+c+d;
 
 % Plot the result
 hold on
