@@ -12,10 +12,8 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
     
     methods
         function this = TwoParticlesHamiltonian(options)
-            % A simple two particle hamiltonian, of the form:
-            % H =   [-epsilon/2                 omega*sin(t*gamma)
-            %        conj(omega)*sin(t*gamma)   epsilon/2]
-            %
+            % A two particle hamiltonian with a simplified model of
+            % interaction
             % Takes the optional name value parameters Time and Gamma
             % 
             % Time is the TimeOptions used by this hamiltonian
