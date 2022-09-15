@@ -13,8 +13,8 @@ classdef SquareRootSwap < Gates.GateInterface
     end
 
     properties(Constant)
-        gate = [1 0 0 0; 0 0.5*(1+i) 0.5*(1-i) 0;...
-            0 0.5*(1-i) 0.5*(1+i) 0; 0 0 0 1];
+        gate = [1 0 0 0; 0 0.5*(1+1i) 0.5*(1-1i) 0;...
+            0 0.5*(1-1i) 0.5*(1+1i) 0; 0 0 0 1];
         Psi0 = eye(4);
 
     end

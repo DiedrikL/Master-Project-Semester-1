@@ -32,9 +32,6 @@ for n = 1:index
     end
 end
 
-psi0 = [1;0];
-psi1 = [0;1];
-
 
 targetGate = Gate.gate;
 
