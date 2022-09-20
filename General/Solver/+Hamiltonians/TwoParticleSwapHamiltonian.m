@@ -46,9 +46,9 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
                 this Hamiltonians.TwoParticleSwapHamiltonian
             end
             
-            epsilon = this.Parameters(1,1);
-            omegaX = this.Parameters(1,2);
-            omegaY = 1i*this.Parameters(1,3);
+%             epsilon = this.Parameters(1,1);
+%             omegaX = this.Parameters(1,2);
+%             omegaY = 1i*this.Parameters(1,3);
             %gamma = this.Gamma;
 
             % Interaction
@@ -72,7 +72,7 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
 
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
-            omegaY = 1i*this.Parameters(1,3);
+            omegaY = this.Parameters(1,3);
 
             
             Sigma = omegaX.*kron(PauliX, PauliX) + omegaY.*kron(PauliY, PauliY) ...
