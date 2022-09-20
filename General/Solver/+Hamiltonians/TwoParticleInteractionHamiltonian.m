@@ -16,7 +16,6 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the gamma used by this hamiltonian
             
             % Input validation and default values
             arguments
