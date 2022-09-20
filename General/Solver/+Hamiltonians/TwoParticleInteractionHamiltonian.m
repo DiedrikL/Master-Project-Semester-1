@@ -1,7 +1,6 @@
 classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
-        Gamma double
         Parameters
     end
     
@@ -12,10 +11,7 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
     
     methods
         function this = TwoParticleInteractionHamiltonian(options)
-            % A simple two particle hamiltonian, of the form:
-            % H =   [-epsilon/2                 omega*sin(t*gamma)
-            %        conj(omega)*sin(t*gamma)   epsilon/2]
-            %
+            % A two particle hamiltonian wit hinteraction
             % Takes the optional name value parameters Time and Gamma
             % 
             % Time is the TimeOptions used by this hamiltonian
@@ -25,12 +21,10 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Gamma double {mustBeNonzero} = 1;
                 options.Parameters(1,4) double {mustBeReal} = zeros(1,4);
             end
             
             this.Time = options.Time;
-            this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
         end
         
@@ -51,7 +45,6 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
             omegaY = 1i*this.Parameters(1,3);
-            gamma = this.Gamma;
 
             % Interaction
             inter = Interaction(this);
@@ -76,13 +69,10 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             PauliZ = [1 0; 0 -1];
 
             u = this.Parameters(1,4);
-            xu = u;
-            yu = u;
-            zu = u;
 
             
-            Sigma = xu.*kron(PauliX, PauliX) + yu.*kron(PauliY, PauliY) ...
-                + zu.*kron(PauliZ, PauliZ);
+            Sigma = u.*kron(PauliX, PauliX) + u.*kron(PauliY, PauliY) ...
+                + u.*kron(PauliZ, PauliZ);
         end
          
 
