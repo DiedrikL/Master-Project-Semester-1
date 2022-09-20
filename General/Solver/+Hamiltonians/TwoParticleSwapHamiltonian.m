@@ -24,7 +24,7 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
             arguments
                 options.Time TimeOptions = TimeOptions;
                 options.Gamma double {mustBeNonzero} = 1;
-                options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
+                options.Parameters(1,1) double {mustBeReal} = zeros(1,1);
             end
             
             this.Time = options.Time;
@@ -51,13 +51,11 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
             PauliY = [0 -1i; 1i 0];
             PauliZ = [1 0; 0 -1];
 
-            epsilon = this.Parameters(1,1);
-            omegaX = this.Parameters(1,2);
-            omegaY = this.Parameters(1,3);
+            u = this.Parameters(1,1);
 
             
-            H = @(t) omegaX.*kron(PauliX, PauliX) + omegaY.*kron(PauliY, PauliY) ...
-                + epsilon.*kron(PauliZ, PauliZ);
+            H = @(t) u.*kron(PauliX, PauliX) + u.*kron(PauliY, PauliY) ...
+                + u.*kron(PauliZ, PauliZ);
 
         end
 
@@ -88,7 +86,7 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
             
             arguments
                 this Hamiltonians.TwoParticleSwapHamiltonian
-                para(1,3) double {mustBeReal}
+                para(1,1) double {mustBeReal}
             end
             
             this.Parameters = para;

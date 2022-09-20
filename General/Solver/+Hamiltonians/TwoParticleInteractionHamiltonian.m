@@ -95,15 +95,6 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             this.Time = Time;
         end
         
-        function this = set.Gamma(this, Gamma)
-            % Set the gamma used by this hamiltonian
-            arguments
-                this Hamiltonians.TwoParticleInteractionHamiltonian
-                Gamma(1,1) double {mustBeReal}
-            end 
-            
-            this.Gamma = Gamma;
-        end
         
         function this = set.Parameters(this, para)
             
