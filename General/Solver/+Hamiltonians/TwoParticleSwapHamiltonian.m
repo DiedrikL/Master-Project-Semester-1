@@ -46,26 +46,7 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
                 this Hamiltonians.TwoParticleSwapHamiltonian
             end
             
-%             epsilon = this.Parameters(1,1);
-%             omegaX = this.Parameters(1,2);
-%             omegaY = 1i*this.Parameters(1,3);
-            %gamma = this.Gamma;
-
             % Interaction
-            inter = Interaction(this);
-
-            % Setup parameters
-            H = @(t) inter;
-
-        end
-
-        function Sigma = Interaction(this)
-            % Creates the interactions between particles with kron function
-
-            arguments
-                this Hamiltonians.TwoParticleSwapHamiltonian
-            end
-            
             PauliX = [0 1; 1 0];
             PauliY = [0 -1i; 1i 0];
             PauliZ = [1 0; 0 -1];
@@ -75,10 +56,11 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
             omegaY = this.Parameters(1,3);
 
             
-            Sigma = omegaX.*kron(PauliX, PauliX) + omegaY.*kron(PauliY, PauliY) ...
+            H = @(t) omegaX.*kron(PauliX, PauliX) + omegaY.*kron(PauliY, PauliY) ...
                 + epsilon.*kron(PauliZ, PauliZ);
+
         end
-         
+
 
         % Get function for dependent variable
         function Period = get.Period(this)
@@ -100,15 +82,7 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
             this.Time = Time;
         end
         
-        function this = set.Gamma(this, Gamma)
-            % Set the gamma used by this hamiltonian
-            arguments
-                this Hamiltonians.TwoParticleSwapHamiltonian
-                Gamma(1,1) double {mustBeReal}
-            end 
-            
-            this.Gamma = Gamma;
-        end
+
         
         function this = set.Parameters(this, para)
             
