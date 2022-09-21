@@ -16,9 +16,10 @@ x = 0;
 y = 0;
 z = 0;
 
-parameters = [epsilon, omegaX, omegaY, u];
-
+% parameters = [epsilon, omegaX, omegaY];
+parameters = [0,0,0,0.0625];
 % Create the hamiltonian
+% Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
 Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
 
 % set target gate
@@ -55,6 +56,8 @@ pause
 clf
 hold on
 plot(Time1, b)
+plot(Time1, c)
+plot(Time1, d)
 
 pause
 clf
