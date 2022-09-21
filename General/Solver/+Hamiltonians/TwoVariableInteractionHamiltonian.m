@@ -1,7 +1,6 @@
 classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
-        Gamma double
         Parameters
         Epsilon
         OmegaX
@@ -27,20 +26,23 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Gamma double {mustBeNonzero} = 1;
                 options.Parameters(1,2) double {mustBeReal} = zeros(1,2);
             end
             
             this.Time = options.Time;
-            this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
+            this.Epsilon = 0;
+            this.OmegaX = 0;
+            this.OmegaY = this.Parameters(1);
+            this.U = this.Parameters(2);
+%             this.U = 0.0625;
         end
         
         function H = createHamiltonian(this)
             % Creates a Hamiltonian with the parameters provided and the
             % values stored in this instance of the class
-            % parameters must be in the form of a (1,4) double vector, with
-            % real numbers. It contain epsilon, omegaX,, omegaY and the
+            % parameters must be in the form of a (1,2) double vector, with
+            % real numbers. It the two parameters being changed
             % interaction u.
             %
 
@@ -77,13 +79,9 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             PauliZ = [1 0; 0 -1];
 
             u = this.U;
-            xu = u;
-            yu = u;
-            zu = u;
-
             
-            Sigma = xu.*kron(PauliX, PauliX) + yu.*kron(PauliY, PauliY) ...
-                + zu.*kron(PauliZ, PauliZ);
+            Sigma = u.*kron(PauliX, PauliX) + u.*kron(PauliY, PauliY) ...
+                + u.*kron(PauliZ, PauliZ);
         end
          
 
@@ -107,15 +105,7 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             this.Time = Time;
         end
         
-        function this = set.Gamma(this, Gamma)
-            % Set the gamma used by this hamiltonian
-            arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
-                Gamma(1,1) double {mustBeReal}
-            end 
-            
-            this.Gamma = Gamma;
-        end
+
         
         function this = set.Parameters(this, para)
             
@@ -125,10 +115,8 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             end
             
             this.Parameters = para;
-            this.OmegaX = para(1);
-            this.U = para(2);
-            this.OmegaY = 1;
-            this.Epsilon = 1;
+            this.OmegaY = this.Parameters(1);
+            this.U = this.Parameters(2);
         end
     end
 end
