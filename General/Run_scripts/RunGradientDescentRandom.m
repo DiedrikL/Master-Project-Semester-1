@@ -5,18 +5,18 @@ Time = TimeOptions;
 % Setup parameters
 range = 10;
 minimum = 0.1;
-repeats = 20;
+repeats = 5;
 learning = 1e-3;
-HGate = Gates.SquareRootSwap;
+HGate = Gates.CNOT;
 
 
 % Result matrices
-parameters = rand(repeats,4).*range+minimum;
+parameters = rand(repeats,6).*range+minimum;
 result = zeros(repeats, 1);
 
-for n=1:repeats
+parfor n=1:repeats
     para = parameters(n,:);
-    Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = para);
+    Hamilt = Hamiltonians.TwoParticleMultiInteractionHamiltonian(Time=Time, Parameters = para);
     [para, result(n)] = GradientDescent.GradientDescent(...
     Hamilt, HGate, learning=learning)    
     parameters(n,:) = para;

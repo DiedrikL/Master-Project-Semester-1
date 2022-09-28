@@ -5,8 +5,8 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 6;
-N = 80;
+L = 1;
+N = 100;
 
 % Hamiltonian
 Hamilt = Hamiltonians.TwoVariableInteractionHamiltonian;
