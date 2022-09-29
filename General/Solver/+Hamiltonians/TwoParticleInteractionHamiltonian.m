@@ -11,7 +11,7 @@ classdef TwoParticleInteractionHamiltonian < Hamiltonians.HamiltonianInterface
     
     methods
         function this = TwoParticleInteractionHamiltonian(options)
-            % A two particle hamiltonian wit hinteraction
+            % A two particle hamiltonian with interaction
             % Takes the optional name value parameters Time and Gamma
             % 
             % Time is the TimeOptions used by this hamiltonian
