@@ -23,7 +23,7 @@ parameters = [0,0,0,0.0625];
 Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
 
 % set target gate
-HGate = Gates.SquareRootSwap;
+HGate = Gates.CNOT;
 
 
 

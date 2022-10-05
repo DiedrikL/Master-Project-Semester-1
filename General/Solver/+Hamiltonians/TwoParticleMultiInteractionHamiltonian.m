@@ -1,11 +1,7 @@
-classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
+classdef TwoParticleMultiInteractionHamiltonian < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
         Parameters
-        Epsilon
-        OmegaX
-        OmegaY
-        U
     end
     
     properties(Dependent)
@@ -14,47 +10,40 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
 
     
     methods
-        function this = TwoVariableInteractionHamiltonian(options)
-            % A two particle hamiltonian with interaction.
-            %
-            % Takes the optional name value parameters Time and Gamma
+        function this = TwoParticleMultiInteractionHamiltonian(options)
+            % A two particle hamiltonian with multiple interaction
+            % Takes the optional name value parameters Time
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the gamma used by this hamiltonian
             
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Parameters(1,2) double {mustBeReal} = zeros(1,2);
+                options.Parameters(1,6) double {mustBeReal} = zeros(1,6);
             end
             
             this.Time = options.Time;
             this.Parameters = options.Parameters;
-            this.Epsilon = this.Parameters(1);
-            this.OmegaX = 0;
-            this.OmegaY = 0;
-            this.U = this.Parameters(2);
-%             this.U = 0.0625;
         end
         
         function H = createHamiltonian(this)
             % Creates a Hamiltonian with the parameters provided and the
             % values stored in this instance of the class
-            % parameters must be in the form of a (1,2) double vector, with
-            % real numbers. It the two parameters being changed
-            % interaction u.
+            % parameters must be in the form of a (16) double vector, with
+            % real numbers. It contain epsilon, omegaX, omegaY and the
+            % interaction u for each direction.
             %
 
 
             % Input validation
             arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
+                this Hamiltonians.TwoParticleMultiInteractionHamiltonian
             end
             
-            epsilon = this.Epsilon;
-            omegaX = this.OmegaX;
-            omegaY = 1i*this.OmegaY;
+            epsilon = this.Parameters(1,1);
+            omegaX = this.Parameters(1,2);
+            omegaY = 1i*this.Parameters(1,3);
 
             % Interaction
             inter = Interaction(this);
@@ -71,24 +60,27 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             % Creates the interactions between particles with kron function
 
             arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
+                this Hamiltonians.TwoParticleMultiInteractionHamiltonian
             end
             
             PauliX = [0 1; 1 0];
             PauliY = [0 -1i; 1i 0];
             PauliZ = [1 0; 0 -1];
 
-            u = this.U;
+            uz = this.Parameters(1,4);
+            ux = this.Parameters(1,5);
+            uy = this.Parameters(1,6);
+
             
-            Sigma = u.*kron(PauliX, PauliX) + u.*kron(PauliY, PauliY) ...
-                + u.*kron(PauliZ, PauliZ);
+            Sigma = ux.*kron(PauliX, PauliX) + uy.*kron(PauliY, PauliY) ...
+                + uz.*kron(PauliZ, PauliZ);
         end
          
 
         % Get function for dependent variable
         function Period = get.Period(this)
             arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
+                this Hamiltonians.TwoParticleMultiInteractionHamiltonian
             end
             
             Period = this.Time.Tpulse;
@@ -98,25 +90,22 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Time(this, Time)
             % Set the TimeOptions used by this hamiltonian
             arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
+                this Hamiltonians.TwoParticleMultiInteractionHamiltonian
                 Time TimeOptions
             end
             
             this.Time = Time;
         end
         
-
         
         function this = set.Parameters(this, para)
             
             arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
-                para(1,2) double {mustBeReal}
+                this Hamiltonians.TwoParticleMultiInteractionHamiltonian
+                para(1,6) double {mustBeReal}
             end
             
             this.Parameters = para;
-            this.Epsilon = this.Parameters(1);
-            this.U = this.Parameters(2);
         end
     end
 end

@@ -6,9 +6,9 @@ T = 2*pi;
 Time = TimeOptions;
 
 % Setup parameters
-epsilon = 1;
-omegaX = 0.6;
-omegaY = 0;
+epsilon = rand*5;
+omegaX = rand*5;
+omegaY = rand*5;
 
 Beta = 0.1;
 learning = 1e-2;
@@ -18,29 +18,30 @@ x = 0;
 y = 0;
 z = 0;
 
-parameters = [epsilon, omegaX, omegaY, x, y, z];
+parameters = [epsilon, omegaX, omegaY];
 
 % Create the hamiltonian
-Hamilt = Hamiltonians.SmoothHamiltonianOffsets(...
+Hamilt = Hamiltonians.SimpleHamiltonian(...
     Time = Time, Parameters = parameters);
 
 % set target gate
-HGate = Gates.Hadamard;
+HGate = Gates.RandomUnitary;
 
 
 
 
 % Run gradient descent
 [para, result] = GradientDescent.GradientDescent(...
-    Hamilt, HGate, Beta=Beta, learning=learning)
+    Hamilt, HGate)
 
 
 % Plot result of gradient descent
 
 % Set result of gradient descent as parameters
 Hamilt.Parameters = para;
+psi0 = HGate.Psi0(1,:);
 
-[Time1, Psi1] = SolveTDSEgeneral(psi0, H1);
+[Time1, Psi1] = SolveTDSEgeneral(psi0, Hamilt);
 
 a = abs(Psi1(1,:)).^2;
 b = abs(Psi1(2,:)).^2;
