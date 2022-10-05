@@ -5,14 +5,15 @@ Time = TimeOptions;
 % Setup parameters
 range = 10;
 minimum = 0.1;
-repeats = 5;
+repeats = 1000;
 learning = 1e-3;
-HGate = Gates.CNOT;
+%HGate = Gates.RandomUnitary;
+HGate = Gates.RandomUGate;
 
 
 % Result matrices
 parameters = rand(repeats,6).*range+minimum;
-result = zeros(repeats, 1);
+result = ones(repeats, 1);
 
 parfor n=1:repeats
     para = parameters(n,:);
