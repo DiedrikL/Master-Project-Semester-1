@@ -29,18 +29,19 @@ classdef RandomGate < Gates.GateInterface
     
             mSize = [4,4];   
     
-            A = normrnd(mu, sigma, mSize);
-            B = normrnd(mu, sigma, mSize);
+            %A = normrnd(mu, sigma, mSize);
+            A = rand(4,4)*10;
+            %B = normrnd(mu, sigma, mSize);
+            B = rand(4,4)*10;
             G = A + 1i*B;
-            H = G'*G;
+            H = G'+G;
             H_exchanged = [H(1,1) H(1,3) H(1,2) H(1,4);...
                 H(3,1) H(3,3) H(3,1) H(3,4);...
                 H(2,1) H(2,3) H(2,2) H(2,4);...
                 H(4,1) H(4,3) H(4,2) H(4,4)];
             H_sym = H + H_exchanged;
 
-            Unitary = expm(1i*H_sym);
-            %Unitary = Uni/norm(Uni);
+            Unitary = expm(-1i*H_sym);
 
         end
 

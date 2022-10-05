@@ -8,7 +8,7 @@ classdef RandomUnitary < Gates.GateInterface
             end
 
             phi = angle(U(1,1));
-            theta = angle(Gates.RandomGate.gate(1,1));
+            theta = angle(Gates.RandomUnitary.gate(1,1));
             rotate = exp(-1i*phi+1i*theta)*U;
         end
     end
