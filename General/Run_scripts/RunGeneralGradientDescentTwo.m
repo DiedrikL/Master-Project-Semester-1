@@ -8,8 +8,9 @@ omegaX = 9.8733;
 omegaY = 2.1526;
 u = 0.3129;
                
-Beta = 0.1;
+% Beta = 0.1;
 learning = 1e-3;
+Iterations = 500;
 
 % offsets
 x = 0;
@@ -17,20 +18,25 @@ y = 0;
 z = 0;
 
 % parameters = [epsilon, omegaX, omegaY];
-parameters = [0,0,0,0.0625];
+parameters = (rand(1,6) - 0.5)*0.5 + 1;
 % Create the hamiltonian
 % Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
-Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
+Hamilt = Hamiltonians.TwoParticleMultiInteractionHamiltonian( ...
+    Time=Time, ...
+    Parameters = parameters);
 
 % set target gate
-HGate = Gates.CNOT;
+HGate = Gates.OnesGate;
 
 
 
 
 % Run gradient descent
 [para, result] = GradientDescent.GradientDescent(...
-    Hamilt, HGate, learning=learning)
+    Hamilt, ...
+    HGate, ...
+    learning=learning, ...
+    maxIter = Iterations)
 
 
 % Plot result of gradient descent
@@ -49,18 +55,18 @@ d = abs(Psi1(4,:)).^2;
 norm1 = a+b+c+d;
 
 % Plot the result
-hold on
-plot(Time1, a)
-
-pause
-clf
-hold on
-plot(Time1, b)
-plot(Time1, c)
-plot(Time1, d)
-
-pause
-clf
-hold on
-plot(Time1, norm1)
+% hold on
+% plot(Time1, a)
+% 
+% pause
+% clf
+% hold on
+% plot(Time1, b)
+% plot(Time1, c)
+% plot(Time1, d)
+% 
+% pause
+% clf
+% hold on
+% plot(Time1, norm1)
 
