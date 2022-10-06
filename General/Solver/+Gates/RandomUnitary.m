@@ -1,5 +1,5 @@
 classdef RandomUnitary < Gates.GateInterface
-    % The gate and rotation for the Hadamard gate
+    % A random unitary gate from Haar measure
     
     methods(Access = public, Static)
         function rotate = rotation(U)
