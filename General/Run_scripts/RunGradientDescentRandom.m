@@ -5,10 +5,11 @@ Time = TimeOptions;
 % Setup parameters
 range = 10;
 minimum = 0.1;
-repeats = 1000;
+repeats = 500;
 learning = 1e-3;
 %HGate = Gates.RandomUnitary;
 HGate = Gates.RandomUGate;
+HGate.gate
 
 
 % Result matrices
@@ -22,6 +23,8 @@ parfor n=1:repeats
     Hamilt, HGate, learning=learning)    
     parameters(n,:) = para;
 end
+
+HGate.gate
 
 [m, Index] = min(result);
 result(Index)
