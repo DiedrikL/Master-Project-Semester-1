@@ -5,9 +5,9 @@ Time = TimeOptions;
 % Setup parameters
 range = 10;
 minimum = 0.1;
-repeats = 40;
+repeats = 100;
 learning = 1e-3;
-Gate = HGate.gate
+Gate = Gates.RandomGate;
 UsedGates = zeros(4,4,repeats);
 
 
@@ -21,7 +21,7 @@ for n=1:repeats
     Hamilt = Hamiltonians.TwoParticleMultiInteractionHamiltonian(Time=Time, Parameters = para);
     result(n) = MeasureDiffGeneral(Hamilt, Gate = HGate);  
     parameters(n,:) = para;
-    UsedGates(:,:,n) = HGate.gate
+    UsedGates(:,:,n) = HGate.gate;
     clear HGate
 end
 [m, Index] = max(result);
