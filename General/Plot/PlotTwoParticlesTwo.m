@@ -8,8 +8,6 @@ format short e
 L = 1;
 N = 100;
 
-% Hamiltonian
-Hamilt = Hamiltonians.TwoVariableInteractionHamiltonian;
 Gate = Gates.SquareRootSwap;
 
 % Setup space
@@ -17,8 +15,11 @@ parameter = linspace(-L/2,L/2,N);
 
 Room = zeros(N,N);
 
-for m = 1:N
+parfor m = 1:N
     m
+    % Hamiltonian
+    Hamilt = Hamiltonians.TwoVariableInteractionHamiltonian;
+
     for n = 1:N
         para = [parameter(n), parameter(m)];
         Hamilt.Parameters = para;
