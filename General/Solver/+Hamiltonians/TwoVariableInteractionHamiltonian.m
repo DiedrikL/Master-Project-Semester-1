@@ -30,11 +30,13 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             end
             
             this.Time = options.Time;
-            this.Parameters = options.Parameters;
-            this.Epsilon = this.Parameters(1);
+            this.Epsilon = 0;
             this.OmegaX = 0;
             this.OmegaY = 0;
-            this.U = this.Parameters(2);
+            this.U = 0;
+            this.Parameters = options.Parameters;
+
+            
 %             this.U = 0.0625;
         end
         
