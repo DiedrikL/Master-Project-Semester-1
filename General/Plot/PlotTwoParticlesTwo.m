@@ -5,10 +5,10 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 1;
-N = 100;
+L = 5;
+N = 120;
 
-Gate = Gates.SquareRootSwap;
+Gate = Gates.OnesGate;
 
 % Setup space
 parameter = linspace(-L/2,L/2,N);    
