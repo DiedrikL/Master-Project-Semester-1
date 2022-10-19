@@ -28,7 +28,7 @@ arguments
    options.Beta1 double {mustBeInRange(options.Beta1,0,1,"exclude-upper")} = 0.9;
    options.Beta2 double {mustBeInRange(options.Beta2,0,1,"exclude-upper")} = 0.999;
    options.epsilon double {mustBePositive} = 1e-8;
-   options.maxIter = 500;
+   options.maxIter = 1000;
 end
 
 learning = options.learning;
