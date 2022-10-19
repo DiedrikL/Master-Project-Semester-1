@@ -1,24 +1,18 @@
 % Test function to see difference with effect with two particles
 
 % Parametre and start value
+
+
+gate = Gates.OnesGate;
+
 epsilon = 0;
-omegaX = 1;
+omegaX = 0;
 omegaY = 0;
-u = 0.5;
+u = -0.5;
 
-Period = pi/2;
+parameters = [epsilon, omegaX, omegaY, u];
 
-SimpleTime = TimeOptions(Tpulse = Period, Tsize = 500);
-DoubleTime = TimeOptions(Tpulse = Period, Tsize = 1000);
+H1 = Hamiltonians.TwoParticleInteractionHamiltonian(Parameters = parameters);
 
-gate = Gates.SquareRootSwap;
-
-% epsilon = 2;
-% omegaX = 1;
-% omegaY = 0;
-
-parameters = [epsilon, omegaX, omegaY];
-
-H1 = Hamiltonians.TwoParticlesHamiltonian(Time=SimpleTime, Parameters = parameters, U = u);
-
-MeasureDiffGeneral(H1, Gate=gate)
+Diff = MeasureDiffGeneral(H1, Gate=gate)
+AvgGF = AverageGateFidelity(H1, Gate = gate)
