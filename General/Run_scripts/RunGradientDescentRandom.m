@@ -17,6 +17,7 @@ HGate.gate
 parameters = rand(repeats,6).*range+minimum;
 result = ones(repeats, 1);
 
+% Setup for waitbar
 bar = PoolWaitbar(repeats);
 q = parallel.pool.DataQueue;
 afterEach(q, @(value)bar.updateBarValue(value));
