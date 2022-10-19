@@ -9,6 +9,9 @@ repeats = 100;
 learning = 1e-3;
 measure = 1;
 
+% Measure treshold
+treshold = 1e-1;
+
 % Gate
 HGate = Gates.OnesGate;
 HGate.gate
@@ -37,4 +40,4 @@ end
 [m, Index] = min(result);
 result(Index)
 parameters(Index,:)
-lowValues = sum(result<1e-1)
+lowValues = sum(result<treshold)
