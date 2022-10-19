@@ -43,4 +43,4 @@ surf(parameter, parameter, Room)
 [row, col] = ind2sub(N,I);
 LowestPara1 = parameter(row)
 LowestPara2 = parameter(col)
-% LowestValue = MeasureDiff(epsilon(row), omegaX, omegaY(col))
+LowestValue = MeasureDiff(epsilon(row), omegaX, omegaY(col))
