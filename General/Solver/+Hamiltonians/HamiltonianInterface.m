@@ -5,7 +5,7 @@ classdef (Abstract) HamiltonianInterface
     end
 
     properties(Access=public)
-        Measure {mustBeMember(Measure,[0, 1])} = 0;
+        Measure {mustBeMember(Measure,[0, 1])} = 1;
     end
     
     properties(Dependent)
