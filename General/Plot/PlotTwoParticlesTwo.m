@@ -19,12 +19,13 @@ parfor m = 1:N
     m
     % Hamiltonian
     Hamilt = Hamiltonians.TwoVariableInteractionHamiltonian;
+    Hamilt.Measure = 1;
 
     for n = 1:N
         para = [parameter(n), parameter(m)];
         Hamilt.Parameters = para;
 
-        Room(m,n) = AverageGateFidelity(Hamilt, Gate = Gate);
+        Room(m,n) = MeasureDiffGeneral(Hamilt, Gate = Gate);
 
     end
 end
