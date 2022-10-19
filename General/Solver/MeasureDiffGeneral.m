@@ -35,8 +35,22 @@ end
 
 targetGate = Gate.gate;
 
-U = Gate.rotation(U);
+measure = Hamiltonian.Measure;
+
+switch measure
+    case 0
+        % Measure distance with norm
+        U = Gate.rotation(U);
+        % Measuring distance
+        Diff = norm(U-targetGate);
 
 
-% Measuring distance
-Diff = norm(U-targetGate);
+    case 1
+        % Measure with average gate fidelity
+        Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);
+
+
+    otherwise
+        error('Wrong measure value')
+end
+
