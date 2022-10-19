@@ -37,3 +37,4 @@ end
 [m, Index] = min(result);
 result(Index)
 parameters(Index,:)
+lowValues = sum(result<1e-1)
