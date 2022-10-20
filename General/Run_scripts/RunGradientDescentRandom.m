@@ -3,9 +3,9 @@
 Time = TimeOptions;
 
 % Setup parameters
-range = 10;
-minimum = 0.1;
-repeats = 100;
+range = 1;
+minimum = -0.5;
+repeats = 4;
 learning = 1e-3;
 measure = 1;
 
@@ -13,7 +13,7 @@ measure = 1;
 treshold = 1e-1;
 
 % Gate
-HGate = Gates.OnesGate;
+HGate = Gates.Identity_Two;
 HGate.gate
 
 
@@ -31,7 +31,10 @@ parfor n=1:repeats
     Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = para);
     Hamilt.Measure = measure;
     [para, result(n)] = GradientDescent.GradientDescent(...
-    Hamilt, HGate, learning=learning)    
+    Hamilt, ...
+    HGate, ...
+    learning=learning)   
+    
     parameters(n,:) = para;
     send(q, result(n));
 end
