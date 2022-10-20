@@ -65,7 +65,10 @@ for iter = 1:maxIt
     Hamiltonian.Parameters = para;
     
     if mod(iter,100) == 0
-        MeasureDiffGeneral(Hamiltonian, Gate=Gate) 
+        test = MeasureDiffGeneral(Hamiltonian, Gate=Gate)
+        if(test > 0.5 || test < 1e-6)
+            break
+        end
     end
     
     
