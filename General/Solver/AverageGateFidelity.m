@@ -1,4 +1,4 @@
-function Diff = MeasureDiffGeneral(Hamiltonian, options)
+function Diff = AverageGateFidelity(Hamiltonian, options)
 % Function that measures the difference from a given gate for the
 % Hamiltonian. 
 %
@@ -35,22 +35,5 @@ end
 
 targetGate = Gate.gate;
 
-measure = Hamiltonian.Measure;
-
-switch measure
-    case Measure.NormDistance
-        % Measure distance with norm
-        U = Gate.rotation(U);
-        % Measuring distance
-        Diff = norm(U-targetGate);
-
-
-    case Measure.AvgFidelity
-        % Measure with average gate fidelity
-        Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);
-
-
-    otherwise
-        error('Wrong measure value')
-end
-
+% Average fidelity
+Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);

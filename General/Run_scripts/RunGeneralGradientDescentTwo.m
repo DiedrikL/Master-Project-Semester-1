@@ -3,10 +3,16 @@
 Time = TimeOptions;
 
 % Setup parameters
-epsilon = 9.7661;
-omegaX = 9.8733;
-omegaY = 2.1526;
-u = 0.3129;
+% epsilon = 9.7661;
+% omegaX = 9.8733;
+% omegaY = 2.1526;
+% u = 0.3129;
+ epsilon = 2.0163e+00   
+ omegaX = 4.1951e+00;
+ omegaY = 9.3115e+00;
+ uz = 2.5358e+00;
+ ux = 3.3929e+00;
+ uy = 6.8453e-01;
                
 % Beta = 0.1;
 learning = 1e-3;
@@ -17,8 +23,8 @@ x = 0;
 y = 0;
 z = 0;
 
-% parameters = [epsilon, omegaX, omegaY];
-parameters = (rand(1,6) - 0.5)*0.5 + 1;
+parameters = [epsilon, omegaX, omegaY, uz, ux, uy];
+% parameters = (rand(1,6) - 0.5)*0.5 + 1;
 % Create the hamiltonian
 % Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian(Time=Time, Parameters = parameters);
 Hamilt = Hamiltonians.TwoParticleMultiInteractionHamiltonian( ...

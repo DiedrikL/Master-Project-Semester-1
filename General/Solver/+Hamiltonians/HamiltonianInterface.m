@@ -3,6 +3,10 @@ classdef (Abstract) HamiltonianInterface
        Time TimeOptions
        Parameters double {mustBeReal}
     end
+
+    properties(Access=public)
+        Measure Measure = Measure.AvgFidelity;
+    end
     
     properties(Dependent)
        TimeStep double 
@@ -39,6 +43,23 @@ classdef (Abstract) HamiltonianInterface
             
             TimeVector = (TimeStart):this.TimeStep:(TimeEnd);
             TimeVector(end) = [];
+        end
+
+        function measure = get.Measure(this)
+            arguments
+                this Hamiltonians.HamiltonianInterface
+            end
+
+            measure = this.Measure;
+        end        
+        
+        function this = set.Measure(this, value)
+            arguments
+                this Hamiltonians.HamiltonianInterface
+                value Measure
+            end
+
+            this.Measure = value;
         end
         
         

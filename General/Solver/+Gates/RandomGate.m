@@ -47,7 +47,7 @@ classdef RandomGate < Gates.GateInterface
         end
 
         function Reset()
-            clear RandomGate
+            clear this
         end
     end
 end

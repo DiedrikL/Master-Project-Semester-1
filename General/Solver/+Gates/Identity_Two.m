@@ -1,5 +1,5 @@
-classdef CNOT < Gates.GateInterface
-    % The gate and rotation for the CNOT gate
+classdef Identity_Two < Gates.GateInterface
+    % The gate and rotation for the Hadamard gate
     
     methods(Access = public, Static)
         function rotate = rotation(U)
@@ -13,8 +13,7 @@ classdef CNOT < Gates.GateInterface
     end
 
     properties(Constant)
-        gate = [1 0 0 0; 0 1 0 0;...
-            0 0 0 1; 0 0 1 0];
+        gate = eye(4);
         Psi0 = eye(4);
 
     end

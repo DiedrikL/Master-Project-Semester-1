@@ -1,5 +1,5 @@
-classdef CNOT < Gates.GateInterface
-    % The gate and rotation for the CNOT gate
+classdef Swap < Gates.GateInterface
+    % The gate and rotation for the swap gate
     
     methods(Access = public, Static)
         function rotate = rotation(U)
@@ -13,8 +13,10 @@ classdef CNOT < Gates.GateInterface
     end
 
     properties(Constant)
-        gate = [1 0 0 0; 0 1 0 0;...
-            0 0 0 1; 0 0 1 0];
+        gate = [1 0 0 0;
+                0 0 1 0;
+                0 1 0 0; 
+                0 0 0 1];
         Psi0 = eye(4);
 
     end
