@@ -3,17 +3,17 @@
 Time = TimeOptions;
 
 % Setup parameters
-range = 1;
-minimum = -0.5;
-repeats = 4;
+range = 10;
+minimum = 0;
+repeats = 200;
 learning = 1e-3;
-measure = 1;
+measure = Measure.AvgFidelity;
 
 % Measure treshold
 treshold = 1e-1;
 
 % Gate
-HGate = Gates.Identity_Two;
+HGate = Gates.Hadamard_Two;
 HGate.gate
 
 

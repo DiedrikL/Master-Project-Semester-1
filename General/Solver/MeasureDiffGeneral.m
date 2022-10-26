@@ -38,14 +38,14 @@ targetGate = Gate.gate;
 measure = Hamiltonian.Measure;
 
 switch measure
-    case 0
+    case Measure.NormDistance
         % Measure distance with norm
         U = Gate.rotation(U);
         % Measuring distance
         Diff = norm(U-targetGate);
 
 
-    case 1
+    case Measure.AvgFidelity
         % Measure with average gate fidelity
         Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);
 
