@@ -28,13 +28,18 @@ arguments
    options.Beta1 double {mustBeInRange(options.Beta1,0,1,"exclude-upper")} = 0.9;
    options.Beta2 double {mustBeInRange(options.Beta2,0,1,"exclude-upper")} = 0.999;
    options.epsilon double {mustBePositive} = 1e-8;
+   options.minDiff double {mustBePositive} = 1e-6;
    options.maxIter = 1000;
 end
 
+% setting initial values
 learning = options.learning;
 Beta1 = options.Beta1;
 Beta2 = options.Beta2;
 epsilon = options.epsilon;
+cutoff = Hamiltonian.Measure.cutoff;
+minDiff = options.minDiff;
+last = 0;
 
 % Max intervals
 maxIt = options.maxIter;
@@ -46,7 +51,6 @@ V = zeros(1,leng);
 U = zeros(1,leng);
 
 for iter = 1:maxIt
-    
     
     grads = CalculateGradients(Hamiltonian, Gate);
     V = Beta1*V + (1-Beta1)*grads;
@@ -66,8 +70,10 @@ for iter = 1:maxIt
     
     if mod(iter,100) == 0
         test = MeasureDiffGeneral(Hamiltonian, Gate=Gate)
-        if(test > 0.5 || test < 1e-6)
+        if(test > cutoff || abs(test-last) < minDiff)
             break
+        else
+            last = test;
         end
     end
     
