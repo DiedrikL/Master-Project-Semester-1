@@ -5,7 +5,7 @@ classdef (Abstract) HamiltonianInterface
     end
 
     properties(Access=public)
-        Measure {mustBeMember(Measure,[0, 1])} = 1;
+        Measure Measure = Measure.AvgFidelity;
     end
     
     properties(Dependent)
@@ -56,7 +56,7 @@ classdef (Abstract) HamiltonianInterface
         function this = set.Measure(this, value)
             arguments
                 this Hamiltonians.HamiltonianInterface
-                value {mustBeInteger}
+                value Measure
             end
 
             this.Measure = value;
