@@ -5,14 +5,14 @@ classdef Measure
     end
 
     methods
-        function con = Measure(cutoff, number)
+        function con = Measure(cutoff)
             con.cutoff = cutoff;
-            con.number = number;
 
         end
     end
     enumeration
-        NormDistance(1,0)
-        AvgFidelity(0.5,1)
+        NormDistance(1)
+        AvgFidelity(0.5)
+        ChoiFidelity(0.5)
     end
 end
