@@ -5,8 +5,8 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 6;
-N = 100;
+L = 12;
+N = 160;
 measure = Measure.AvgFidelity
 
 Gate = Gates.Hadamard_Two;
@@ -23,25 +23,25 @@ parfor m = 1:N
     Hamilt.Measure = measure;
 
     for n = 1:N
-        para = [parameter(n), parameter(m)];
+        para = [parameter(n), parameter(m)+6];
         Hamilt.Parameters = para;
 
-        Room(n,m) = MeasureDiffGeneral(Hamilt, Gate = Gate);
+        Room(m,n) = MeasureDiffGeneral(Hamilt, Gate = Gate);
 
     end
 end
 
 % Plot room
 figure
-pcolor(parameter, parameter, Room)
+pcolor(parameter, parameter+6, Room)
 xlabel('First variable')
 ylabel('Second variable')
 colorbar
 
 figure
-surf(parameter, parameter, Room)
-xlabel('First variable')
-ylabel('Second variable')
+surf(parameter, parameter+6, Room)
+xlabel('Omega X')
+ylabel('Omega Y')
 
 % Finds and prints lowest value with parameters
 [M, I] = min(Room,[],'all','linear');

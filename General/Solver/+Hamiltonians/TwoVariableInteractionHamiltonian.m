@@ -30,10 +30,10 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             end
             
             this.Time = options.Time;
-            this.Epsilon = 1;
-            this.OmegaX = 1;
-            this.OmegaY = 1;
-            this.U = 1;
+            this.Epsilon = 4.108533266720993;
+            this.OmegaX = 0.559805913967558;
+            this.OmegaY = 9.093423892887524;
+            this.U = 0.500202954767157;
             this.Parameters = options.Parameters;
 
             
@@ -76,7 +76,7 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
                 this Hamiltonians.TwoVariableInteractionHamiltonian
             end
             
-            PauliX = [0 1; 1 0];
+            PauliX = [0 1; 1 0]; 
             PauliY = [0 -1i; 1i 0];
             PauliZ = [1 0; 0 -1];
 
@@ -117,8 +117,8 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             end
             
             this.Parameters = para;
-            this.OmegaY = this.Parameters(1);
-            this.U = this.Parameters(2);
+            this.Epsilon = this.Parameters(1);
+            this.OmegaX = this.Parameters(2);
         end
     end
 end
