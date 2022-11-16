@@ -3,7 +3,7 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
         Time TimeOptions
         Gamma double
         Parameters
-        Rho
+        Rho (1,1) {mustBeInteger, mustBeInRange(Rho, 1,4)} = 1;
     end
     
     properties(Dependent)
@@ -29,10 +29,10 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
                 options.Time TimeOptions = TimeOptions;
                 options.Gamma double {mustBeNonzero} = 1;
                 options.Parameters(1,3) double {mustBeReal} = ones(1,3);
-                options.Rho(1,1) {mustBeInteger, mustBeInRange(options.Rho, 1,4)} = 1;
+                options.Rho = 1;
                 options.Measure = Measure.ChoiFidelity;
             end
-            
+            this.Rho = options.Rho;
             this.Time = options.Time;
             this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
@@ -57,7 +57,7 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
             gamma = this.Gamma;
-            rho = zeros(2);
+            rho = sparse(2,2);
             rho(this.Rho) = 1;
 
             % Setup parameters
@@ -72,7 +72,7 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
 
             % creatin components of the Lindbladian
             lindblad = @(t) H(t)*rho - rho*H(t) - ...
-                1i*gamma*(A*rho + rho*A - 2*a*rho*a')
+                1i*gamma*(A*rho + rho*A - 2*a*rho*a');
 
             % creatin components of the Lindbladian
 
@@ -124,10 +124,10 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             
             arguments
                 this Hamiltonians.LindbladOne
-                rho(2,2) double {mustBeReal}
+                rho
             end
             
-            this.Parameters = rho;
+            this.Rho = rho;
         end
     end
 end
