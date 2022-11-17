@@ -1,5 +1,5 @@
             syms rho_00 rho_01 rho_10 rho_11;
-            syms epsilon omegaX omegaY gamma V
+            syms epsilon omegaX omegaY gamma V Vd
             rho = [rho_00 rho_01; rho_10 rho_11];
 
             % Setup parameters
@@ -8,7 +8,7 @@
 %             V = @(t) B1(t)+B2(t);
 
             % Creating hamiltonian
-            H = @(t) [-epsilon/2 V; V epsilon/2]
+            H = @(t) [-epsilon/2 V; Vd epsilon/2]
             a = [1; 0]*[0 1]
             A = a'*a;
 
@@ -16,4 +16,4 @@
             lindblad = @(t) H(t)*rho - rho*H(t) - 1i*gamma*(A*rho + rho*A -2.*a*rho*a')
 
             lindblad(0)
-            lindblad(pi/2)
+%             lindblad(pi/2)
