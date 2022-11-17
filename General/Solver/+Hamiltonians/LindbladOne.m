@@ -63,15 +63,8 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             B2 = @(t) 1i*omegaY*sin(t);
             V = @(t) B1(t)-B2(t);
 
-%             % Creating hamiltonian
-%             H = @(t) [-epsilon/2 V(t); V(t)' epsilon/2];
-%             a = [1; 0]*[0 1];
-%             A = a'*a;
 
-            % creatin components of the Lindbladian
-%             lindblad = @(t) H(t)*rho - rho*H(t) - ...
-%                 1i*gamma*(A*rho + rho*A - 2*a*rho*a');
-
+            % Create the lindblad matrix
             lindblad = @(t) ...
                     [0      -V(t)'              V(t)    2i*gamma;...
                     -V(t)   -epsilon-1i*gamma   0       V(t);...
