@@ -15,14 +15,13 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
         function this = LindbladOne(options)
             % The lindblad equation
             % Takes the optional name value parameters Rho, Time and Gamma
-            %
-            % Rho is a double repsenting the index of a matrix with a value
-            % of 1 at that index
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the vale determining how large the influence of
-            % interference is.
+            % Gamma is an optional parameter with default value of 1. It
+            % scales how large the effect reducing the state of the system
+            % towards basis state [1;0], it is the interference experienced
+            % by the system.
             
             % Input validation and default values
             arguments
@@ -44,6 +43,7 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             % parameters must be in the form of a (1,3) double vector, with
             % real numbers. It contain epsilon, omegaX and omegaY.
             %
+
 
 
             % Input validation
@@ -73,10 +73,10 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
 %                 1i*gamma*(A*rho + rho*A - 2*a*rho*a');
 
             lindblad = @(t) ...
-                    [0 -V(t)' V(t) 2i*gamma;...
-                    -V(t) -epsilon-1i*gamma 0 V(t);...
-                    V(t)' 0 epsilon-1i*gamma -V(t)';...
-                    0 V(t)' -V(t) -2i*gamma];
+                    [0      -V(t)'              V(t)    2i*gamma;...
+                    -V(t)   -epsilon-1i*gamma   0       V(t);...
+                    V(t)'   0       epsilon-1i*gamma    -V(t)';...
+                    0       V(t)'       -V(t)           -2i*gamma];
 
 
         end
