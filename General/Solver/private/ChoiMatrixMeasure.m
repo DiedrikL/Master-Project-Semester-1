@@ -37,18 +37,21 @@ function Diff = ChoiMatrixMeasure(Hamiltonian, Gate)
     
         end
     end
-    Upart = part.*scale;
-    Tpart = targetPart.*scale;
+    Upart = part;
+    Tpart = targetPart;
         
     U = sum(Upart, [1, 2]);
     U = squeeze(U);
+    U = U.*scale;
     sqrU = sqrtm(U);
 
     TargetSum = sum(targetPart,[1, 2]);
     TargetSum = squeeze(TargetSum);
+    TargetSum = TargetSum.*scale;
     content = sqrtm(sqrU*TargetSum*sqrU);
     
     
     Diff = trace(abs(content))^2;
 
 end
+
