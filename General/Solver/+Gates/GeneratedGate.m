@@ -1,5 +1,5 @@
 classdef GeneratedGate < Gates.GateInterface
-    % The gate and rotation for the Hadamard gate
+    % The gate and rotation for a generated gate
     
     methods(Access = public, Static)
         function rotate = rotation(U)
