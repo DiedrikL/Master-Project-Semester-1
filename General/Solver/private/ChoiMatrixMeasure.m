@@ -13,7 +13,6 @@ function Diff = ChoiMatrixMeasure(Hamiltonian, Gate)
     
     % Setup matrices
     index = size(Psi0, 2);
-    U = zeros(index);
 
     exponent = size(factor(index),2);
 
@@ -29,24 +28,27 @@ function Diff = ChoiMatrixMeasure(Hamiltonian, Gate)
     for n = 1:solveIndex
         for m = 1:solveIndex
             Rho = sparse(m, n, 1, solveIndex, solveIndex);
-            ind = sub2ind([solveIndex, solveIndex], m, n);
-            Hamiltonian.Rho = ind;
-            part(m,n,:,:) = kron(SolveForStartValue(Hamiltonian, Psi0), Rho);
+            RhoVect = reshape(Rho,[],1);
+            [~, solVect] = SolveTDSEgeneral(RhoVect, Hamiltonian);
+            sol = reshape(solVect(:,end), index, index);
+            part(m,n,:,:) = kron(sol, Rho);
             targetPart(m,n,:,:) = kron(targetGate, eye(index)) * kron(Rho, Rho);
     
     
         end
     end
-    Upart = part.*scale
-    Tpart = targetPart.*scale
+    Upart = part.*scale;
+    Tpart = targetPart.*scale;
         
-    U = sum(Upart, [3, 4])
+    U = sum(Upart, [1, 2]);
+    U = squeeze(U);
     sqrU = sqrtm(U);
-    TargetSum = sum(targetPart,[3, 4])
-    content = sqrtm(sqrU*TargetSum*sqrU)
-    
-    
-    Diff = trace(content)^2
 
+    TargetSum = sum(targetPart,[1, 2]);
+    TargetSum = squeeze(TargetSum);
+    content = sqrtm(sqrU*TargetSum*sqrU);
+    
+    
+    Diff = trace(abs(content))^2;
 
 end
