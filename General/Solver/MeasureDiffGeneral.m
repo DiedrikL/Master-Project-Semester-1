@@ -20,28 +20,15 @@ function Diff = MeasureDiffGeneral(Hamiltonian, options)
     % Start positions
     Psi0 = options.Gate.Psi0;
     
-    % Setup matrices
-    index = size(Psi0, 2);
-    U = zeros(index);
-    
-    function U = solveForStartValue(Hamiltonian)
-        % Getting the solution for the start positions
-        for n = 1:index
-            [~, Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
-            for m = 1:index
-                U(m,n) = Psi(m, end);
-            end
-        end
-    end
-    
-    
+    % Setup target and measure
     targetGate = Gate.gate;
     
     measure = Hamiltonian.Measure;
     
+    % Use selected measure
     switch measure
         case Measure.NormDistance
-            U = solveForStartValue(Hamiltonian);
+            U = solveForStartValue(Hamiltonian, Psi0);
             % Measure distance with norm
             U = Gate.rotation(U);
             % Measuring distance
@@ -49,22 +36,13 @@ function Diff = MeasureDiffGeneral(Hamiltonian, options)
     
     
         case Measure.AvgFidelity
-            U = solveForStartValue(Hamiltonian);
+            U = SolveForStartValue(Hamiltonian, Psi0);
             % Measure with average gate fidelity
+            index = size(Psi0, 2);
             Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);
     
         case Measure.ChoiFidelity
-            solveIndex = index^2;
-            Upart = zeros(solveIndex);
-
-            for o = 1:solveIndex
-                Hamiltonian.Rho = o;
-                Upart(o) = solveForStartValue(Hamiltonian);
-            end
-
-            U = sum(Upart, 'all');
-
-            error('Not finished')
+            Diff = 1-ChoiMatrixMeasure(Hamiltonian, Gate);
     
         otherwise
             error('Wrong measure value')

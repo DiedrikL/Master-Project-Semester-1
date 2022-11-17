@@ -1,9 +1,9 @@
 classdef LindbladOne < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
-        Gamma double
+        Gamma double {mustBeReal}
         Parameters
-        Rho
+%         Rho (1,1) {mustBeInteger, mustBeInRange(Rho, 1,4)} = 1;
     end
     
     properties(Dependent)
@@ -15,24 +15,21 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
         function this = LindbladOne(options)
             % The lindblad equation
             % Takes the optional name value parameters Rho, Time and Gamma
-            %
-            % Rho is a double repsenting the index of a matrix with a value
-            % of 1 at that index
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the vale determining how large the influence of
-            % interference is.
+            % Gamma is an optional parameter with default value of 1. It
+            % scales how large the effect reducing the state of the system
+            % towards basis state [1;0], it is the interference experienced
+            % by the system.
             
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Gamma double {mustBeNonzero} = 1;
+                options.Gamma double {mustBeReal} = 1;
                 options.Parameters(1,3) double {mustBeReal} = ones(1,3);
-                options.Rho(1,1) {mustBeInteger, mustBeInRange(options.Rho, 1,4)} = 1;
                 options.Measure = Measure.ChoiFidelity;
             end
-            
             this.Time = options.Time;
             this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
@@ -48,6 +45,7 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             %
 
 
+
             % Input validation
             arguments
                 this Hamiltonians.LindbladOne
@@ -57,24 +55,21 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
             gamma = this.Gamma;
-            rho = zeros(2);
-            rho(this.Rho) = 1;
+%             rho = sparse(2,2);
+%             rho(this.Rho) = 1;
 
             % Setup parameters
-            B1 = @(t) omegaX*sin(gamma*t);
-            B2 = @(t) 1i*omegaY*sin(gamma*t);
-            V = @(t) B1(t)+B2(t);
+            B1 = @(t) omegaX*sin(t);
+            B2 = @(t) 1i*omegaY*sin(t);
+            V = @(t) B1(t)-B2(t);
 
-            % Creating hamiltonian
-            H = @(t) [-epsilon/2 V(t); V(t)' epsilon/2];
-            a = [1; 0]*[0 1];
-            A = a'*a;
 
-            % creatin components of the Lindbladian
-            lindblad = @(t) H(t)*rho - rho*H(t) - ...
-                1i*gamma*(A*rho + rho*A - 2*a*rho*a')
-
-            % creatin components of the Lindbladian
+            % Create the lindblad matrix
+            lindblad = @(t) ...
+                    [0      -V(t)'              V(t)    2i*gamma;...
+                    -V(t)   -epsilon-1i*gamma   0       V(t);...
+                    V(t)'   0       epsilon-1i*gamma    -V(t)';...
+                    0       V(t)'       -V(t)           -2i*gamma];
 
 
         end
@@ -120,14 +115,5 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             this.Parameters = para;
         end
 
-                function this = set.Rho(this, rho)
-            
-            arguments
-                this Hamiltonians.LindbladOne
-                rho(2,2) double {mustBeReal}
-            end
-            
-            this.Parameters = rho;
-        end
     end
 end
