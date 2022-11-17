@@ -32,21 +32,19 @@ function Diff = ChoiMatrixMeasure(Hamiltonian, Gate)
             [~, solVect] = SolveTDSEgeneral(RhoVect, Hamiltonian);
             sol = reshape(solVect(:,end), index, index);
             part(m,n,:,:) = kron(sol, Rho);
-            targetPart(m,n,:,:) = kron(targetGate, eye(index)) * kron(Rho, Rho);
+            targetPart(m,n,:,:) = kron(targetGate, speye(index)) * kron(Rho, Rho);
     
     
         end
     end
-    Upart = part;
-    Tpart = targetPart;
         
-    U = sum(Upart, [1, 2]);
+    U = sum(part, [1, 2]);
     U = squeeze(U);
     U = U.*scale;
     sqrU = sqrtm(U);
 
     TargetSum = sum(targetPart,[1, 2]);
-    TargetSum = squeeze(TargetSum);
+    TargetSum = squeeze(TargetSum)
     TargetSum = TargetSum.*scale;
     content = sqrtm(sqrU*TargetSum*sqrU);
     
