@@ -1,16 +1,18 @@
 
-epsilon = 2.4210e+00;
-omegaX = 0;
-omegaY = 1.6971e+00;
+epsilon = 5;
+omegaX = 4;
+omegaY = 2;
+gamma = 1e-4;
 
 parameters = [epsilon, omegaX, omegaY];
 
-Hamiltonian = Hamiltonians.LindbladOne(Gamma = 1);
-Gate = Gates.Hadamard;
+Hamiltonian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma);
+% Gate = Gates.Hadamard;
+Gate = Gates.TestGateOne;
 MeasureDiffGeneral(Hamiltonian, Gate = Gate)
 
-SimpleHam = Hamiltonians.SimpleHamiltonian();
+SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
 MeasureDiffGeneral(SimpleHam, Gate = Gate)
 
-FindU(Hamiltonian)
+% FindU(Hamiltonian)
 FindU(SimpleHam)
