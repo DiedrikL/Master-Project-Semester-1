@@ -1,7 +1,7 @@
-function Diff = ChoiMatrixMeasure(Hamiltonian, Gate)
+function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 
     arguments
-        Hamiltonian Hamiltonians.HamiltonianInterface
+        Lindbladian Hamiltonians.HamiltonianInterface
         Gate Gates.GateInterface
     end
         
@@ -12,43 +12,47 @@ function Diff = ChoiMatrixMeasure(Hamiltonian, Gate)
     Psi0 = Gate.Psi0;
     
     % Setup matrices
-    index = size(Psi0, 2);
+    psiSize = size(Psi0, 2);
 
-    exponent = size(factor(index),2);
+    exponent = size(factor(psiSize),2);
 
-    solveIndex = 2^exponent;
-    matrixSize = solveIndex^2;
-    scale = 1/2^solveIndex;
+    index = 2^exponent;
+    matrixSize = index^2;
+    scale = 1/2^index;
     targetGate = Gate.gate;
 
     
-    part = zeros(solveIndex, solveIndex, matrixSize, matrixSize);
-    targetPart = zeros(solveIndex, solveIndex, matrixSize, matrixSize);
+    part = zeros(index, index, matrixSize, matrixSize);
+    targetPart = zeros(index, index, matrixSize, matrixSize);
     
-    for n = 1:solveIndex
-        for m = 1:solveIndex
-            Rho = sparse(m, n, 1, solveIndex, solveIndex);
-            RhoVect = reshape(Rho,[],1);
-            [~, solVect] = SolveTDSEgeneral(RhoVect, Hamiltonian);
-            sol = reshape(solVect(:,end), index, index);
-            part(m,n,:,:) = kron(sol, Rho);
-            targetPart(m,n,:,:) = kron(targetGate, speye(index)) * kron(Rho, Rho);
+    for n = 1:index
+        for m = 1:index
+            Rho = sparse(m, n, 1, index, index);
+            RhoVector = reshape(Rho,[],1);
+            [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
+            lindbladSolution = reshape(solutionMatrix(:,end), index, index);
+            part(m,n,:,:) = kron(lindbladSolution, Rho);
+
+            targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
     
     
         end
     end
         
-    U = sum(part, [1, 2]);
-    U = squeeze(U);
-    U = U.*scale;
-    sqrU = sqrtm(U);
+    % Sums and reduces the parts of the choi matrix
+    Choi = sum(part, [1, 2]);
+    Choi = squeeze(Choi);
+    Choi = Choi.*scale;
+    sqrChoi = sqrtm(Choi);
 
+    % Sums and reduces the kron products of the target gate
     TargetSum = sum(targetPart,[1, 2]);
-    TargetSum = squeeze(TargetSum)
+    TargetSum = squeeze(TargetSum);
     TargetSum = TargetSum.*scale;
-    content = sqrtm(sqrU*TargetSum*sqrU);
+   
+    content = sqrtm(sqrChoi*TargetSum*sqrChoi);
     
-    
+    % Finds fidelity
     Diff = trace(abs(content))^2;
 
 end
