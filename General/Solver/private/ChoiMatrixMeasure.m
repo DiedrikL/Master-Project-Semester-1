@@ -18,7 +18,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 
     index = 2^exponent;
     matrixSize = index^2;
-    scale = 1/2^index;
+    scale = 1/index;
     targetGate = Gate.gate;
 
     
