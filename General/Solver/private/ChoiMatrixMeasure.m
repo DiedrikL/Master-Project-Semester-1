@@ -8,17 +8,17 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
     end
     
     
-    % Start positions
+    % Get matrix size from gate
     Psi0 = Gate.Psi0;
-    
-    % Setup matrices 
     psiSize = size(Psi0, 2);
 
+    % Setup values 
     exponent = size(factor(psiSize),2);
-
     index = 2^exponent;
     matrixSize = index^2;
     scale = 1/index;
+
+    % Extract gate
     targetGate = Gate.gate;
 
     % initialize matrix
@@ -31,7 +31,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
             RhoVector = reshape(Rho,[],1);
             [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
             lindbladSolution = reshape(solutionMatrix(:,end), index, index);
-            ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho);
+            ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho).';
             
             targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
     
@@ -41,8 +41,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
     % Sums and reduces the parts of the choi matrix
     Choi = sum(ChoiPart, [1, 2]);
     Choi = squeeze(Choi);
-    Choi = Choi.*scale;
-    Choi = conj(Choi);
+    Choi = (Choi.*scale);
     sqrChoi = sqrtm(Choi);
 
     % Sums and reduces the kron products of the target gate
