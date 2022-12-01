@@ -9,10 +9,10 @@ gamma = 0;
 
 parameters = [epsilon, omegaX, omegaY];
 
-Hamiltonian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma);
+Lindbladian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma);
 % Gate = Gates.Hadamard;
-Gate = Gates.TestGateOne;   
-Choi = MeasureDiffGeneral(Hamiltonian, Gate = Gate)
+Gate = Gates.TestGateOne;
+Choi = MeasureDiffGeneral(Lindbladian, Gate = Gate)
 
 SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
 Avg = MeasureDiffGeneral(SimpleHam, Gate = Gate)
