@@ -52,14 +52,17 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
             gamma = this.Gamma;
+            omega = omegaX + 1i*omegaY;
 
             % Setup parameters
             B1 = @(t) 2*omegaX*sin(gamma*t);
-            B2 = @(t) 2*omegaY*sin(gamma*t);
+            B2 = @(t) -2*omegaY*sin(gamma*t);
             B3 = @(t) -epsilon;
-
-            % Creating the hamiltonian
-            H = Hamiltonians.HamiltonianInterface.pauliRotations(B1,B2,B3); 
+% 
+%             % Creating the hamiltonian
+%             H = Hamiltonians.HamiltonianInterface.pauliRotations(B1,B2,B3); 
+            H = @(t)  [-epsilon/2                 omega*sin(t*gamma);...
+                   conj(omega)*sin(t*gamma)   epsilon/2];
 
         end
          
