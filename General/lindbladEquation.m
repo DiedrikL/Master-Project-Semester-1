@@ -8,7 +8,7 @@
 %             V = @(t) B1(t)+B2(t);
 
             % Creating hamiltonian
-            H = @(t) [-epsilon/2 V; Vd epsilon/2]
+            H = @(t) [-epsilon/2 omegaX+1i*omegaY; omegaX-1i*omegaY epsilon/2]
             a = [1; 0]*[0 1]
             A = a'*a;
 
