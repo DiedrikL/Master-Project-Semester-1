@@ -1,17 +1,17 @@
 function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
+% Compares the difference of a Lindbladian with a given gate using a Choi
+% matrix
 
     arguments
         Lindbladian Hamiltonians.HamiltonianInterface
         Gate Gates.GateInterface
     end
-        
     
-    % Compare distance for a gate U with a given gate
     
     % Start positions
     Psi0 = Gate.Psi0;
     
-    % Setup matrices
+    % Setup matrices 
     psiSize = size(Psi0, 2);
 
     exponent = size(factor(psiSize),2);
@@ -21,8 +21,8 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
     scale = 1/index;
     targetGate = Gate.gate;
 
-    
-    part = zeros(index, index, matrixSize, matrixSize);
+    % initialize matrix
+    ChoiPart = zeros(index, index, matrixSize, matrixSize);
     targetPart = zeros(index, index, matrixSize, matrixSize);
     
     for n = 1:index
@@ -31,26 +31,27 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
             RhoVector = reshape(Rho,[],1);
             [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
             lindbladSolution = reshape(solutionMatrix(:,end), index, index);
-            part(m,n,:,:) = kron(lindbladSolution, Rho);
-
+            ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho);
+            
             targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
-    
     
         end
     end
         
     % Sums and reduces the parts of the choi matrix
-    Choi = sum(part, [1, 2]);
+    Choi = sum(ChoiPart, [1, 2]);
     Choi = squeeze(Choi);
     Choi = Choi.*scale;
+    Choi = conj(Choi);
     sqrChoi = sqrtm(Choi);
 
     % Sums and reduces the kron products of the target gate
-    TargetSum = sum(targetPart,[1, 2]);
-    TargetSum = squeeze(TargetSum);
-    TargetSum = TargetSum.*scale;
+    TargetChoi = sum(targetPart,[1, 2]);
+    TargetChoi = squeeze(TargetChoi);
+    TargetChoi = TargetChoi.*scale;
    
-    content = sqrtm(sqrChoi*TargetSum*sqrChoi);
+    content = sqrtm(sqrChoi*TargetChoi*sqrChoi);
+
     
     % Finds fidelity
     Diff = trace(abs(content))^2;
