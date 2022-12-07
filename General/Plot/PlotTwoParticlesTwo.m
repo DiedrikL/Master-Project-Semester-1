@@ -5,11 +5,17 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 12;
-N = 160;
-measure = Measure.AvgFidelity
+L = 8;
+N = 100;
 
-Gate = Gates.Hadamard_Two;
+% Measure and Gate
+measure = Measure.ChoiFidelity
+Gate = Gates.Hadamard;
+
+% Static parameters
+epsilon = 2.4210e+00;
+omegaX = 3.1426e-16;
+omegaY = 1.6971e+00;
 
 % Setup space
 parameter = linspace(-L/2,L/2,N);  
@@ -19,11 +25,11 @@ Room = zeros(N,N);
 parfor m = 1:N
     m
     % Hamiltonian
-    Hamilt = Hamiltonians.TwoVariableInteractionHamiltonian;
+    Hamilt = Hamiltonians.LindbladOne;
     Hamilt.Measure = measure;
 
     for n = 1:N
-        para = [parameter(n), parameter(m)+6];
+        para = [epsilon, parameter(n), parameter(m)];
         Hamilt.Parameters = para;
 
         Room(m,n) = MeasureDiffGeneral(Hamilt, Gate = Gate);
@@ -33,13 +39,13 @@ end
 
 % Plot room
 figure
-pcolor(parameter, parameter+6, Room)
+pcolor(parameter, parameter, Room)
 xlabel('First variable')
 ylabel('Second variable')
 colorbar
 
 figure
-surf(parameter, parameter+6, Room)
+surf(parameter, parameter, Room)
 xlabel('Omega X')
 ylabel('Omega Y')
 

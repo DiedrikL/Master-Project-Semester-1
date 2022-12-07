@@ -51,9 +51,9 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
                 this Hamiltonians.LindbladOne
             end
             
-            epsilon = -this.Parameters(1,1);
-            omegaX = -this.Parameters(1,2);
-            omegaY = -this.Parameters(1,3);
+            epsilon = this.Parameters(1,1);
+            omegaX = this.Parameters(1,2);
+            omegaY = this.Parameters(1,3);
             gamma = this.Gamma;
 %             rho = sparse(2,2);
 %             rho(this.Rho) = 1;
@@ -61,15 +61,15 @@ classdef LindbladOne < Hamiltonians.HamiltonianInterface
             % Setup parameters
             B1 = @(t) omegaX*sin(t);
             B2 = @(t) 1i*omegaY*sin(t);
-            V = @(t) B1(t)+B2(t);
+            Omega = @(t) B1(t)+B2(t);
 
 
             % Create the lindblad matrix
             lindblad = @(t) ...
-                    [0      -V(t)'              V(t)    2i*gamma;...
-                    -V(t)   -epsilon-1i*gamma   0       V(t);...
-                    V(t)'   0       epsilon-1i*gamma    -V(t)';...
-                    0       V(t)'       -V(t)           -2i*gamma];
+                    [0      conj(-Omega(t))         Omega(t)    2i*gamma;...
+                    -Omega(t)   -epsilon-1i*gamma   0       Omega(t);...
+                    conj(Omega(t))   0     epsilon-1i*gamma  -conj(Omega(t));...
+                    0       conj(Omega(t))          -Omega(t)   -2i*gamma];
 
 
         end
