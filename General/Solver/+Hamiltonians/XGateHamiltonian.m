@@ -1,4 +1,4 @@
-classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
+classdef XGateHamiltonian < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
         Gamma double
@@ -11,7 +11,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
 
     
     methods
-        function this = SimpleHamiltonian(options)
+        function this = XGateHamiltonian(options)
             % A simple hamiltonian, of the form:
             % H =   [-epsilon/2                 omega*sin(t*gamma)
             %        conj(omega)*sin(t*gamma)   epsilon/2]
@@ -45,7 +45,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
 
             % Input validation
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.XGateHamiltonian
             end
             
             epsilon = this.Parameters(1,1);
@@ -61,8 +61,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
 % 
 %             % Creating the hamiltonian
 %             H = Hamiltonians.HamiltonianInterface.pauliRotations(B1,B2,B3); 
-            H = @(t)  [-epsilon/2                 omega*sin(t*gamma);...
-                   conj(omega)*sin(t*gamma)   epsilon/2];
+            H = @(t)  [0 1; 1 0];
 
         end
          
@@ -70,7 +69,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         % Get function for dependent variable
         function Period = get.Period(this)
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.XGateHamiltonian
             end
             
             Period = this.Time.Tpulse;
@@ -80,7 +79,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Time(this, Time)
             % Set the TimeOptions used by this hamiltonian
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.XGateHamiltonian
                 Time TimeOptions
             end
             
@@ -90,7 +89,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Gamma(this, Gamma)
             % Set the gamma used by this hamiltonian
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.XGateHamiltonian
                 Gamma(1,1) double {mustBeReal}
             end 
             
@@ -100,7 +99,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Parameters(this, para)
             
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.XGateHamiltonian
                 para(1,3) double {mustBeReal}
             end
             

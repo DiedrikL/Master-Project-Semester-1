@@ -1,8 +1,9 @@
-classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
+classdef LindbladXgate < Hamiltonians.HamiltonianInterface
     properties
         Time TimeOptions
-        Gamma double
+        Gamma double {mustBeNonnegative}
         Parameters
+%         Rho (1,1) {mustBeInteger, mustBeInRange(Rho, 1,4)} = 1;
     end
     
     properties(Dependent)
@@ -11,30 +12,31 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
 
     
     methods
-        function this = SimpleHamiltonian(options)
-            % A simple hamiltonian, of the form:
-            % H =   [-epsilon/2                 omega*sin(t*gamma)
-            %        conj(omega)*sin(t*gamma)   epsilon/2]
-            %
-            % Takes the optional name value parameters Time and Gamma
+        function this = LindbladXgate(options)
+            % A matrix derived from the lindblad equation
+            % Takes the optional name value parameters Rho, Time and Gamma
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the gamma used by this hamiltonian
+            % Gamma is an optional parameter with default value of 1. It
+            % scales how large the effect reducing the state of the system
+            % towards basis state [1;0], it is the interference experienced
+            % by the system.
             
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Gamma double {mustBeNonzero} = 1;
-                options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
+                options.Gamma double {mustBeReal} = 1;
+                options.Parameters(1,3) double {mustBeReal} = ones(1,3);
+                options.Measure = Measure.ChoiFidelity;
             end
-            
             this.Time = options.Time;
             this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
+            this.Measure = options.Measure;
         end
         
-        function H = createHamiltonian(this)
+        function lindblad = createHamiltonian(this)
             % Creates a Hamiltonian with the parameters provided and the
             % values stored in this instance of the class
             %
@@ -43,26 +45,32 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             %
 
 
+
             % Input validation
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.LindbladXgate
             end
             
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
             gamma = this.Gamma;
-            omega = omegaX + 1i*omegaY;
+%             rho = sparse(2,2);
+%             rho(this.Rho) = 1;
 
-%             % Setup parameters
-%             B1 = @(t) 2*omegaX*sin(gamma*t);
-%             B2 = @(t) -2*omegaY*sin(gamma*t);
-%             B3 = @(t) -epsilon;
-% 
-%             % Creating the hamiltonian
-%             H = Hamiltonians.HamiltonianInterface.pauliRotations(B1,B2,B3); 
-            H = @(t)  [-epsilon/2                 omega*sin(t*gamma);...
-                   conj(omega)*sin(t*gamma)   epsilon/2];
+            % Setup parameters
+            B1 = @(t) omegaX*sin(t);
+            B2 = @(t) 1i*omegaY*sin(t);
+            Omega = @(t) B1(t)+B2(t);
+
+
+            % Create the lindblad matrix
+            lindblad = @(t) ...
+                    [0      -1         1    2i*gamma;...
+                    -1   -1i*gamma   0       1;...
+                    1   0     -1i*gamma  -1;...
+                    0       1          -1   -2i*gamma];
+
 
         end
          
@@ -70,7 +78,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         % Get function for dependent variable
         function Period = get.Period(this)
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.LindbladXgate
             end
             
             Period = this.Time.Tpulse;
@@ -80,7 +88,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Time(this, Time)
             % Set the TimeOptions used by this hamiltonian
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.LindbladXgate
                 Time TimeOptions
             end
             
@@ -90,7 +98,7 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Gamma(this, Gamma)
             % Set the gamma used by this hamiltonian
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.LindbladXgate
                 Gamma(1,1) double {mustBeReal}
             end 
             
@@ -100,11 +108,12 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         function this = set.Parameters(this, para)
             
             arguments
-                this Hamiltonians.SimpleHamiltonian
+                this Hamiltonians.LindbladXgate
                 para(1,3) double {mustBeReal}
             end
             
             this.Parameters = para;
         end
+
     end
 end
