@@ -53,7 +53,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 
     
     % Finds fidelity
-    Diff = trace(abs(content))^2;
+    Diff = trace(content)^2;
 
 end
 
