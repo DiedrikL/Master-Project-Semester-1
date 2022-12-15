@@ -1,5 +1,10 @@
 classdef RandomGate < Gates.GateInterface
-    % The gate and rotation for the Hadamard gate
+    % The gate and rotation for a random gate generated at first call
+    
+    properties(Constant)
+        Psi0 = eye(4);
+        gate = Gates.RandomGate.getRandom();
+    end
     
     methods(Access = public, Static)
         function rotate = rotation(U)
@@ -13,10 +18,6 @@ classdef RandomGate < Gates.GateInterface
         end
     end
 
-    properties(Constant)
-        Psi0 = eye(4);
-        gate = Gates.RandomGate.getRandom();
-    end
 
 
     methods(Access = public, Static)
