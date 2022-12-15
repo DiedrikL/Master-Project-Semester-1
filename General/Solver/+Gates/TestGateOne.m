@@ -1,5 +1,5 @@
 classdef TestGateOne < Gates.GateInterface
-    % The gate and rotation for the Hadamard gate
+    % The gate and rotation for a gate created with parameter values of one
     
     methods(Access = public, Static)
         function rotate = rotation(U)
@@ -8,7 +8,8 @@ classdef TestGateOne < Gates.GateInterface
             end
 
             phi = angle(U(1,1));
-            rotate = exp(-1i*phi)*U;
+            theta = angle(Gates.OnesGate.gate(1,1));
+            rotate = exp(-1i*phi+1i*theta)*U;
         end
     end
 
