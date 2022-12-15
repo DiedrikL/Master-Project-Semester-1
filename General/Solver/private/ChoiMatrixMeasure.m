@@ -31,7 +31,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
             RhoVector = reshape(Rho,[],1);
             [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
             lindbladSolution = reshape(solutionMatrix(:,end), index, index);
-            ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho).';
+            ChoiPart(m,n,:,:) = transpose(kron(lindbladSolution, Rho));
             
             targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
     
@@ -53,7 +53,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 
     
     % Finds fidelity
-    Diff = trace(abs(content))^2;
+    Diff = trace(content)^2;
 
 end
 
