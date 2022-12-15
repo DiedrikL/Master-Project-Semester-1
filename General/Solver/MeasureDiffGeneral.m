@@ -28,7 +28,7 @@ function Diff = MeasureDiffGeneral(Hamiltonian, options)
     % Use selected measure
     switch measure
         case Measure.NormDistance
-            U = solveForStartValue(Hamiltonian, Psi0);
+            U = SolveForStartValue(Hamiltonian, Psi0);
             % Measure distance with norm
             U = Gate.rotation(U);
             % Measuring distance
