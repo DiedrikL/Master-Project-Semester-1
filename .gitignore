@@ -1,3 +1,6 @@
+# Output folder
+Outputs/
+
 # Windows default autosave extension
 *.asv
 

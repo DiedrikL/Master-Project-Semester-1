@@ -11,7 +11,7 @@ classdef TimeOptions
             arguments
                options.Tstart(1,1) double = 0;
                options.Tpulse(1,1) double = 2*pi;
-               options.Tsize(1,1) double = 2000;
+               options.Tsize(1,1) double = 1000;
             end
             
             Time.Tstart = options.Tstart;
