@@ -29,7 +29,7 @@ parameters = [epsilon, omegaX, omegaY];
 
 
 % Starting timestep, and number of repetitions
-N = 80;
+N = 100;
 
 % Regular stepsizes
 startSteps = 100;
@@ -38,7 +38,7 @@ endStep = (N-1)*stepSize+startSteps;
 Timesteps = startSteps:stepSize:endStep;
 
 % logarithmic step sizes
-% startExponent = 3;
+% startExponent = 2;
 % endExponent = 5;
 % Timesteps = logspace(startExponent, endExponent, N);
 % Timesteps = round(Timesteps);
@@ -60,8 +60,9 @@ for n = 1:N
     lindbladMatrix = reshape(solutionMatrix(:,end), 2, 2);
     lindbladMatrix = transpose(lindbladMatrix);
     lindbladMatrices(n,:,:) = lindbladMatrix;
-    content = sqrtm(lindbladRootMatrix*lindbladMatrix*lindbladRootMatrix);
-    result = 1-trace(content)^2;
+%     content = sqrtm(lindbladRootMatrix*lindbladMatrix*lindbladRootMatrix);
+%     result = 1-trace(content)^2;
+    result = norm(trace(lindbladMatrix-lindbladSolution));
     lindbladResult(n) = result;
 end
 
@@ -78,11 +79,12 @@ hamiltResult = ones(N,1);
 for n = 1:N
     step = Timesteps(n);
     Hamiltonian.Time.Tsize = step;
-    matrix = SolveTDSEgeneral(Psi0, Hamiltonian);
-    hamiltMatrices(n,:,:) = matrix;
+    hMatrix = FindU(Hamiltonian);
+    hamiltMatrices(n,:,:) = hMatrix;
 %     result = MeasureDiffGeneral(Hamiltonian, Gate = Gates.HighStepNumberGate);
-    content = sqrtm(hamiltRootMatrix*matrix*hamiltRootMatrix);
-    result = 1-trace(content)^2;
+%     content = sqrtm(hamiltRootMatrix*hMatrix*hamiltRootMatrix);
+%     result = 1-trace(content)^2
+    result = norm(hMatrix-hamiltSolution);
 
     hamiltResult(n) = result;
 end
