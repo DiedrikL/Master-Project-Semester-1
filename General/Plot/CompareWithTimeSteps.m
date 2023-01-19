@@ -32,16 +32,16 @@ parameters = [epsilon, omegaX, omegaY];
 N = 100;
 
 % Regular stepsizes
-startSteps = 100;
-stepSize = 100;
-endStep = (N-1)*stepSize+startSteps;
-Timesteps = startSteps:stepSize:endStep;
+% startSteps = 100;
+% stepSize = 100;
+% endStep = (N-1)*stepSize+startSteps;
+% Timesteps = startSteps:stepSize:endStep;
 
 % logarithmic step sizes
-% startExponent = 2;
-% endExponent = 5;
-% Timesteps = logspace(startExponent, endExponent, N);
-% Timesteps = round(Timesteps);
+startExponent = 2;
+endExponent = 4;
+Timesteps = logspace(startExponent, endExponent, N);
+Timesteps = round(Timesteps);
 
 % creating the lindbladian
 Lindbladian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma);
@@ -52,19 +52,19 @@ lindbladResult = ones(N,1);
 
 % Solving the lindbladian for one posibility with different number of time
 % steps
-for n = 1:N
-    step = Timesteps(n);
-    Lindbladian.Time.Tsize = step;
-
-    [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
-    lindbladMatrix = reshape(solutionMatrix(:,end), 2, 2);
-    lindbladMatrix = transpose(lindbladMatrix);
-    lindbladMatrices(n,:,:) = lindbladMatrix;
+% for n = 1:N
+%     step = Timesteps(n);
+%     Lindbladian.Time.Tsize = step;
+% 
+%     [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
+%     lindbladMatrix = reshape(solutionMatrix(:,end), 2, 2);
+%     lindbladMatrix = transpose(lindbladMatrix);
+%     lindbladMatrices(n,:,:) = lindbladMatrix;
 %     content = sqrtm(lindbladRootMatrix*lindbladMatrix*lindbladRootMatrix);
-%     result = 1-trace(content)^2;
-    result = norm(trace(lindbladMatrix-lindbladSolution));
-    lindbladResult(n) = result;
-end
+% %     result = 1-trace(content)^2;
+% %     result = norm(lindbladMatrix-lindbladSolution);
+%     lindbladResult(n) = result;
+% end
 
 % Creating the hamiltonian
 Hamiltonian = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
@@ -74,6 +74,9 @@ Psi0 = [1;0];
 % setting up result matrices
 hamiltMatrices = zeros(N, 2,2);
 hamiltResult = ones(N,1);
+hTarget = kron(hamiltSolution*Rho*hamiltSolution', Rho);
+hRoot = sqrtm(full(hTarget));
+
 
 % solving with different number of time steps
 for n = 1:N
@@ -82,9 +85,13 @@ for n = 1:N
     hMatrix = FindU(Hamiltonian);
     hamiltMatrices(n,:,:) = hMatrix;
 %     result = MeasureDiffGeneral(Hamiltonian, Gate = Gates.HighStepNumberGate);
-%     content = sqrtm(hamiltRootMatrix*hMatrix*hamiltRootMatrix);
-%     result = 1-trace(content)^2
-    result = norm(hMatrix-hamiltSolution);
+%     hRedRes = hMatrix(:,1);
+%     result = norm(hRedRes-hReduced);
+    hTemp = kron(hMatrix*Rho*hMatrix', Rho);
+
+    content = sqrtm(hRoot*hTemp*hRoot);
+    result = 1-trace(content)^2;
+
 
     hamiltResult(n) = result;
 end
@@ -93,7 +100,7 @@ figure
 loglog(Timesteps, abs(hamiltResult))
 title('Hamiltonian error')
 
-figure
-loglog(Timesteps, abs(lindbladResult))
-title('Lindblad error')
+% figure
+% loglog(Timesteps, abs(lindbladResult))
+% title('Lindblad error')
 
