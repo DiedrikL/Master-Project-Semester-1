@@ -2,14 +2,14 @@ format long
 
 % parameters
 epsilon = 1;
-omegaX = 2;
-omegaY = 3;
+omegaX = 1;
+omegaY = 1;
 gamma = 0;
 parameters = [epsilon, omegaX, omegaY];
 
 
 % Timesteps and file names
-steps = 1e6;
+steps = 1e5;
 Time = TimeOptions(Tsize = steps)
 LName = "GeneratedLindblad" + steps;
 HName = "GeneratedHamiltonian" + steps;
@@ -29,7 +29,8 @@ SaveMatrixToOutput(lindbladSolution, LName)
 
 % Finding the unitary for the hamiltonian
 Hamiltonian = Hamiltonians.SimpleHamiltonian(Parameters = parameters, Time = Time);
-% hamiltSolution = FindU(Hamiltonian)
-hamiltSolution = SolveTDSEgeneral([1;0], Hamiltonian)
+hamiltSolution = FindU(Hamiltonian)
+% [~, hSolution] = SolveTDSEgeneral([1;0], Hamiltonian);
+% hamiltSolution = hSolution(:,end)
 SaveMatrixToOutput(hamiltSolution, HName)
 
