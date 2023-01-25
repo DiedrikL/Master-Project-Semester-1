@@ -71,6 +71,7 @@ for iter = 1:maxIt
     if mod(iter,100) == 0
         test = MeasureDiffGeneral(Hamiltonian, Gate=Gate)
         if(test > cutoff || abs(test-last) < minDiff)
+            disp(iter)
             break
         else
             last = test;
