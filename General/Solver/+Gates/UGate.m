@@ -8,7 +8,7 @@ classdef UGate < Gates.GateInterface
             end
 
             phi = angle(U(1,1));
-            theta = angle(Gates.RandomUGate.gate(1,1));
+            theta = angle(Gates.UGate.gate(1,1));
             rotate = exp(-1i*phi+1i*theta)*U;
         end
     end

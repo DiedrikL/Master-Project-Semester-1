@@ -32,9 +32,7 @@ Gate = Gates.Hadamard;
 N = 1e2;
 goal = 0.2;
 
-deltaGamma = goal/N;
-gamma = 0:deltaGamma:goal;
-gamma(end) = [];
+lambda = linspace(0, goal, N);
 
 % Setting up arrays
 Choi = ones(1,N);
@@ -48,14 +46,14 @@ SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
 Avg = MeasureDiffGeneral(SimpleHam, Gate = Gate);
 
 for n = 1:N
-    Lindbladian.Gamma = gamma(n);
+    Lindbladian.Lambda = lambda(n);
     Choi(n) = MeasureDiffGeneral(Lindbladian, Gate = Gate);
 end
 
 figure
 hold on
 
-plot(gamma, Choi);
+plot(lambda, Choi);
 refline([0,Avg]);
 
 hold off

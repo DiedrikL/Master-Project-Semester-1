@@ -5,8 +5,8 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 8;
-N = 100;
+L = 4;
+N = 50;
 
 % Measure and Gate
 measure = Measure.ChoiFidelity
@@ -16,6 +16,7 @@ Gate = Gates.Hadamard;
 epsilon = 2.4210e+00;
 omegaX = 3.1426e-16;
 omegaY = 1.6971e+00;
+lambda = 0.1;
 
 % Setup space
 parameter = linspace(-L/2,L/2,N);  
@@ -25,11 +26,11 @@ Room = zeros(N,N);
 parfor m = 1:N
     m
     % Hamiltonian
-    Hamilt = Hamiltonians.LindbladOne;
+    Hamilt = Hamiltonians.LindbladOne(Lambda = lambda);
     Hamilt.Measure = measure;
 
     for n = 1:N
-        para = [epsilon, parameter(n), parameter(m)];
+        para = [parameter(n), omegaX, parameter(m)];
         Hamilt.Parameters = para;
 
         Room(m,n) = MeasureDiffGeneral(Hamilt, Gate = Gate);
@@ -46,7 +47,7 @@ colorbar
 
 figure
 surf(parameter, parameter, Room)
-xlabel('Omega X')
+xlabel('Epsilon')
 ylabel('Omega Y')
 
 % Finds and prints lowest value with parameters

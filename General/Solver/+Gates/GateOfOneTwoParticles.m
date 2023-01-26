@@ -1,4 +1,4 @@
-classdef OnesGate < Gates.GateInterface
+classdef GateOfOneTwoParticles < Gates.GateInterface
     % The gate and rotation for 6 parameters with values of 1
     
     methods(Access = public, Static)

@@ -1,21 +1,27 @@
 
-epsilon = 5;
-omegaX = 4;
-omegaY = 2;
-% epsilon = 2.4210e+00;
-% omegaX = 3.1426e-16;
-% omegaY = -1.6971e+00;
-gamma = 0;
+epsilon = 1;
+omegaX = 1;
+omegaY = 1;
+% epsilon = 2.42122268156879;
+% omegaX = -7.22876276613933e-06;
+% omegaY = -1.69707213380438;
+% epsilon = 0.808031091653885;
+% omegaX = 0.727038453078781;
+% omegaY = 0.716575238588071;
+
+lambda = 0e-2;
 
 parameters = [epsilon, omegaX, omegaY];
-
-Lindbladian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma);
+Gate = Gates.GateOfOne;
 % Gate = Gates.Hadamard;
-Gate = Gates.TestGateOne;
+
+
+
+Lindbladian = Hamiltonians.LindbladOne(Parameters = parameters, Lambda = lambda);
 Choi = MeasureDiffGeneral(Lindbladian, Gate = Gate)
 
 SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
 Avg = MeasureDiffGeneral(SimpleHam, Gate = Gate)
 
-% FindU(Hamiltonian)
-% FindU(SimpleHam)
+% FindU(Lindbladian)
+FindU(SimpleHam)
