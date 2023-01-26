@@ -1,5 +1,6 @@
 classdef TestGateOne < Gates.GateInterface
-    % The gate and rotation for a gate created with parameter values of one
+    % The gate and rotation for a gate created with parameter values of 5,
+    % 4, 2
     
     methods(Access = public, Static)
         function rotate = rotation(U)

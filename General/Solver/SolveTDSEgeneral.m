@@ -32,9 +32,7 @@ Y = zeros(psiHeight, leng);
 
 for n = 1:leng
     Psi = Phi(tVector(n),Psi);
-    for m = 1:psiHeight
-        Y(m,n) = Psi(m);
-    end
+    Y(:,n) = Psi;
 end
 
 Solution = Y;

@@ -3,9 +3,9 @@
 Time = TimeOptions;
 
 % Setup parameters
-range = 1;
+range = 1.5;
 minimum = 0;
-repeats = 20;
+repeats = 60;
 learning = 1e-3;
 measure = Measure.ChoiFidelity;
 
@@ -18,7 +18,7 @@ treshold = 1e-1;
 epsilon = 2.4210e+00;
 omegaX = 3.1426e-16;
 omegaY = -1.6971e+00;
-lambda = 5e-2;
+lambda = 1e-2;
 
 startvalue = [epsilon, omegaX, omegaY];
 
@@ -39,7 +39,7 @@ afterEach(q, @(value)bar.updateBarValue(value));
 
 parfor n=1:repeats
     para = parameters(n,:);
-    Hamilt = Hamiltonians.LindbladOne(Time=Time, Parameters = para);
+    Hamilt = Hamiltonians.LindbladOne(Time=Time, Parameters = para, Lambda = lambda);
     Hamilt.Measure = measure;
     [para, result(n)] = GradientDescent.GradientDescent(...
     Hamilt, ...
@@ -55,3 +55,10 @@ end
 result(Index)
 parameters(Index,:)
 lowValues = sum(result<treshold)
+
+% Save workspace after run
+formatSpec = 'GDLambda_%d';
+name = sprintf(formatSpec, lambda);
+
+SaveToOutput(name);
+
