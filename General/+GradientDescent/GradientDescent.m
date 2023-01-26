@@ -39,7 +39,8 @@ Beta2 = options.Beta2;
 epsilon = options.epsilon;
 cutoff = Hamiltonian.Measure.cutoff;
 minDiff = options.minDiff;
-last = 0;
+last = MeasureDiffGeneral(Hamiltonian, Gate=Gate);
+
 
 % Max intervals
 maxIt = options.maxIter;
@@ -47,23 +48,23 @@ maxIt = options.maxIter;
 % Initialise momentum vector
 para = Hamiltonian.Parameters;
 leng = length(para);
+M = zeros(1,leng);
 V = zeros(1,leng);
-U = zeros(1,leng);
 
 for iter = 1:maxIt
     
     grads = CalculateGradients(Hamiltonian, Gate);
-    V = Beta1*V + (1-Beta1)*grads;
-    U = Beta2*U + (1-Beta2)*grads.^2;
+    M = Beta1*M + (1-Beta1)*grads;
+    V = Beta2*V + (1-Beta2)*grads.^2;
     
     % Compute bias-corrected first and second moment estimate
-    V_bias = V./(1-Beta1^iter);
-    U_bias = U./(1-Beta2^iter);
+    M_bias = M./(1-Beta1^iter);
+    U_bias = V./(1-Beta2^iter);
 
 
     
     for n = 1:leng
-       para(n) = para(n) - learning*V_bias(n)/(sqrt(U_bias(n))+epsilon);
+       para(n) = para(n) - learning*M_bias(n)/(sqrt(U_bias(n))+epsilon);
     end
     
     Hamiltonian.Parameters = para;
