@@ -3,8 +3,8 @@
 Time = TimeOptions;
 
 % Setup parameters
-steps = 15;
-N = 2*steps;
+steps = 8;
+N = 3*steps;
 learning = 1e-3;
 measure = Measure.ChoiFidelity;
 
@@ -24,7 +24,7 @@ tresh3 = 1e0;
 lambda1 = linspace(0, tresh1, steps);
 lambda2 = linspace(tresh1, tresh2, steps);
 lambda3 = linspace(tresh2, tresh3, steps);
-lambda = [lambda1, lambda2];
+lambda = [lambda1, lambda2, lambda3];
 
 startvalue = [epsilon, omegaX, omegaY];
 
@@ -65,10 +65,9 @@ plot(lambda, referenceValue, 'r')
 
 lambda = transpose(lambda);
 
-Data = [parameters lambda result]
-d = string(datetime('now'));
-formatSpec = 'LambdaPlot_%s';
-name = sprintf(formatSpec, d);
+% Data = [parameters lambda result, referenceValue]
+naem = 'LambdaPlot_';
+% name = sprintf(formatSpec);
 nameFormat = regexprep(name, '[\s:]', '_');
-SaveMatrixToOutput(Data, nameFormat)
+SaveToOutput(nameFormat)
 
