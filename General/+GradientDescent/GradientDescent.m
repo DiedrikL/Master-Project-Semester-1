@@ -62,10 +62,8 @@ for iter = 1:maxIt
     U_bias = V./(1-Beta2^iter);
 
 
-    
-    for n = 1:leng
-       para(n) = para(n) - learning*M_bias(n)/(sqrt(U_bias(n))+epsilon);
-    end
+    para = para - learning.*M_bias./(sqrt(U_bias)+epsilon);
+
     
     Hamiltonian.Parameters = para;
     
