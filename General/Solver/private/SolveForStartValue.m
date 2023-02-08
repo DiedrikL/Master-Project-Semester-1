@@ -1,6 +1,6 @@
 function U = SolveForStartValue(Hamiltonian, Psi0)
     arguments
-        Hamiltonian Hamiltonians.HamiltonianInterface
+        Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
         Psi0 double
     end
 
@@ -11,9 +11,7 @@ function U = SolveForStartValue(Hamiltonian, Psi0)
     % Getting the solution for the start positions
     for n = 1:index
         [~, Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
-        for m = 1:index
-            U(m,n) = Psi(m, end);
-        end
+        U(:,n) = Psi(:, end);
     end
 end
     
