@@ -3,7 +3,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 % matrix
 
     arguments
-        Lindbladian Hamiltonians.HamiltonianInterface
+        Lindbladian Hamiltonians.Interfaces.HamiltonianInterface
         Gate Gates.GateInterface
     end
     
