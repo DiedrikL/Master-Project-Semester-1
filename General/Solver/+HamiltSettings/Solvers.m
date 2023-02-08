@@ -10,7 +10,8 @@ classdef Solvers
     end
 
     enumeration
-        Crank_Nicolson(@(psi,hamilt) SolveTDSEgeneral(psi,hamilt))
-        Runge_Kutta(@(rho, hamilt) Runge_kutta(rho, hamilt))
+        Crank_Nicolson(@(psi,hamilt) SolveFunk.Crank_Nicolson(psi,hamilt))
+        Runge_Kutta(@(rho, hamilt) SolveFunk.Runge_Kutta(rho, hamilt))
+        Runge_Kutta_Rho(@(rho, hamilt) SolveFunk.Rho_Runge_Kutta(rho, hamilt))
     end
 end
