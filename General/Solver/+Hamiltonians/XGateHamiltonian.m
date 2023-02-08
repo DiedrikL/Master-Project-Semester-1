@@ -1,20 +1,18 @@
-classdef XGateHamiltonian < Hamiltonians.HamiltonianInterface
+classdef XGateHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-        Time TimeOptions
         Gamma double
-        Parameters
     end
     
-    properties(Dependent)
-        Period
+    properties(Constant)
+        matrixSize = 2;
     end
 
     
     methods
         function this = XGateHamiltonian(options)
             % A simple hamiltonian, of the form:
-            % H =   [-epsilon/2                 omega*sin(t*gamma)
-            %        conj(omega)*sin(t*gamma)   epsilon/2]
+            % H =   [0 1
+            %        1 0]
             %
             % Takes the optional name value parameters Time and Gamma
             % 
@@ -66,25 +64,6 @@ classdef XGateHamiltonian < Hamiltonians.HamiltonianInterface
         end
          
 
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.XGateHamiltonian
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.XGateHamiltonian
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
         
         function this = set.Gamma(this, Gamma)
             % Set the gamma used by this hamiltonian
@@ -96,14 +75,5 @@ classdef XGateHamiltonian < Hamiltonians.HamiltonianInterface
             this.Gamma = Gamma;
         end
         
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.XGateHamiltonian
-                para(1,3) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-        end
     end
 end

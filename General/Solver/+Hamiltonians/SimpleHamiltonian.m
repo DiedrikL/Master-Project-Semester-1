@@ -1,14 +1,12 @@
-classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
+classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-        Time TimeOptions
-        Gamma double
-        Parameters
-    end
-    
-    properties(Dependent)
-        Period
+        Gamma double {mustBeReal}
     end
 
+    properties(Constant)
+        matrixSize = 2;
+    end
+    
     
     methods
         function this = SimpleHamiltonian(options)
@@ -20,7 +18,8 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the gamma used by this hamiltonian
+            % Gamma is the gamma used by this hamiltonian to shift the
+            % frequency the magnetic fields x and y oscillates
             
             % Input validation and default values
             arguments
@@ -67,25 +66,6 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
         end
          
 
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.SimpleHamiltonian
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.SimpleHamiltonian
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
         
         function this = set.Gamma(this, Gamma)
             % Set the gamma used by this hamiltonian
@@ -97,14 +77,5 @@ classdef SimpleHamiltonian < Hamiltonians.HamiltonianInterface
             this.Gamma = Gamma;
         end
         
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.SimpleHamiltonian
-                para(1,3) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-        end
     end
 end

@@ -1,16 +1,13 @@
-classdef OneVariableXgate < Hamiltonians.HamiltonianInterface
+classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-       Time TimeOptions
-       Parameters
        Scale(1,1) double {mustBeReal}
     end
-    
-    properties(Dependent)
-       Period
+
+    properties(Constant)
+        matrixSize = 2;
     end
-    
-    
-    
+
+
     methods
         function this = OneVariableXgate(options)
             % A Hamiltonian that simulates the smoothness of real magnetic
@@ -68,40 +65,7 @@ classdef OneVariableXgate < Hamiltonians.HamiltonianInterface
         
         end
         
-        
-        
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.OneVariableXgate
-            end
-            
-            Period =  3*this.Time.Tpulse;
-        end
-        
-        
-        % Custom set functions with validation
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.OneVariableXgate
-                para(1,1) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-            this.Time.Tpulse = para;
-        end
-        
-        
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.OneVariableXgate
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-            
-        end
+
         
         function this = set.Scale(this, Scale)
             % Set the Scale used by this hamiltonian
@@ -111,6 +75,19 @@ classdef OneVariableXgate < Hamiltonians.HamiltonianInterface
             end 
             
             this.Scale = Scale;
+        end
+    end
+
+    methods(Access=protected)
+        % Custom set functions with validation
+        function valid = parameterValidate(this, para)
+            
+            arguments
+                this
+                para(1,1) double {mustBeReal}
+            end
+            
+            valid = para;
         end
     end
 end

@@ -1,12 +1,10 @@
-classdef SmoothHamiltonian < Hamiltonians.HamiltonianInterface
+classdef SmoothHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-       Time TimeOptions
-       Parameters
        Scale(1,1) double {mustBeReal}
     end
     
-    properties(Dependent)
-       Period
+    properties(Constant)
+       matrixSize = 2;
     end
     
     
@@ -69,39 +67,7 @@ classdef SmoothHamiltonian < Hamiltonians.HamiltonianInterface
         
         end
         
-        
-        
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.SmoothHamiltonian
-            end
-            
-            Period =  2*this.Time.Tpulse;
-        end
-        
-        
-        % Custom set functions with validation
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.SmoothHamiltonian
-                para(1,3) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-        end
-        
-        
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.SmoothHamiltonian
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-            
-        end
+
         
         function this = set.Scale(this, Scale)
             % Set the Scale used by this hamiltonian
@@ -111,6 +77,17 @@ classdef SmoothHamiltonian < Hamiltonians.HamiltonianInterface
             end 
             
             this.Scale = Scale;
+        end
+        
+    end
+
+    methods(Access=protected)
+        function Period = periodGet(this)
+            arguments
+                this Hamiltonians.SmoothHamiltonian
+            end
+            
+            Period =  2*this.Time.Tpulse;
         end
     end
 end

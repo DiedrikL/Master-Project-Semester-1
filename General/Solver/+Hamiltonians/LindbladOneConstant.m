@@ -1,13 +1,6 @@
-classdef LindbladOneConstant < Hamiltonians.HamiltonianInterface
-    properties
-        Time TimeOptions
-        Lambda double {mustBeNonnegative}
-        Parameters
-%         Rho (1,1) {mustBeInteger, mustBeInRange(Rho, 1,4)} = 1;
-    end
-    
-    properties(Dependent)
-        Period
+classdef LindbladOneConstant < Hamiltonians.Interfaces.LindbladInterface
+    properties(Constant)
+        matrixSize = 4;
     end
 
     
@@ -26,14 +19,16 @@ classdef LindbladOneConstant < Hamiltonians.HamiltonianInterface
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Lambda double {mustBeReal} = 0;
+                options.Gamma double {mustBeReal} = 0;
                 options.Parameters(1,3) double {mustBeReal} = ones(1,3);
                 options.Measure = Measure.ChoiFidelity;
+                options.Solver = HamiltSettings.Solvers.Crank_Nicolson;
             end
             this.Time = options.Time;
-            this.Lambda = options.Lambda;
+            this.Gamma = options.Gamma;
             this.Parameters = options.Parameters;
             this.Measure = options.Measure;
+            this.Solver = options.Solver;
         end
         
         function lindblad = createHamiltonian(this)
@@ -54,10 +49,7 @@ classdef LindbladOneConstant < Hamiltonians.HamiltonianInterface
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
-            lambda = this.Lambda;
-%             rho = sparse(2,2);
-%             rho(this.Rho) = 1;
-
+            gamma = this.Gamma;
 
             % Setup parameters
             B1 = omegaX;
@@ -67,54 +59,14 @@ classdef LindbladOneConstant < Hamiltonians.HamiltonianInterface
 
             % Create the lindblad matrix
             lindblad = @(t) ...
-                    [0      conj(-Omega)         Omega    2i*lambda;...
-                    -Omega   -epsilon-1i*lambda   0       Omega;...
-                    conj(Omega)   0     epsilon-1i*lambda  -conj(Omega);...
-                    0       conj(Omega)          -Omega   -2i*lambda];
+                    [0      conj(-Omega)         Omega    2i*gamma;...
+                    -Omega   -epsilon-1i*gamma   0       Omega;...
+                    conj(Omega)   0     epsilon-1i*gamma  -conj(Omega);...
+                    0       conj(Omega)          -Omega   -2i*gamma];
 
 
         end
          
-
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.LindbladOneConstant
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.LindbladOneConstant
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
-        
-        function this = set.Lambda(this, Lambda)
-            % Set the lambda used by this hamiltonian
-            arguments
-                this Hamiltonians.LindbladOneConstant
-                Lambda(1,1) double {mustBeReal}
-            end 
-            
-            this.Lambda = Lambda;
-        end
-        
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.LindbladOneConstant
-                para(1,3) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-        end
 
     end
 end
