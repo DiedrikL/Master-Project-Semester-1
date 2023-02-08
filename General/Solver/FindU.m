@@ -24,9 +24,7 @@ U = zeros(index);
 % Getting the solution for the start positions
 for n = 1:index
     [~, Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
-    for m = 1:index
-        U(m,n) = Psi(m, end);
-    end
+    U(:,n) = Psi(:, end);
 end
 
 
