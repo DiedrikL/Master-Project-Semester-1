@@ -11,6 +11,6 @@ classdef Solvers
 
     enumeration
         Crank_Nicolson(@(psi,hamilt) SolveTDSEgeneral(psi,hamilt))
-        Runge_Kutta(@(rho, hamilt) Runge_kutta(psi, hamilt))
+        Runge_Kutta(@(rho, hamilt) Runge_kutta(rho, hamilt))
     end
 end
