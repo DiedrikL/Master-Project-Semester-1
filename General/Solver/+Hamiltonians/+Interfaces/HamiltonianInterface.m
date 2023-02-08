@@ -1,21 +1,25 @@
 classdef (Abstract) HamiltonianInterface
-    properties(Abstract)
-       Time TimeOptions
-       Parameters double {mustBeReal}
+
+    properties(Abstract, Constant, GetAccess=public)
+       matrixSize int8 {mustBePositive}
+    end
+
+    properties(Access=protected)
     end
 
     properties(Access=public)
+        Parameters double {mustBeReal}
         Measure Measure = Measure.AvgFidelity;
+        Solver HamiltSettings.Solvers = HamiltSettings.Solvers.Crank_Nicolson;
+        Time TimeOptions
     end
     
     properties(Dependent)
-       TimeStep double 
-       TimeVector(1,:) double
-    end
-    
-    properties(Abstract, Dependent)
+        TimeStep double 
+        TimeVector(1,:) double
         Period double
     end
+
     
     methods(Abstract)
         createHamiltonian(this)
@@ -26,7 +30,7 @@ classdef (Abstract) HamiltonianInterface
         % Get functions for dependent variabels
         function TimeStep = get.TimeStep(this)
             arguments
-                this Hamiltonians.HamiltonianInterface
+                this Hamiltonians.Interfaces.HamiltonianInterface
             end
             
             TimeStep = this.Period/this.Time.Tsize;
@@ -34,7 +38,7 @@ classdef (Abstract) HamiltonianInterface
         
         function TimeVector = get.TimeVector(this)
             arguments
-                this Hamiltonians.HamiltonianInterface
+                this Hamiltonians.Interfaces.HamiltonianInterface
             end
             
             TimeStart = this.Time.Tstart;
@@ -45,26 +49,57 @@ classdef (Abstract) HamiltonianInterface
             TimeVector(end) = [];
         end
 
-        function measure = get.Measure(this)
-            arguments
-                this Hamiltonians.HamiltonianInterface
-            end
-
-            measure = this.Measure;
-        end        
         
-        function this = set.Measure(this, value)
+        
+        function this = set.Time(this, Time)
+            % Set the TimeOptions used by this hamiltonian
             arguments
-                this Hamiltonians.HamiltonianInterface
-                value Measure
+                this Hamiltonians.Interfaces.HamiltonianInterface
+                Time TimeOptions
             end
-
-            this.Measure = value;
+            
+            this.Time = Time;
+            
         end
-        
-        
+
+        % Get function for dependent variable linking to protected function
+        function Period = get.Period(this)
+            Period = this.periodGet;
+        end
+
+        % set function that links to custom validation that can be
+        % overridden
+        function this = set.Parameters(this, para)
+            arguments
+                this Hamiltonians.Interfaces.HamiltonianInterface
+                para
+            end
+            test = this.parameterValidate(para);
+
+            this.Parameters = test;            
+        end
     end
-    
+
+    methods(Access=protected)
+        % Default parameter validation for set function
+        function valid = parameterValidate(this,para)
+            arguments
+                this
+                para(1,3) double {mustBeReal}
+            end
+            valid = para;
+        end
+
+
+        % Default get function for period
+        function Period = periodGet(this)
+            arguments
+                this Hamiltonians.Interfaces.HamiltonianInterface
+            end
+            
+            Period = this.Time.Tpulse;
+        end
+    end    
 
     
     methods(Static, Sealed)
