@@ -9,6 +9,18 @@ function [tVector, Solution] = Runge_Kutta(Rho, Hamiltonian)
         Rho (:,:) double
         Hamiltonian Hamiltonians.HamiltonianInterface;
     end
+
+
+    % Function for step in Runge Kutta
+    function step = rk_algorithm(t, rho)
+        k1 = expm(-1i*H(t)*dt)*rho; 
+        k2 = expm(-1i*H(t+dt/2)*dt)*(rho+dt*k1/2);
+        k3 = expm(-1i*H(t+dt/2)*dt)*(rho+dt*k2/2);
+        k4 = expm(-1i*H(t+dt)*dt)*(rho+dt*k3);
+
+        step = rho + 1/6*(k1 + 2*k2 + 2*k3 + k4)*dt;
+    
+    end
     
     % Get parameterized hamiltonian 
     H = Hamiltonian.createHamiltonian;
@@ -22,16 +34,7 @@ function [tVector, Solution] = Runge_Kutta(Rho, Hamiltonian)
     % Find sizes
     leng = length(tVector);
     psiHeight = Hamiltonian.matrixSize;
-    
-    function step = rk_algorithm(t, rho)
-        k1 = expm(-1i*H(t)*dt)*rho; 
-        k2 = expm(-1i*H(t+dt/2)*dt)*(rho+dt*k1/2);
-        k3 = expm(-1i*H(t+dt/2)*dt)*(rho+dt*k2/2);
-        k4 = expm(-1i*H(t+dt)*dt)*(rho+dt*k3);
 
-        step = rho+ + 1/6*(k1 + 2*k2 + 2*k3 + k4)*dt;
-    
-    end
     
 
     Y = zeros(psiHeight, leng);
