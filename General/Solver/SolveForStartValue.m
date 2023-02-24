@@ -5,13 +5,14 @@ function U = SolveForStartValue(Hamiltonian, Psi0)
     end
 
     % Setup matrices
+    Hsize = Hamiltonian.matrixSize;
     index = size(Psi0, 2);
-    U = zeros(index);
+    U = zeros(Hsize,index);
 
     % Getting the solution for the start positions
     for n = 1:index
-        [~, Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
-        U(:,n) = Psi(:, end);
+        [Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
+        U(:,n) = Psi;
     end
 end
     
