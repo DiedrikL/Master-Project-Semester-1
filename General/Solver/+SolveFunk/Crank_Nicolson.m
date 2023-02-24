@@ -1,4 +1,4 @@
-function [tVector, Solution] = Crank_Nicolson(Psi, Hamiltonian)
+function [Solution] = Crank_Nicolson(Psi, Hamiltonian)
 
 % Solves the schrödinger equation with Crank Nicolson for a specified
 % Hamiltonian and startvalues Psi.
@@ -12,7 +12,6 @@ end
 
 % Get parameterized hamiltonian 
 H = Hamiltonian.createHamiltonian;
-
 
 % Set timelength
 dt = Hamiltonian.TimeStep;
@@ -31,8 +30,7 @@ Y = zeros(psiHeight, leng);
 
 for n = 1:leng
     Psi = Phi(tVector(n),Psi);
-    Y(:,n) = Psi;
 end
 
-Solution = Y;
+Solution = Psi;
 
