@@ -1,6 +1,7 @@
 classdef LindbladRhoOne < Hamiltonians.Interfaces.LindbladInterface
     properties(Constant)
         matrixSize = 2;
+        rhoSize = 2;
     end
 
     
