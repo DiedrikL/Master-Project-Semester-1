@@ -1,5 +1,9 @@
 classdef (Abstract) LindbladInterface < Hamiltonians.Interfaces.HamiltonianInterface
     
+    properties(Abstract, Constant, GetAccess=public)
+       rhoSize int8 {mustBePositive}
+    end
+
     properties(Access=public)
         Gamma double {mustBeReal} = 0;
     end
