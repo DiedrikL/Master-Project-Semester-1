@@ -14,7 +14,7 @@ function [Gradients] = CalculateGradients(Hamiltonian, Gate, options)
 
     % Validate input
     arguments
-        Hamiltonian Hamiltonians.HamiltonianInterface
+        Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
         Gate Gates.GateInterface
         options.h(1,1) double = 1e-3;
     end

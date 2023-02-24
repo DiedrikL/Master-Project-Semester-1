@@ -21,7 +21,7 @@ function [para, distance] = GradientDescent(Hamiltonian, Gate, options)
 
 % Input validation and default values
 arguments
-   Hamiltonian Hamiltonians.HamiltonianInterface
+   Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
    Gate Gates.GateInterface
 
    options.learning double = 1e-3;
