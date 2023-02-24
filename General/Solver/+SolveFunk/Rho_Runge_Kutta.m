@@ -1,4 +1,4 @@
-function [tVector, Solution] = Rho_Runge_Kutta(Rho, Hamiltonian)
+function [Solution] = Rho_Runge_Kutta(Rho, Hamiltonian)
     
     % Solves the schrödinger equation with the Runge Kutta method for a
     % specified Hamiltonian and startvalues Rho.
@@ -36,17 +36,10 @@ function [tVector, Solution] = Rho_Runge_Kutta(Rho, Hamiltonian)
     tVector = Hamiltonian.TimeVector;
     
     % Find sizes
-    leng = length(tVector);
-    psiHeight = Hamiltonian.matrixSize;
-
-    
-
-    Y = zeros(psiHeight, psiHeight, leng);
+    leng = length(tVector);    
     
     for n = 1:leng
         Rho = rk_algorithm(tVector(n),Rho);
-        Y(:,:,n) = Rho;
     end
-    
-    Solution = Y;
+    Solution = Rho;
 end
