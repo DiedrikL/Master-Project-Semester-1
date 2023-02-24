@@ -5,7 +5,7 @@ omegaY = 1;
 % epsilon = 2.4210e+00;
 % omegaX = 3.1426e-16;
 % omegaY = 1.6971e+00;
-lambda = 1;
+Gamma = 1;
 
 parameters = [epsilon, omegaX, omegaY];
 PsiL = [1; 0; 0; 0];
@@ -13,10 +13,10 @@ PsiH = [1;0];
 time = TimeOptions(Tpulse = 4*pi, Tsize = 1e4);
 
 
-Lindbladian = Hamiltonians.LindbladOneConstant(Parameters = parameters, Lambda = lambda, Time = time);
+Lindbladian = Hamiltonians.LindbladOneConstant(Parameters = parameters, Gamma = Gamma, Time = time);
 
-[~, Lindblad] = SolveTDSEgeneral(PsiL, Lindbladian);
-LindbladSolution = reshape(Lindblad(:, end),2,2).';
+[Lindblad] = SolveTDSEgeneral(PsiL, Lindbladian);
+LindbladSolution = reshape(Lindblad(:),2,2).';
 
 % SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters, Time = Time);
 % [~, Simple] = SolveTDSEgeneral(PsiH, SimpleHam);
@@ -37,8 +37,8 @@ for n = 1:index
     for m = 1:index
         Rho = sparse(m, n, 1, index, index);
         RhoVector = reshape(Rho,[],1);
-        [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
-        lindbladSolution = reshape(solutionMatrix(:,end), index, index);
+        [solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
+        lindbladSolution = reshape(solutionMatrix(:), index, index);
         ChoiPart(m,n,:,:) = transpose(kron(lindbladSolution, Rho));
         
     end
