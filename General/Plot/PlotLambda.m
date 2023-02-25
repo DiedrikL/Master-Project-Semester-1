@@ -54,7 +54,7 @@ plot(gamma, referenceValue, 'r')
 gamma = transpose(gamma);
 
 % Data = [parameters lambda result, referenceValue]
-naem = 'LambdaPlot_';
+name = 'LambdaPlot_';
 % name = sprintf(formatSpec);
 nameFormat = regexprep(name, '[\s:]', '_');
 SaveToOutput(nameFormat)
