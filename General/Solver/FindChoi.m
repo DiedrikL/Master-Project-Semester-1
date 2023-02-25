@@ -1,5 +1,5 @@
 function Solution = FindChoi(Lindbladian)
-% Function that finds the effect on the hamiltonian
+% Function that finds the effect on the lindbladian
 %
 % H the hamiltonian function handle
 
@@ -17,15 +17,16 @@ index = RhoSize^2;
 % Start positions
 
 % Setup matrices
-Solution = zeros(RhoSize);
+Choi = zeros(index);
 
 % Getting the solution for the start positions
 for n = 1:index
     Rho0 = zeros(RhoSize);
     Rho0(n) = 1;
-    [Rho] = UseSolver(Rho0, Lindbladian);
-    Solution = Solution + Rho;
+    Rho = SolveForRho(Lindbladian, Rho0, RhoSize);
+    choiPart = kron(Rho, Rho0);
+    Choi = Choi + choiPart;
 end
 
 % Scaling the answer
-Solution = Solution/double(index);
+Solution = Choi/double(index);
