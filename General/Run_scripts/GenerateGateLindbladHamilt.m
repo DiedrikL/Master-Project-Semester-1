@@ -21,7 +21,7 @@ Lindbladian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma, T
 % Solving the lindbladian for one posibility
 Rho = sparse(1, 1, 1, 2, 2);
 RhoVector = reshape(Rho,[],1);
-[~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
+solutionMatrix = UseSolver(RhoVector, Lindbladian);
 lindbladSolution = reshape(solutionMatrix(:,end), 2, 2);
 lindbladSolution = transpose(lindbladSolution)
 
@@ -30,7 +30,6 @@ SaveMatrixToOutput(lindbladSolution, LName)
 % Finding the unitary for the hamiltonian
 Hamiltonian = Hamiltonians.SimpleHamiltonian(Parameters = parameters, Time = Time);
 hamiltSolution = FindU(Hamiltonian)
-% [~, hSolution] = SolveTDSEgeneral([1;0], Hamiltonian);
-% hamiltSolution = hSolution(:,end)
+
 SaveMatrixToOutput(hamiltSolution, HName)
 

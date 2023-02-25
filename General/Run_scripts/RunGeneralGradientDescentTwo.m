@@ -17,7 +17,7 @@ epsilon = 0.9994;
 omegaX = 0.9994;
 omegaY = 0.9994;
 u = 0.9994;
-gamma = 1e-1;
+gamma = 2e-1;
                
 % Beta = 0.1;
 learning = 1e-3;
@@ -57,7 +57,7 @@ HGate = Gates.GateOfOneTwoParticles;
 Hamilt.Parameters = para;
 % psi0 = HGate.Psi0(:,1);
 
-% [Psi1] = SolveTDSEgeneral(psi0, Hamilt);
+% [Psi1] = UseSolver(psi0, Hamilt);
 
 % a = abs(Psi1(1,:)).^2;
 % b = abs(Psi1(2,:)).^2;

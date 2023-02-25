@@ -11,7 +11,7 @@ function U = SolveForStartValue(Hamiltonian, Psi0)
 
     % Getting the solution for the start positions
     for n = 1:index
-        [Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
+        [Psi] = UseSolver(Psi0(:,n), Hamiltonian);
         U(:,n) = Psi;
     end
 end

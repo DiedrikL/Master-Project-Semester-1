@@ -1,4 +1,4 @@
-function [Solution] = SolveTDSEgeneral(psi, Hamiltonian)
+function [Solution] = UseSolver(psi, Hamiltonian)
     arguments
         psi double
         Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface

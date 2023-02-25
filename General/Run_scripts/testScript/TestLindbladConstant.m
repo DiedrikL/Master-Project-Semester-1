@@ -15,7 +15,7 @@ time = TimeOptions(Tpulse = 4*pi, Tsize = 1e4);
 
 Lindbladian = Hamiltonians.LindbladOneConstant(Parameters = parameters, Gamma = Gamma, Time = time);
 
-[Lindblad] = SolveTDSEgeneral(PsiL, Lindbladian);
+[Lindblad] = UseSolver(PsiL, Lindbladian);
 LindbladSolution = reshape(Lindblad(:),2,2).';
 
 % SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters, Time = Time);
@@ -37,7 +37,7 @@ for n = 1:index
     for m = 1:index
         Rho = sparse(m, n, 1, index, index);
         RhoVector = reshape(Rho,[],1);
-        [solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
+        [solutionMatrix] = UseSolver(RhoVector, Lindbladian);
         lindbladSolution = reshape(solutionMatrix(:), index, index);
         ChoiPart(m,n,:,:) = transpose(kron(lindbladSolution, Rho));
         

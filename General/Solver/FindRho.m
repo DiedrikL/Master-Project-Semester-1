@@ -23,7 +23,7 @@ Solution = zeros(RhoSize);
 for n = 1:index
     Rho0 = zeros(RhoSize);
     Rho0(n) = 1;
-    [Rho] = SolveTDSEgeneral(Rho0, Lindbladian);
+    [Rho] = UseSolver(Rho0, Lindbladian);
     Solution = Solution + Rho;
 end
 
