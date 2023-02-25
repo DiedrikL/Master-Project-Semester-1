@@ -7,10 +7,11 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
         Gate Gates.GateInterface
     end
     
+    % Extract gate
+    targetGate = Gate.gate;
     
     % Get matrix size from gate
-    Psi0 = Gate.Psi0;
-    index = size(Psi0, 2);
+    index = size(targetGate, 2);
 
     % Setup values 
 %     exponent = size(factor(psiSize),2);
@@ -18,20 +19,35 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
     matrixSize = index^2;
     scale = 1/index;
 
-    % Extract gate
-    targetGate = Gate.gate;
 
     % initialize matrix
     ChoiPart = zeros(index, index, matrixSize, matrixSize);
     targetPart = zeros(index, index, matrixSize, matrixSize);
     
+    % Solve for all rho values
     for n = 1:index
         for m = 1:index
-            Rho = sparse(m, n, 1, index, index);
-            lindbladSolution = SolveForRho(Lindbladian, Rho, index);
-            ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho);
-            
-            targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
+            if(n>m)
+                % Use the fact the parts are symmetrical around the
+                % diagonal to reduce runtime with the upper triangular to
+                % fill in the lower triangular
+                Rho = sparse(m, n, 1, index, index);
+                lindbladSolution = SolveFunk.SolveForRho(Lindbladian, Rho, index);
+                part = kron(lindbladSolution, Rho);
+                ChoiPart(m,n,:,:) = part;
+                ChoiPart(n,m,:,:) = ctranspose(part);
+                
+                tPart = kron(targetGate*Rho*targetGate', Rho);
+                targetPart(m,n,:,:) = tPart;
+                targetPart(n,m,:,:) = ctranspose(tPart);
+            elseif(n==m)
+                % Adding the diagonal parts
+                Rho = sparse(m, n, 1, index, index);
+                lindbladSolution = SolveFunk.SolveForRho(Lindbladian, Rho, index);
+                ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho);
+                
+                targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
+            end
         end
     end
         
