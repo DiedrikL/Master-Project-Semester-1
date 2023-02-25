@@ -26,9 +26,6 @@ Difference = abs(Ltest(1) - abs(Htest(1))^2)
 H = Htest*Htest';
 normDiff = norm(H-Ltest)
 
-% value = FindRho(Lindb);
-
-% hValue = FindU(Hamilt);
 
 return
 
