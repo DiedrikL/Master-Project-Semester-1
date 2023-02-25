@@ -30,5 +30,4 @@ ChoiTwo = MeasureDiffGeneral(LindbladianTwo, Gate=Gate)
 SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
 Avg = MeasureDiffGeneral(SimpleHam, Gate = Gate)
 
-% FindU(Lindbladian)
 FindU(SimpleHam)
