@@ -59,7 +59,7 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
 %             B3 = @(t) -epsilon;
 % 
 %             % Creating the hamiltonian
-%             H = Hamiltonians.HamiltonianInterface.pauliRotations(B1,B2,B3); 
+%             H = this.pauliRotations(B1,B2,B3);
             H = @(t)  [-epsilon/2                 omega*sin(t*gamma);...
                    conj(omega)*sin(t*gamma)   epsilon/2];
 
