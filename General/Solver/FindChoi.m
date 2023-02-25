@@ -23,10 +23,10 @@ Choi = zeros(index);
 for n = 1:index
     Rho0 = zeros(RhoSize);
     Rho0(n) = 1;
-    Rho = SolveForRho(Lindbladian, Rho0, RhoSize);
+    Rho = SolveFunk.SolveForRho(Lindbladian, Rho0, RhoSize);
     choiPart = kron(Rho, Rho0);
     Choi = Choi + choiPart;
 end
 
 % Scaling the answer
-Solution = Choi/double(index);
+Solution = Choi/double(RhoSize);
