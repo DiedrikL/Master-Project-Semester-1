@@ -26,8 +26,6 @@ psiHeight = size(Psi,1);
 I = eye(psiHeight);
 Phi = @(t,y) (I + 1i*dt/2*H(t+dt))^(-1) * (I - 1i*dt/2*H(t))*y;
 
-Y = zeros(psiHeight, leng);
-
 for n = 1:leng
     Psi = Phi(tVector(n),Psi);
 end
