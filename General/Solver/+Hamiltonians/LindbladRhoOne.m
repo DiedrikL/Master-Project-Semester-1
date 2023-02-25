@@ -23,7 +23,7 @@ classdef LindbladRhoOne < Hamiltonians.Interfaces.LindbladInterface
                 options.Gamma double {mustBeReal} = 0;
                 options.Parameters(1,3) double {mustBeReal} = ones(1,3);
                 options.Measure = Measure.ChoiFidelity;
-                options.Solver = HamiltSettings.Solvers.Crank_Nicolson;
+                options.Solver = HamiltSettings.Solvers.Runge_Kutta_Rho;
             end
             this.Time = options.Time;
             this.Gamma = options.Gamma;
@@ -44,7 +44,7 @@ classdef LindbladRhoOne < Hamiltonians.Interfaces.LindbladInterface
 
             % Input validation
             arguments
-                this Hamiltonians.LindbladOne
+                this Hamiltonians.Interfaces.LindbladInterface
             end
             
             epsilon = this.Parameters(1,1);
@@ -61,12 +61,13 @@ classdef LindbladRhoOne < Hamiltonians.Interfaces.LindbladInterface
 
 
             % Creating hamiltonian
-            H = @(t) [-epsilon/2 Omega; conj(Omega) epsilon/2]
-            a = [1; 0]*[0 1]
+            H = @(t) [-epsilon/2 Omega(t); conj(Omega(t)) epsilon/2];
+            a = [1; 0]*[0 1];
             A = a'*a;
 
             % creatin components of the Lindbladian
-            lindblad = @(t,rho) H(t)*rho - rho*H(t) - 1i*gamma*(A*rho + rho*A -2.*a*rho*a');
+            lindblad = @(t,rho) -1i*(H(t)*rho - rho*H(t))...
+                -Gamma*(A*rho + rho*A -2.*a*rho*a');
         end
 
 
