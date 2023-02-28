@@ -1,6 +1,6 @@
 function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 % Compares the difference of a Lindbladian with a given gate using a Choi
-% matrix
+% matrix and returns the fidelity
 
     arguments
         Lindbladian Hamiltonians.Interfaces.HamiltonianInterface
@@ -14,8 +14,6 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
     index = size(targetGate, 2);
 
     % Setup values 
-%     exponent = size(factor(psiSize),2);
-%     index = 2^exponent;
     matrixSize = index^2;
     scale = 1/index;
 
@@ -29,8 +27,8 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
         for m = 1:index
             if(n>m)
                 % Use the fact the parts are symmetrical around the
-                % diagonal to reduce runtime with the upper triangular to
-                % fill in the lower triangular
+                % diagonal to reduce runtime with the upper triangular
+                % matrix to fill in the lower triangular
                 Rho = sparse(m, n, 1, index, index);
                 lindbladSolution = SolveFunk.SolveForRho(Lindbladian, Rho, index);
                 part = kron(lindbladSolution, Rho);
@@ -41,7 +39,7 @@ function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
                 targetPart(m,n,:,:) = tPart;
                 targetPart(n,m,:,:) = ctranspose(tPart);
             elseif(n==m)
-                % Adding the diagonal parts
+                % Adding the diagonal parts directly
                 Rho = sparse(m, n, 1, index, index);
                 lindbladSolution = SolveFunk.SolveForRho(Lindbladian, Rho, index);
                 ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho);
