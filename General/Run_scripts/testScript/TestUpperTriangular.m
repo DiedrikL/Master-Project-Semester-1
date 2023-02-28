@@ -1,4 +1,6 @@
-% 
+% Test script to see time difference when using an upper triangular matrix
+% and symmetri to reduce computations needed.
+
 epsilon = 5;
 omegaX = 4;
 omegaY = 2;
