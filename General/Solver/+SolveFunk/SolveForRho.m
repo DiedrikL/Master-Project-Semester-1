@@ -1,6 +1,7 @@
 function U = SolveForRho(Hamiltonian, Rho, index)
 % Reshapes Rho for solver functions that cannot take rho as matrix before
-% usinging the solver function
+% usinging the solver function. Rho is unchanged for solvers that uses rho
+% directly.
     arguments
         Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
         Rho double
@@ -11,7 +12,7 @@ function U = SolveForRho(Hamiltonian, Rho, index)
     
     switch solver
         case HamiltSettings.Solvers.Runge_Kutta_Rho
-            % Straightforward solver that uses rho
+            % Straightforward solver that uses rho as matrix
 
             U = solver.solver(Rho, Hamiltonian);
         
