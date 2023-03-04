@@ -1,12 +1,10 @@
-classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
+classdef TwoParticlesHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-        Time TimeOptions
         Gamma double
-        Parameters
     end
     
-    properties(Dependent)
-        Period
+    properties(Constant)
+        matrixSize = 4;
     end
 
     
@@ -79,25 +77,7 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
         end
          
 
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.TwoParticlesHamiltonian
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.TwoParticlesHamiltonian
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
+
         
         function this = set.Gamma(this, Gamma)
             % Set the gamma used by this hamiltonian
@@ -108,15 +88,18 @@ classdef TwoParticlesHamiltonian < Hamiltonians.HamiltonianInterface
             
             this.Gamma = Gamma;
         end
+    end
+
+    methods(Access=protected)
         
-        function this = set.Parameters(this, para)
+        function valid = parameterValidate(this, para)
             
             arguments
                 this Hamiltonians.TwoParticlesHamiltonian
                 para(1,4) double {mustBeReal}
             end
             
-            this.Parameters = para;
+            valid = para;
         end
     end
 end

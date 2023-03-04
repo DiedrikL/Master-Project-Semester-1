@@ -8,38 +8,25 @@ function Diff = MeasureDiffGeneral(Hamiltonian, options)
     % default Hadamard
     
     arguments
-        Hamiltonian Hamiltonians.HamiltonianInterface
+        Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
         options.Gate Gates.GateInterface = Gates.Hadamard;
     end
     
     Gate = options.Gate;
     
     
-    % Compare distance for a gate U with a given gate
+    % Compare infidelity for a gate U with a given gate
     
-    % Start positions
-    Psi0 = options.Gate.Psi0;
-    
-    % Setup target and measure
-    targetGate = Gate.gate;
-    
+    % get measure
     measure = Hamiltonian.Measure;
     
     % Use selected measure
     switch measure
         case Measure.NormDistance
-            U = SolveForStartValue(Hamiltonian, Psi0);
-            % Measure distance with norm
-            U = Gate.rotation(U);
-            % Measuring distance
-            Diff = norm(U-targetGate);
-    
+            Diff = NormDistance(Hamiltonian, Gate);
     
         case Measure.AvgFidelity
-            U = SolveForStartValue(Hamiltonian, Psi0);
-            % Measure with average gate fidelity
-            index = size(Psi0, 2);
-            Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);
+            Diff = AverageGateFidelity(Hamiltonian, Gate);
     
         case Measure.ChoiFidelity
             Diff = 1-ChoiMatrixMeasure(Hamiltonian, Gate);

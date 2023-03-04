@@ -8,7 +8,7 @@ classdef GateOfOneTwoParticles < Gates.GateInterface
             end
 
             phi = angle(U(1,1));
-            theta = angle(Gates.OnesGate.gate(1,1));
+            theta = angle(Gates.GateOfOneTwoParticles.gate(1,1));
             rotate = exp(-1i*phi+1i*theta)*U;
         end
     end

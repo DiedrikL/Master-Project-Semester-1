@@ -1,40 +1,51 @@
 function Diff = ChoiMatrixMeasure(Lindbladian, Gate)
 % Compares the difference of a Lindbladian with a given gate using a Choi
-% matrix
+% matrix and returns the fidelity
 
     arguments
-        Lindbladian Hamiltonians.HamiltonianInterface
+        Lindbladian Hamiltonians.Interfaces.HamiltonianInterface
         Gate Gates.GateInterface
     end
     
+    % Extract gate
+    targetGate = Gate.gate;
     
     % Get matrix size from gate
-    Psi0 = Gate.Psi0;
-    psiSize = size(Psi0, 2);
+    index = size(targetGate, 2);
 
     % Setup values 
-    exponent = size(factor(psiSize),2);
-    index = 2^exponent;
     matrixSize = index^2;
     scale = 1/index;
 
-    % Extract gate
-    targetGate = Gate.gate;
 
     % initialize matrix
     ChoiPart = zeros(index, index, matrixSize, matrixSize);
     targetPart = zeros(index, index, matrixSize, matrixSize);
     
+    % Solve for all rho values
     for n = 1:index
         for m = 1:index
-            Rho = sparse(m, n, 1, index, index);
-            RhoVector = reshape(Rho,[],1);
-            [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
-            lindbladSolution = reshape(solutionMatrix(:,end), index, index);
-            ChoiPart(m,n,:,:) = transpose(kron(lindbladSolution, Rho));
-            
-            targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
-    
+            if(n>m)
+                % Use the fact the parts are symmetrical around the
+                % diagonal to reduce runtime with the upper triangular
+                % matrix to fill in the lower triangular
+                Rho = sparse(m, n, 1, index, index);
+                lindbladSolution = SolveFunk.SolveForRho(Lindbladian, Rho, index);
+                part = kron(lindbladSolution, Rho);
+                ChoiPart(m,n,:,:) = part;
+                ChoiPart(n,m,:,:) = ctranspose(part);
+                
+                tPart = kron(targetGate*Rho*targetGate', Rho);
+                targetPart(m,n,:,:) = tPart;
+                targetPart(n,m,:,:) = ctranspose(tPart);
+            elseif(n==m)
+                % Adding the diagonal parts directly
+                Rho = sparse(m, n, 1, index, index);
+                lindbladSolution = SolveFunk.SolveForRho(Lindbladian, Rho, index);
+                ChoiPart(m,n,:,:) = kron(lindbladSolution, Rho);
+                
+                targetPart(m,n,:,:) = kron(targetGate*Rho*targetGate', Rho);
+            end
         end
     end
         

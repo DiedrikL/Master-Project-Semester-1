@@ -1,4 +1,4 @@
-classdef LindbladOne < Hamiltonians.Interfaces.LindbladInterface
+classdef LindbladOneConstant < Hamiltonians.Interfaces.LindbladInterface
     properties(Constant)
         matrixSize = 4;
         rhoSize = 2;
@@ -6,13 +6,13 @@ classdef LindbladOne < Hamiltonians.Interfaces.LindbladInterface
 
     
     methods
-        function this = LindbladOne(options)
+        function this = LindbladOneConstant(options)
             % A matrix derived from the lindblad equation
-            % Takes the optional name value parameters Rho, Time and Gamma
+            % Takes the optional name value parameters Time and Lambda
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is an optional parameter with default value of 0. It
+            % Lambda is an optional parameter with default value of 0. It
             % scales how large the effect reducing the state of the system
             % towards basis state [1;0], it is the interference experienced
             % by the system.
@@ -44,32 +44,30 @@ classdef LindbladOne < Hamiltonians.Interfaces.LindbladInterface
 
             % Input validation
             arguments
-                this Hamiltonians.LindbladOne
+                this Hamiltonians.LindbladOneConstant
             end
             
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
-            Gamma = this.Gamma;
-%             rho = sparse(2,2);
-%             rho(this.Rho) = 1;
+            gamma = this.Gamma;
 
             % Setup parameters
-            B1 = @(t) omegaX*sin(t);
-            B2 = @(t) 1i*omegaY*sin(t);
-            Omega = @(t) B1(t)+B2(t);
+            B1 = omegaX;
+            B2 = 1i*omegaY;
+            Omega = B1+B2;
 
 
             % Create the lindblad matrix
             lindblad = @(t) ...
-                    [0      conj(-Omega(t))         Omega(t)    2i*Gamma;...
-                    -Omega(t)   -epsilon-1i*Gamma   0       Omega(t);...
-                    conj(Omega(t))   0     epsilon-1i*Gamma  -conj(Omega(t));...
-                    0       conj(Omega(t))          -Omega(t)   -2i*Gamma];
+                    [0      conj(-Omega)         Omega    2i*gamma;...
+                    -Omega   -epsilon-1i*gamma   0       Omega;...
+                    conj(Omega)   0     epsilon-1i*gamma  -conj(Omega);...
+                    0       conj(Omega)          -Omega   -2i*gamma];
 
 
         end
-
+         
 
     end
 end

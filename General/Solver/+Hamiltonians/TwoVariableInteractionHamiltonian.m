@@ -1,15 +1,13 @@
-classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
+classdef TwoVariableInteractionHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-        Time TimeOptions
-        Parameters
         Epsilon
         OmegaX
         OmegaY
         U
     end
     
-    properties(Dependent)
-        Period
+    properties(Constant)
+        matrixSize = 4;
     end
 
     
@@ -44,8 +42,9 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             % Creates a Hamiltonian with the parameters provided and the
             % values stored in this instance of the class
             % parameters must be in the form of a (1,2) double vector, with
-            % real numbers. It the two parameters being changed
-            % interaction u.
+            % real numbers. Two parameters are set by the vector the rest
+            % are static.
+            % u is the interaction.
             %
 
 
@@ -53,6 +52,10 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             arguments
                 this Hamiltonians.TwoVariableInteractionHamiltonian
             end
+
+%             para1 = this.Parameters(1);
+%             para2 = this.Parameters(2);
+            this = this.updatePara;
             
             epsilon = this.Epsilon;
             omegaX = this.OmegaX;
@@ -85,38 +88,21 @@ classdef TwoVariableInteractionHamiltonian < Hamiltonians.HamiltonianInterface
             Sigma = u.*kron(PauliX, PauliX) + u.*kron(PauliY, PauliY) ...
                 + u.*kron(PauliZ, PauliZ);
         end
+    end
          
 
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.TwoVariableInteractionHamiltonian
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
-        
-
-        
-        function this = set.Parameters(this, para)
+    methods(Access=protected)
+        function valid = parameterValidate(this, para)
             
             arguments
                 this Hamiltonians.TwoVariableInteractionHamiltonian
                 para(1,2) double {mustBeReal}
             end
             
-            this.Parameters = para;
+            valid = para;
+        end
+
+        function this = updatePara(this)
             this.Epsilon = this.Parameters(1);
             this.OmegaX = this.Parameters(2);
         end

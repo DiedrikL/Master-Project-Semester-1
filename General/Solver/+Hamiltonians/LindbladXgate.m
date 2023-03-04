@@ -1,15 +1,8 @@
-classdef LindbladXgate < Hamiltonians.HamiltonianInterface
-    properties
-        Time TimeOptions
-        Gamma double {mustBeNonnegative}
-        Parameters
-%         Rho (1,1) {mustBeInteger, mustBeInRange(Rho, 1,4)} = 1;
+classdef LindbladXgate < Hamiltonians.Interfaces.LindbladInterface
+    properties(Constant)
+        matrixSize = 4;
     end
     
-    properties(Dependent)
-        Period
-    end
-
     
     methods
         function this = LindbladXgate(options)
@@ -74,46 +67,5 @@ classdef LindbladXgate < Hamiltonians.HamiltonianInterface
 
         end
          
-
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.LindbladXgate
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.LindbladXgate
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
-        
-        function this = set.Gamma(this, Gamma)
-            % Set the gamma used by this hamiltonian
-            arguments
-                this Hamiltonians.LindbladXgate
-                Gamma(1,1) double {mustBeReal}
-            end 
-            
-            this.Gamma = Gamma;
-        end
-        
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.LindbladXgate
-                para(1,3) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-        end
-
     end
 end

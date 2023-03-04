@@ -1,19 +1,18 @@
 function U = SolveForStartValue(Hamiltonian, Psi0)
     arguments
-        Hamiltonian Hamiltonians.HamiltonianInterface
+        Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
         Psi0 double
     end
 
     % Setup matrices
+    Hsize = Hamiltonian.matrixSize;
     index = size(Psi0, 2);
-    U = zeros(index);
+    U = zeros(Hsize,index);
 
     % Getting the solution for the start positions
     for n = 1:index
-        [~, Psi] = SolveTDSEgeneral(Psi0(:,n), Hamiltonian);
-        for m = 1:index
-            U(m,n) = Psi(m, end);
-        end
+        [Psi] = UseSolver(Psi0(:,n), Hamiltonian);
+        U(:,n) = Psi;
     end
 end
     
