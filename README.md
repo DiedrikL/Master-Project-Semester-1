@@ -1,3 +1,3 @@
-# Master-Project-Semester-1
+# Master-Project
 
-Code used in the first semester of the master project Constructing gates using optimization techniques
+Code used in the master project Constructing gates using optimization techniques

@@ -21,7 +21,7 @@ function [para, distance] = GradientDescent(Hamiltonian, Gate, options)
 
 % Input validation and default values
 arguments
-   Hamiltonian Hamiltonians.HamiltonianInterface
+   Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
    Gate Gates.GateInterface
 
    options.learning double = 1e-3;
@@ -62,10 +62,8 @@ for iter = 1:maxIt
     U_bias = V./(1-Beta2^iter);
 
 
-    
-    for n = 1:leng
-       para(n) = para(n) - learning*M_bias(n)/(sqrt(U_bias(n))+epsilon);
-    end
+    para = para - learning.*M_bias./(sqrt(U_bias)+epsilon);
+
     
     Hamiltonian.Parameters = para;
     

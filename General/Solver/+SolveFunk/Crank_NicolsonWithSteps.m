@@ -1,4 +1,4 @@
-function [tVector, Solution] = SolveTDSEgeneral(Psi, Hamiltonian)
+function [Solution] = Crank_NicolsonWithSteps(Psi, Hamiltonian)
 
 % Solves the schrödinger equation with Crank Nicolson for a specified
 % Hamiltonian and startvalues Psi.
@@ -7,17 +7,15 @@ function [tVector, Solution] = SolveTDSEgeneral(Psi, Hamiltonian)
 % Input validation
 arguments
     Psi (:,1) double
-    Hamiltonian Hamiltonians.HamiltonianInterface;
+    Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface;
 end
 
 % Get parameterized hamiltonian 
 H = Hamiltonian.createHamiltonian;
 
-
 % Set timelength
 dt = Hamiltonian.TimeStep;
 tVector = Hamiltonian.TimeVector;
-%tVector(end) = [];
 
 % Find sizes
 leng = length(tVector);

@@ -1,41 +1,29 @@
 
 % Setup time
-Time = TimeOptions;
+Time = TimeOptions(Tsize = 500);
 
 % Setup parameters
-steps = 15;
-N = 2*steps;
+N = 40;
+startpoint = -5;
+endpoint = -1;
 learning = 1e-3;
 measure = Measure.ChoiFidelity;
 
-% Measure treshold
-treshold = 1e-1;
+paraUsed = 4;
+maxIter = 500;
 
-epsilon = 1;
-omegaX = 1;
-omegaY = 1;
-% epsilon = 2.4210e+00;
-% omegaX = 3.1426e-16;
-% omegaY = -1.6971e+00;
-tresh1 = 1e-2;
-tresh2 = 1e-1;
-tresh3 = 1e0;
 
-lambda1 = linspace(0, tresh1, steps);
-lambda2 = linspace(tresh1, tresh2, steps);
-lambda3 = linspace(tresh2, tresh3, steps);
-lambda = [lambda1, lambda2];
+gamma = logspace(startpoint, endpoint, N);
 
-startvalue = [epsilon, omegaX, omegaY];
+startvalue = ones(paraUsed,1);
 
 % Gate to optimize over
-% HGate = Gates.TestGateOne;
-HGate = Gates.GateOfOne;
+HGate = Gates.GateOfOneTwoParticles;
 HGate.gate
 
 
 % create result matrices
-parameters = zeros(N,3);
+parameters = zeros(N,paraUsed);
 result = ones(N, 1);
 referenceValue = ones(N,1);
 
@@ -46,29 +34,28 @@ q = parallel.pool.DataQueue;
 afterEach(q, @(value)bar.updateBarValue(value));
 
 parfor n=1:N
-    Hamilt = Hamiltonians.LindbladOne(Time=Time, Parameters = startvalue, Lambda = lambda(n));
+    Hamilt = Hamiltonians.LindbladRhoTwo(Time=Time, Parameters = startvalue, Gamma = gamma(n));
     Hamilt.Measure = measure;
     referenceValue(n) = MeasureDiffGeneral(Hamilt, Gate = HGate);
     [parameters(n,:), result(n)] = GradientDescent.GradientDescent(...
     Hamilt, ...
     HGate, ...
-    learning=learning)   
-
+    learning=learning, ...
+    maxIter=maxIter)   
     
     send(q, result(n));
 end
 
 % plot result
-plot(lambda, result)
+plot(gamma, result)
 hold on
-plot(lambda, referenceValue, 'r')
+plot(gamma, referenceValue, 'r')
 
-lambda = transpose(lambda);
+gamma = transpose(gamma);
 
-Data = [parameters lambda result]
-d = string(datetime('now'));
-formatSpec = 'LambdaPlot_%s';
-name = sprintf(formatSpec, d);
+% Data = [parameters lambda result, referenceValue]
+name = 'LambdaPlot_';
+% name = sprintf(formatSpec);
 nameFormat = regexprep(name, '[\s:]', '_');
-SaveMatrixToOutput(Data, nameFormat)
+SaveToOutput(nameFormat)
 

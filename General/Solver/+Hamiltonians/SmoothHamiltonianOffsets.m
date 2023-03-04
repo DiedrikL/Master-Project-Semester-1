@@ -1,12 +1,10 @@
-classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
+classdef SmoothHamiltonianOffsets < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-       Time TimeOptions
-       Parameters
        Scale(1,1) double {mustBeReal}
     end
     
-    properties(Dependent)
-       Period
+    properties(Constant)
+       matrixSize = 2;
     end
     
     
@@ -85,17 +83,8 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
         
         end
         
-        
-        
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.SmoothHamiltonianOffsets
-            end
-            
-            offset = this.minOffset + this.maxOffset;
-                        
-            Period =  2*this.Time.Tpulse + offset;
-        end
+
+
         
         function offset = minOffset(this)
             arguments
@@ -125,29 +114,7 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
             end        
         end
         
-        
-        % Custom set functions with validation
-        function this = set.Parameters(this, para)
-            
-            arguments
-                this Hamiltonians.SmoothHamiltonianOffsets
-                para(1,6) double {mustBeReal}
-            end
-            
-            this.Parameters = para;
-        end
-        
-        
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.SmoothHamiltonianOffsets
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-            
-        end
+
         
         function this = set.Scale(this, Scale)
             % Set the Scale used by this hamiltonian
@@ -158,5 +125,29 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.HamiltonianInterface
             
             this.Scale = Scale;
         end
+    end
+
+    methods(Access=protected)
+        % Custom function to get the period
+        function Period = periodGet(this)
+            arguments
+                this Hamiltonians.SmoothHamiltonianOffsets
+            end
+            
+            offset = this.minOffset + this.maxOffset;
+                        
+            Period =  2*this.Time.Tpulse + offset;
+        end
+
+
+        % Custom validation for parameters
+        function valid = parameterValidate(this, para)
+            
+            arguments
+                this Hamiltonians.SmoothHamiltonianOffsets
+                para(1,6) double {mustBeReal}
+            end
+            valid = para;
+        end    
     end
 end

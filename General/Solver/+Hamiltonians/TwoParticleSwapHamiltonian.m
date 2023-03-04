@@ -1,12 +1,10 @@
-classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
+classdef TwoParticleSwapHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-        Time TimeOptions
         Gamma double
-        Parameters
     end
     
-    properties(Dependent)
-        Period
+    properties(Constant)
+        matrixSize = 4;
     end
 
     
@@ -58,38 +56,19 @@ classdef TwoParticleSwapHamiltonian < Hamiltonians.HamiltonianInterface
                 + u.*kron(PauliZ, PauliZ);
 
         end
+    end
 
-
-        % Get function for dependent variable
-        function Period = get.Period(this)
-            arguments
-                this Hamiltonians.TwoParticleSwapHamiltonian
-            end
-            
-            Period = this.Time.Tpulse;
-        end
-        
-        % Custom set functions with validation
-        function this = set.Time(this, Time)
-            % Set the TimeOptions used by this hamiltonian
-            arguments
-                this Hamiltonians.TwoParticleSwapHamiltonian
-                Time TimeOptions
-            end
-            
-            this.Time = Time;
-        end
-        
+    methods(Access = protected)
 
         
-        function this = set.Parameters(this, para)
+        function valid = parameterValidate(this, para)
             
             arguments
                 this Hamiltonians.TwoParticleSwapHamiltonian
                 para(1,1) double {mustBeReal}
             end
             
-            this.Parameters = para;
+            valid = para;
         end
     end
 end

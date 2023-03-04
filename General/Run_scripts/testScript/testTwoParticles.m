@@ -3,7 +3,7 @@
 % Parametre and start value
 
 
-gate = Gates.OnesGate;
+gate = Gates.GateOfOneTwoParticles;
 
 epsilon = 0;
 omegaX = 0;
@@ -13,6 +13,7 @@ u = -0.5;
 parameters = [epsilon, omegaX, omegaY, u];
 
 H1 = Hamiltonians.TwoParticleInteractionHamiltonian(Parameters = parameters);
-
+H1.Measure = Measure.NormDistance;
+NormMeasure = MeasureDiffGeneral(H1, Gate=gate)
+H1.Measure = Measure.AvgFidelity;
 Diff = MeasureDiffGeneral(H1, Gate=gate)
-AvgGF = AverageGateFidelity(H1, Gate = gate)

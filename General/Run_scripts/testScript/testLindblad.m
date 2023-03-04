@@ -16,11 +16,11 @@ Time = TimeOptions(Tpulse = pi/4);
 Lindbladian = Hamiltonians.LindbladOne(Parameters = parameters, Gamma = gamma, Time = Time);
 % Gate = Gates.Hadamard;
 Gate = Gates.TestGateOne;   
-[~, Lindblad] = SolveTDSEgeneral(PsiL, Lindbladian);
+[Lindblad] = UseSolver(PsiL, Lindbladian);
 LindbladSolution = reshape(Lindblad(:, end),2,2).';
 
 SimpleHam = Hamiltonians.SimpleHamiltonian(Parameters = parameters, Time = Time);
-[~, Simple] = SolveTDSEgeneral(PsiH, SimpleHam);
+[Simple] = UseSolver(PsiH, SimpleHam);
 S = Simple(:, end);
 Solution = S*S'
 
@@ -33,7 +33,8 @@ for n = 1:index
     for m = 1:index
         Rho = sparse(m, n, 1, index, index);
         RhoVector = reshape(Rho,[],1);
-        [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
-        lindbladSolution = reshape(solutionMatrix(:,end), index, index);
+        [solutionMatrix] = UseSolver(RhoVector, Lindbladian);
+        lindbladSolution = reshape(solutionMatrix, index, index);
     end
 end
+lindbladSolution

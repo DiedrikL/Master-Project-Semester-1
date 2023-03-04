@@ -56,7 +56,7 @@ lindbladResult = ones(N,1);
 %     step = Timesteps(n);
 %     Lindbladian.Time.Tsize = step;
 % 
-%     [~, solutionMatrix] = SolveTDSEgeneral(RhoVector, Lindbladian);
+%     [~, solutionMatrix] = UseSolver(RhoVector, Lindbladian);
 %     lindbladMatrix = reshape(solutionMatrix(:,end), 2, 2);
 %     lindbladMatrix = transpose(lindbladMatrix);
 %     lindbladMatrices(n,:,:) = lindbladMatrix;
