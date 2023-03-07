@@ -1,13 +1,14 @@
 
 % Setup time
-Time = TimeOptions(Tsize = 1000);
+Time = TimeOptions(Tsize = 2000);
 
 % Setup parameters
-N = 60;
+N = 40;
 startpoint = -5;
 endpoint = 0;
 learning = 1e-3;
 measure = Measure.ChoiFidelity;
+noise = HamiltSettings.TwoParticleNoises.Generated;
 
 paraUsed = 4;
 maxIter = 500;
@@ -34,7 +35,7 @@ q = parallel.pool.DataQueue;
 afterEach(q, @(value)bar.updateBarValue(value));
 
 parfor n=1:N
-    Hamilt = Hamiltonians.LindbladRhoTwo(Time=Time, Parameters = startvalue, Gamma = gamma(n));
+    Hamilt = Hamiltonians.LindbladRhoTwo(Time=Time, Parameters = startvalue, Gamma = gamma(n), Noise = noise);
     Hamilt.Measure = measure;
     referenceValue(n) = MeasureDiffGeneral(Hamilt, Gate = HGate);
     [parameters(n,:), result(n)] = GradientDescent.GradientDescent(...
