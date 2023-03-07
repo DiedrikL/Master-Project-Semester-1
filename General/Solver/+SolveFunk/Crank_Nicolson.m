@@ -1,5 +1,4 @@
 function [Solution] = Crank_Nicolson(Psi, Hamiltonian)
-
 % Solves the schrödinger equation with Crank Nicolson for a specified
 % Hamiltonian and startvalues Psi.
 

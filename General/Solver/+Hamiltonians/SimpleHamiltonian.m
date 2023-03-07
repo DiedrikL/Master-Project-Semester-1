@@ -1,6 +1,6 @@
 classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     properties
-        Gamma double {mustBeReal}
+        Phase double {mustBeReal}
     end
 
     properties(Constant)
@@ -29,7 +29,7 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             end
             
             this.Time = options.Time;
-            this.Gamma = options.Gamma;
+            this.Phase = options.Gamma;
             this.Parameters = options.Parameters;
         end
         
@@ -50,7 +50,7 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             epsilon = this.Parameters(1,1);
             omegaX = this.Parameters(1,2);
             omegaY = this.Parameters(1,3);
-            gamma = this.Gamma;
+            phase = this.Phase;
             omega = omegaX + 1i*omegaY;
 
 %             % Setup parameters
@@ -67,14 +67,14 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
          
 
         
-        function this = set.Gamma(this, Gamma)
+        function this = set.Phase(this, Phase)
             % Set the gamma used by this hamiltonian
             arguments
                 this Hamiltonians.SimpleHamiltonian
-                Gamma(1,1) double {mustBeReal}
+                Phase(1,1) double {mustBeReal}
             end 
             
-            this.Gamma = Gamma;
+            this.Phase = Phase;
         end
         
     end

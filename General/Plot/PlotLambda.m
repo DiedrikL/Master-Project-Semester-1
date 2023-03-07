@@ -1,11 +1,11 @@
 
 % Setup time
-Time = TimeOptions(Tsize = 500);
+Time = TimeOptions(Tsize = 1000);
 
 % Setup parameters
-N = 40;
+N = 60;
 startpoint = -5;
-endpoint = -1;
+endpoint = 0;
 learning = 1e-3;
 measure = Measure.ChoiFidelity;
 
@@ -57,5 +57,8 @@ gamma = transpose(gamma);
 name = 'LambdaPlot_';
 % name = sprintf(formatSpec);
 nameFormat = regexprep(name, '[\s:]', '_');
-SaveToOutput(nameFormat)
+data = [parameters, gamma, result, referenceValue];
+SaveMatrixToOutput(data, name)
+% SaveToOutput(nameFormat)
+% Save(nameFormat)
 
