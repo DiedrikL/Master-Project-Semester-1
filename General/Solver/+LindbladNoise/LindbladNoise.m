@@ -1,6 +1,6 @@
 classdef LindbladNoise
-    % Class with methods to construct two particle noise for a noise given
-    % during construction
+    % Class with methods to construct a two particle noise for a noise
+    % source specified during construction
     properties(SetAccess = immutable)
         L (4,4,4) double
         D (4,4) double
@@ -10,8 +10,8 @@ classdef LindbladNoise
 
     methods(Access = public)
         function this = LindbladNoise(NoiseType)
-            % Constructor that takes the noise before doing partial
-            % calculations on the noise
+            % Constructor that takes the noise from the noise class and
+            % saves the calculated output
             arguments
                 NoiseType LindbladNoise.TwoParticleNoiseInterface
             end
