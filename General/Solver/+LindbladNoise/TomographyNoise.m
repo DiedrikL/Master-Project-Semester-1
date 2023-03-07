@@ -1,4 +1,4 @@
-classdef Noise
+classdef TomographyNoise < LindbladNoise.TwoParticleNoiseInterface
     % Class for noise levels from Lindblad Tomography of a Superconducting Quantum Processor
     properties(Constant)
         L1 = [ 0.501+0.001i 0.000+0.001i -0.0002+0.002i -0.002+0.000i;
@@ -25,50 +25,24 @@ classdef Noise
 
     methods(Static)
         function L = getL
-            import HamiltSettings.Noise.*
-            L = cat(3, gamma1*L1, gamma2*L2, gamma3*L3, gamma4*L4);
-%             L = cat(3, HamiltSettings.Noise.gamma1*HamiltSettings.Noise.L1,...
-%                 HamiltSettings.Noise.gamma2*HamiltSettings.Noise.L2,...
-%                 HamiltSettings.Noise.gamma3*HamiltSettings.Noise.L3,... 
-%                 HamiltSettings.Noise.gamma4*HamiltSettings.Noise.L4);
+            L = cat(3, LindbladNoise.TomographyNoise.L1,...
+                LindbladNoise.TomographyNoise.L2,...
+                LindbladNoise.TomographyNoise.L3,... 
+                LindbladNoise.TomographyNoise.L4);
         end
 
         function D = getD
-            D = HamiltSettings.Noise.gamma1*HamiltSettings.Noise.L1'*HamiltSettings.Noise.L1 +...
-                HamiltSettings.Noise.gamma2*HamiltSettings.Noise.L2'*HamiltSettings.Noise.L2 +...
-                HamiltSettings.Noise.gamma3*HamiltSettings.Noise.L3'*HamiltSettings.Noise.L3 +...
-                HamiltSettings.Noise.gamma4*HamiltSettings.Noise.L4'*HamiltSettings.Noise.L4;
-        end   
-
-        function L_n = getL_n(n)
-            switch n
-                case 1
-                    L_n = HamiltSettings.Noise.L1;
-                case 2
-                    L_n = HamiltSettings.Noise.L2;
-                case 3
-                    L_n = HamiltSettings.Noise.L3;
-                case 4
-                    L_n = HamiltSettings.Noise.L4;
-                otherwise
-                    error('No such noise')
-            end
+            D = LindbladNoise.TomographyNoise.gamma1*LindbladNoise.TomographyNoise.L1'*LindbladNoise.TomographyNoise.L1 +...
+                LindbladNoise.TomographyNoise.gamma2*LindbladNoise.TomographyNoise.L2'*LindbladNoise.TomographyNoise.L2 +...
+                LindbladNoise.TomographyNoise.gamma3*LindbladNoise.TomographyNoise.L3'*LindbladNoise.TomographyNoise.L3 +...
+                LindbladNoise.TomographyNoise.gamma4*LindbladNoise.TomographyNoise.L4'*LindbladNoise.TomographyNoise.L4;
         end
 
-        function gamma_n = getGamma_n(n)
-            import HamiltSettings.Noise
-            switch n
-                case 1
-                    gamma_n = HamiltSettings.Noise.gamma1;
-                case 2
-                    gamma_n = HamiltSettings.Noise.gamma2;
-                case 3
-                    gamma_n = HamiltSettings.Noise.gamma3;
-                case 4
-                    gamma_n = HamiltSettings.Noise.gamma4;
-                otherwise
-                    error('No such gamma')
-            end
+        function Gamma = getGamma
+            Gamma = [LindbladNoise.TomographyNoise.gamma1,...
+                LindbladNoise.TomographyNoise.gamma2,...
+                LindbladNoise.TomographyNoise.gamma3,...
+                LindbladNoise.TomographyNoise.gamma4];
         end
     end
 end
