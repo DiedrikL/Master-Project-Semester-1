@@ -1,20 +1,28 @@
 
 % Setup time
-Time = TimeOptions(Tsize = 2000);
+Time = TimeOptions(Tsize = 1500);
 
 % Setup parameters
-N = 40;
-startpoint = -5;
-endpoint = 0;
+N = 20;
+
+% Log distance
+% exponentStart = -5;
+% exponentEnd = 0;
+% gamma = logspace(exponentStart, exponentEnd, N);
+
+% Linear distance
+startPoint = 0;
+endPoint = 0.2;
+gamma = linspace(startPoint, endPoint, N);
+
 learning = 1e-3;
+
+% Hamiltonian settings
 measure = Measure.ChoiFidelity;
 noise = HamiltSettings.TwoParticleNoises.Generated;
 
 paraUsed = 4;
 maxIter = 500;
-
-
-gamma = logspace(startpoint, endpoint, N);
 
 startvalue = ones(paraUsed,1);
 
@@ -35,7 +43,11 @@ q = parallel.pool.DataQueue;
 afterEach(q, @(value)bar.updateBarValue(value));
 
 parfor n=1:N
-    Hamilt = Hamiltonians.LindbladRhoTwo(Time=Time, Parameters = startvalue, Gamma = gamma(n), Noise = noise);
+    Hamilt = Hamiltonians.LindbladRhoTwo(...
+        Time=Time,...
+        Parameters = startvalue,...
+        Gamma = gamma(n),...
+        Noise = noise);
     Hamilt.Measure = measure;
     referenceValue(n) = MeasureDiffGeneral(Hamilt, Gate = HGate);
     [parameters(n,:), result(n)] = GradientDescent.GradientDescent(...
