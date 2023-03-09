@@ -79,7 +79,7 @@ classdef LindbladRhoTwo < Hamiltonians.Interfaces.LindbladInterface
 
             % creatin components of the Lindbladian
             lindblad = @(t,rho) -1i*(H(t)*rho - rho*H(t)) ...
-                - gamma*this.Noise.NoiseClass.getNoise(rho);
+                - gamma*this.Noise.getNoise(rho);
         end
 
         function Sigma = Interaction(this)
