@@ -12,7 +12,7 @@ N = 20;
 
 % Linear distance
 startPoint = 0;
-endPoint = 0.2;
+endPoint = 0.02;
 gamma = linspace(startPoint, endPoint, N);
 
 learning = 1e-3;
