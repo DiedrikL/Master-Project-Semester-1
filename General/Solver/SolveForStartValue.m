@@ -1,4 +1,6 @@
 function U = SolveForStartValue(Hamiltonian, Psi0)
+% Solves a Hamiltonian for all inputs in Psi. Where Psi0 is all possible
+% states as column vectors in a matrix format
     arguments
         Hamiltonian Hamiltonians.Interfaces.HamiltonianInterface
         Psi0 double
@@ -15,4 +17,3 @@ function U = SolveForStartValue(Hamiltonian, Psi0)
         U(:,n) = Psi;
     end
 end
-    
