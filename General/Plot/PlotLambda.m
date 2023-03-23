@@ -1,9 +1,9 @@
 
 % Setup time
-Time = TimeOptions(Tsize = 1500);
+Time = TimeOptions(Tsize = 2000);
 
 % Setup parameters
-N = 20;
+N = 30;
 
 % Log distance
 % exponentStart = -5;
@@ -12,17 +12,17 @@ N = 20;
 
 % Linear distance
 startPoint = 0;
-endPoint = 0.02;
+endPoint = 0.1;
 gamma = linspace(startPoint, endPoint, N);
 
 learning = 1e-3;
 
 % Hamiltonian settings
 measure = Measure.ChoiFidelity;
-noise = HamiltSettings.TwoParticleNoises.Generated;
+noise = HamiltSettings.TwoParticleNoises.GeneratedTraceless;
 
 paraUsed = 4;
-maxIter = 500;
+maxIter = 1000;
 
 startvalue = ones(paraUsed,1);
 
