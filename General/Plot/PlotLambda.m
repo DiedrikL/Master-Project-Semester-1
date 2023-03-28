@@ -62,12 +62,12 @@ end
 % plot result
 plot(gamma, result)
 hold on
-plot(gamma, referenceValue, 'r')
+plot(gamma, referenceValue, 'r--')
 
 gamma = transpose(gamma);
 
 % Data = [parameters lambda result, referenceValue]
-name = 'LambdaPlot_';
+name = 'LambdaPlot_' + string(noise);
 % name = sprintf(formatSpec);
 nameFormat = regexprep(name, '[\s:]', '_');
 data = [parameters, gamma, result, referenceValue];
