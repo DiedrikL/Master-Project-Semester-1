@@ -11,25 +11,25 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
     methods
         function this = SimpleHamiltonian(options)
             % A simple hamiltonian, of the form:
-            % H =   [-epsilon/2                 omega*sin(t*gamma)
-            %        conj(omega)*sin(t*gamma)   epsilon/2]
+            % H =   [-epsilon/2                 omega*sin(t*Phase)
+            %        conj(omega)*sin(t*Phase)   epsilon/2]
             %
-            % Takes the optional name value parameters Time and Gamma
+            % Takes the optional name value parameters Time and Phase
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
-            % Gamma is the gamma used by this hamiltonian to shift the
+            % Phase is the Phase used by this hamiltonian to shift the
             % frequency the magnetic fields x and y oscillates
             
             % Input validation and default values
             arguments
                 options.Time TimeOptions = TimeOptions;
-                options.Gamma double {mustBeNonzero} = 1;
+                options.Phase double {mustBeNonzero} = 1;
                 options.Parameters(1,3) double {mustBeReal} = zeros(1,3);
             end
             
             this.Time = options.Time;
-            this.Phase = options.Gamma;
+            this.Phase = options.Phase;
             this.Parameters = options.Parameters;
         end
         
@@ -54,21 +54,21 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             omega = omegaX + 1i*omegaY;
 
 %             % Setup parameters
-%             B1 = @(t) 2*omegaX*sin(gamma*t);
-%             B2 = @(t) -2*omegaY*sin(gamma*t);
+%             B1 = @(t) 2*omegaX*sin(Phase*t);
+%             B2 = @(t) -2*omegaY*sin(Phase*t);
 %             B3 = @(t) -epsilon;
 % 
 %             % Creating the hamiltonian
 %             H = this.pauliRotations(B1,B2,B3);
-            H = @(t)  [-epsilon/2                 omega*sin(t*gamma);...
-                   conj(omega)*sin(t*gamma)   epsilon/2];
+            H = @(t)  [-epsilon/2                 omega*sin(t*phase);...
+                   conj(omega)*sin(t*phase)   epsilon/2];
 
         end
          
 
         
         function this = set.Phase(this, Phase)
-            % Set the gamma used by this hamiltonian
+            % Set the Phase used by this hamiltonian
             arguments
                 this Hamiltonians.SimpleHamiltonian
                 Phase(1,1) double {mustBeReal}

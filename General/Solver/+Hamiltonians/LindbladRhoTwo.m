@@ -4,8 +4,8 @@ classdef LindbladRhoTwo < Hamiltonians.Interfaces.LindbladInterface
         rhoSize = 4;
     end
 
-    properties
-        Noise HamiltSettings.TwoParticleNoises;
+    properties(Access = protected)
+        Noise LindbladNoise.LindbladNoise;
     end
 
     
@@ -35,7 +35,8 @@ classdef LindbladRhoTwo < Hamiltonians.Interfaces.LindbladInterface
             this.Parameters = options.Parameters;
             this.Measure = options.Measure;
             this.Solver = options.Solver;
-            this.Noise = options.Noise;
+            noise = options.Noise;
+            this.Noise = noise.NoiseClass;
         end
         
         function lindblad = createHamiltonian(this)
@@ -78,7 +79,7 @@ classdef LindbladRhoTwo < Hamiltonians.Interfaces.LindbladInterface
 
             % creatin components of the Lindbladian
             lindblad = @(t,rho) -1i*(H(t)*rho - rho*H(t)) ...
-                - gamma*this.Noise.NoiseClass.getNoise(rho);
+                - gamma*this.Noise.getNoise(rho);
         end
 
         function Sigma = Interaction(this)
@@ -97,7 +98,15 @@ classdef LindbladRhoTwo < Hamiltonians.Interfaces.LindbladInterface
             
             Sigma = u.*kron(PauliX, PauliX) + u.*kron(PauliY, PauliY) ...
                 + u.*kron(PauliZ, PauliZ);
-        end        
+        end 
+
+        function this = setNoise(this, noise)
+            arguments
+                this Hamiltonians.LindbladRhoTwo
+                noise HamiltSettings.TwoParticleNoises
+            end
+            this.Noise = noise.NoiseClass;
+        end
     end
 
     methods(Access=protected)

@@ -13,5 +13,6 @@ classdef TwoParticleNoises
     enumeration
         Tomography(LindbladNoise.LindbladNoise(LindbladNoise.TomographyNoise))
         Generated(LindbladNoise.LindbladNoise(LindbladNoise.GeneratedNoise))
+        GeneratedTraceless(LindbladNoise.LindbladNoise(LindbladNoise.GeneratedNoiseTraceless))
     end
 end

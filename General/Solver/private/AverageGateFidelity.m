@@ -17,7 +17,7 @@ end
 
 % Start positions
 Psi0 = Gate.Psi0;
-index = double(Hamiltonian.matrixSize);
+matrixSize = double(Hamiltonian.matrixSize);
 
 
 % Solving the shrödinger equation
@@ -27,4 +27,4 @@ U = SolveForStartValue(Hamiltonian, Psi0);
 targetGate = Gate.gate;
 
 % Average fidelity
-Diff = 1-(abs(trace(U'*targetGate))^2 +index)/(index^2 +index);
+Diff = 1-(abs(trace(U'*targetGate))^2 + matrixSize)/(matrixSize^2 +matrixSize);
