@@ -28,7 +28,8 @@ function [Gradients] = CalculateGradients(Hamiltonian, Gate, options)
     vectorLength = length(para);
     Gradients = zeros(1,vectorLength);
        
-    % For each parameter, find it's gradient
+    % For each parameter, find it's gradient with middle finite
+    % difference scheme
     for n = 1:vectorLength
         [plussVector, minusVector] = CalculateVectors(para, h, n);
         Hamiltonian.Parameters = plussVector;
@@ -38,7 +39,6 @@ function [Gradients] = CalculateGradients(Hamiltonian, Gate, options)
         Hminus = MeasureDiffGeneral(Hamiltonian, Gate=Gate);
         
         Gradients(n) = (Hpluss - Hminus)/(2*h);
-        
     end
 end
 

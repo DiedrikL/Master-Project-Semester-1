@@ -12,7 +12,7 @@ hamiltSolution = ...
 % targetChoi = kron(lindbladSolution, Rho)
 lindbladRootMatrix = sqrtm(lindbladSolution)
 hamiltRootMatrix = sqrtm(hamiltSolution)
-sqrtm(hamiltRootMatrix)
+% sqrtm(hamiltRootMatrix)
 
 lContent = sqrtm(lindbladRootMatrix*lindbladSolution*lindbladRootMatrix)
 lResult = 1 - trace(lContent)^2

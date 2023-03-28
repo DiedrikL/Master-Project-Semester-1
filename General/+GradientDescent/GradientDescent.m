@@ -52,7 +52,6 @@ M = zeros(1,leng);
 V = zeros(1,leng);
 
 for iter = 1:maxIt
-    
     grads = CalculateGradients(Hamiltonian, Gate);
     M = Beta1*M + (1-Beta1)*grads;
     V = Beta2*V + (1-Beta2)*grads.^2;
@@ -76,9 +75,6 @@ for iter = 1:maxIt
             last = test;
         end
     end
-    
-    
-    
 end
 
 

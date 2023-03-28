@@ -1,7 +1,6 @@
 function [Solution] = Rho_Runge_Kutta(Rho, Hamiltonian)
-    
     % Solves the schrödinger equation with the Runge Kutta method for a
-    % specified Hamiltonian and startvalues Rho.
+    % specified Hamiltonian and a given startvalue Rho.
     
     
     % Input validation

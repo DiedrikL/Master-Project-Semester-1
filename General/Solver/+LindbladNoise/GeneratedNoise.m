@@ -1,4 +1,12 @@
 classdef GeneratedNoise < LindbladNoise.TwoParticleNoiseInterface
+    % A noise generated in python using random seed 42, gives four
+    % identical jump operators generated from the constant
+    %
+    % Generated in python with:
+    % np.random.seed(42)
+    % L = np.random.normal(0,1, (4,4)) + 1j*np.random.normal(0,1, (4,4))
+    % L = L - np.trace(L)*np.eye(4)
+
     properties(Constant)
         L = [1.2598-0.4755i -0.1383+0.3142i  0.6477-0.908i   1.523-1.4123i;...
          -0.2342+1.4656i  0.529+0.3115i  1.5792+0.0675i  0.7674-1.4247i;...
@@ -9,12 +17,14 @@ classdef GeneratedNoise < LindbladNoise.TwoParticleNoiseInterface
 
     methods(Static)
         function L = getL
-            % Replicates the L to return a 4x4x4 matrix
+            % The jump operators, using repmat to replicate the L to return
+            % a 4x4x4 matrix to simulate four independent noises
             L = repmat(LindbladNoise.GeneratedNoise.L,1,1,4);
         end
 
         function D = getD
-            % Multiples the D value to get same effect as four
+            % Pre calculates the state independent noise, multiplies the D
+            % value to get same effect as four independents noises
             tmp = LindbladNoise.GeneratedNoise.Gamma...
                 *LindbladNoise.GeneratedNoise.L'...
                 *LindbladNoise.GeneratedNoise.L;

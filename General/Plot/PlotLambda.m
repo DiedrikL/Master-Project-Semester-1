@@ -1,19 +1,28 @@
 
 % Setup time
-Time = TimeOptions(Tsize = 1000);
+Time = TimeOptions(Tsize = 2000);
 
 % Setup parameters
-N = 60;
-startpoint = -5;
-endpoint = 0;
+N = 30;
+
+% Log distance
+% exponentStart = -5;
+% exponentEnd = 0;
+% gamma = logspace(exponentStart, exponentEnd, N);
+
+% Linear distance
+startPoint = 0;
+endPoint = 0.1;
+gamma = linspace(startPoint, endPoint, N);
+
 learning = 1e-3;
+
+% Hamiltonian settings
 measure = Measure.ChoiFidelity;
+noise = HamiltSettings.TwoParticleNoises.GeneratedTraceless;
 
 paraUsed = 4;
-maxIter = 500;
-
-
-gamma = logspace(startpoint, endpoint, N);
+maxIter = 1000;
 
 startvalue = ones(paraUsed,1);
 
@@ -34,7 +43,11 @@ q = parallel.pool.DataQueue;
 afterEach(q, @(value)bar.updateBarValue(value));
 
 parfor n=1:N
-    Hamilt = Hamiltonians.LindbladRhoTwo(Time=Time, Parameters = startvalue, Gamma = gamma(n));
+    Hamilt = Hamiltonians.LindbladRhoTwo(...
+        Time=Time,...
+        Parameters = startvalue,...
+        Gamma = gamma(n),...
+        Noise = noise);
     Hamilt.Measure = measure;
     referenceValue(n) = MeasureDiffGeneral(Hamilt, Gate = HGate);
     [parameters(n,:), result(n)] = GradientDescent.GradientDescent(...
@@ -49,12 +62,12 @@ end
 % plot result
 plot(gamma, result)
 hold on
-plot(gamma, referenceValue, 'r')
+plot(gamma, referenceValue, 'r--')
 
 gamma = transpose(gamma);
 
 % Data = [parameters lambda result, referenceValue]
-name = 'LambdaPlot_';
+name = 'LambdaPlot_' + string(noise);
 % name = sprintf(formatSpec);
 nameFormat = regexprep(name, '[\s:]', '_');
 data = [parameters, gamma, result, referenceValue];
