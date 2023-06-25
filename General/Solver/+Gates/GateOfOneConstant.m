@@ -1,4 +1,4 @@
-classdef GateOfOne < Gates.GateInterface
+classdef GateOfOneConstant < Gates.GateInterface
     % The gate and rotation for one particle parameters values of 1
     
     methods(Access = public, Static)
@@ -15,8 +15,8 @@ classdef GateOfOne < Gates.GateInterface
 
     properties(Constant)
         gate = [...
-            0.658508654874478 + 0.747215458632845i	-0.0633853683250244 - 0.0633853683250200i;
-0.0633853683250204 - 0.0633853683250246i	0.658508654874498 - 0.747215458632866i]
+             -0.999999997566526 + 0.000023254397652i  0.000046508795304 - 0.000046508795304i
+ -0.000046508795304 - 0.000046508795304i -0.999999997566526 - 0.000023254397652i]
         Psi0 = eye(2);
         Parameters = ones(3,1);
 

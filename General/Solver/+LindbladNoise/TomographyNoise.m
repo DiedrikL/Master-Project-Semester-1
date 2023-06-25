@@ -1,6 +1,7 @@
 classdef TomographyNoise < LindbladNoise.TwoParticleNoiseInterface
     % Class for noise levels extracted from the research paper Lindblad
-    % Tomography of a Superconducting Quantum Processor
+    % Tomography of a Superconducting Quantum Processor, as jump operators
+    % and their weights
     properties(Constant)
         L1 = [ 0.501+0.001i 0.000+0.001i -0.0002+0.002i -0.002+0.000i;
 0.000-0.001i 0.499-0.001i -0.001+0.001i -0.002+0.002i;
