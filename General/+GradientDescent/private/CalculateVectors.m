@@ -4,7 +4,7 @@ function [plusVector, minusVector] = CalculateVectors(parameters, h, location)
     %
     % Parameters is an (1,:) array of the parameters
     %
-    % h is how much plus or minus each parameter should be
+    % h is a scalar that deciedes how much plus or minus each parameter should be
     %
     % location is what parameter to change
     

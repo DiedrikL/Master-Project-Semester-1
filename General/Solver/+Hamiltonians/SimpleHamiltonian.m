@@ -54,8 +54,8 @@ classdef SimpleHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             omega = omegaX + 1i*omegaY;
 
 %             % Setup parameters
-%             B1 = @(t) 2*omegaX*sin(Phase*t);
-%             B2 = @(t) -2*omegaY*sin(Phase*t);
+%             B1 = @(t) 2*omegaX*sin(phase*t);
+%             B2 = @(t) -2*omegaY*sin(phase*t);
 %             B3 = @(t) -epsilon;
 % 
 %             % Creating the hamiltonian
