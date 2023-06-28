@@ -9,4 +9,4 @@ The scripts used to run the program are placed in the ```Run_scripts``` folder w
 
 As an example the script ```RunGeneralGradientDescent``` 
 
-https://github.com/DiedrikL/Master-Project-Semester-1/blob/318fb2b72b8f9615558ba06911316e6500135cfc/General/Run_scripts/RunGeneralGradientDescent.m#L2C1-L26C13
+https://github.com/DiedrikL/Master-Project-Semester-1/blob/318fb2b72b8f9615558ba06911316e6500135cfc/General/Run_scripts/RunGeneralGradientDescent.m#L2-L27
