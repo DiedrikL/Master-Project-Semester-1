@@ -6,13 +6,13 @@ omegaX = 1;
 omegaY = 1;
 scale = 2;
 
-time = TimeOptions(Tsize = 2*pi);
+time = TimeOptions(Tpulse = 2*pi);
 timeTotal = zeros(1,N);
 diff = zeros(1,N);
 
 
 parameters = [epsilon, omegaX, omegaY];
-gate = Gates.GateOfOne;
+gate = Gates.GateOfOneConstant;
 
 
 Hamilt = Hamiltonians.ConstantHamiltonian(Parameters = parameters, Time = time);
