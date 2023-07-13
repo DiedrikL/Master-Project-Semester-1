@@ -15,7 +15,9 @@ smoothPulse = @(s,t) 1./(exp(s.*(abs(t-midT)-abs(T)))+1);
 constPulse = @(t) 1;
 sinPulse = @(t) sin(t);
 
-sVect = 1:1:5;
+% sVect = [1:1:5, 20];
+sVect = [1, 2, 4, 8, 14, 30];
+
 S = size(sVect,2);
 
 % Initialize vectors
@@ -37,6 +39,10 @@ resSin = [0, 0, tmpSin, 0, 0];
 
 figTime = [-T, -1e-10,constTime, 2*T + 1e-10, 3*T];
 
+Tstart = midT - T;
+Tend = midT + T;
+translateTime = [0, Tstart-1e-10, constTime+Tstart, Tend+1e-10, Smooth.Period];
+
 figure
 plot(smoothTime,resSmooth)
 legendCell = cell(1,S);
@@ -44,6 +50,14 @@ for n = 1:S
       legendCell{n} = num2str(sVect(n),'Scale=%-d');
 end
 legend(legendCell)
+
+figure
+plot(smoothTime,resSmooth)
+hold on
+plot(translateTime, resConst)
+legendCell{S+1} = 'Constant';
+legend(legendCell)
+
 
 figure
 subplot(1,2,1)
