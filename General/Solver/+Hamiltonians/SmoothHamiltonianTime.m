@@ -112,7 +112,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
         end
 
         function setTime(this, timeOff)
-            this.Time.Tpulse = 2*pi + timeOff;
+            this.Time.Tpulse = 3*pi + timeOff;
         end
     end
 end
