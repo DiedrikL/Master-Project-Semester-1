@@ -3,7 +3,7 @@
 Matlab code used in the master project Constructing gates using optimization techniques
 
 
-To run the program make sure that the folder ```General``` and all it's subfolders are included in the path.
+To run the program make sure that the folder ```General``` and all it's subfolders are included in the path, this can be accomplished by running the ```Setup.m``` script.
 
 The scripts used to run the program are placed in the ```Run_scripts``` folder while the scripts used to create plots are placed in the ```Plot``` folder. 
 
