@@ -99,7 +99,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
                 this Hamiltonians.SmoothHamiltonianTime
             end
             
-            Period =  2*this.Time.Tpulse;
+            Period =  3*this.Time.Tpulse;
         end
         
         function valid = parameterValidate(this,para)
