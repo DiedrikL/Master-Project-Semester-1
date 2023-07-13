@@ -36,7 +36,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
                 options.Epsion(1,1) double {mustBeReal} = 1;
                 options.OmegaX(1,1) double {mustBeReal} = 1;
                 options.OmegaY(1,1) double {mustBeReal} = 1;
-                options.Parameters(1,3) double {mustBeReal} = zeros(1,1);
+                options.Parameters(1,1) double {mustBeReal} = 0;
             end
             
             this.Time = options.Time;
@@ -44,7 +44,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
             this.Epsilon = options.Epsion;
             this.OmegaX = options.OmegaX;
             this.OmegaY = options.OmegaY;
-            this.Parameters = 0;
+            this.Parameters = options.Parameters;
         end
         
         
