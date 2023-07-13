@@ -17,13 +17,13 @@ parameters = [epsilon, omegaX, omegaY];
 
 
 % Set timelength
-T = 2*pi/gamma;
+T = 2*pi;
 TimePara1 = TimeOptions(Tpulse = T, Tsize = 50);
 TimePara2 = TimeOptions(Tstart = -T, Tpulse = T, Tsize = 200);
 
 
 % Set up the hamiltonians
-H1 = Hamiltonians.SimpleHamiltonian(Gamma = gamma, Time = TimePara1, Parameters = parameters);
+H1 = Hamiltonians.SimpleHamiltonian(Time = TimePara1, Parameters = parameters);
 H2 = Hamiltonians.SmoothHamiltonian(Time = TimePara1, Parameters = parameters);
 Time1 = H1.TimeVector;
 Time2 = H2.TimeVector;

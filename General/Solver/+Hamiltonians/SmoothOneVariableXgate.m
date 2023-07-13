@@ -1,4 +1,4 @@
-classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
+classdef SmoothOneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
     properties
        Scale(1,1) double {mustBeReal}
     end
@@ -9,7 +9,7 @@ classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
 
 
     methods
-        function this = OneVariableXgate(options)
+        function this = SmoothOneVariableXgate(options)
             % A Hamiltonian that simulates the smoothness of real magnetic
             % waves from a device. The field is constant with a ramp on and
             % ramp off value. This only 
@@ -29,13 +29,13 @@ classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
             arguments
                 options.Time TimeOptions = TimeOptions;
                 options.Scale(1,1) double {mustBeReal} = 5;
-                options.Parameters(1,1) double {mustBeReal} = 2*pi;
+                options.Parameters(1,1) double {mustBeReal} = 1/4;
             end
             
             this.Time = options.Time;
             this.Scale = options.Scale;
             this.Parameters = options.Parameters;
-            this.Time.Tpulse = this.Parameters;
+%             this.Time.Tpulse = this.Parameters;
         end
         
         
@@ -46,7 +46,7 @@ classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
             
             % Input validation and default values
             arguments
-                this Hamiltonians.OneVariableXgate
+                this Hamiltonians.SmoothOneVariableXgate
             end
             
             %this.Time.Tpulse = this.Parameters;
@@ -54,9 +54,11 @@ classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
             s = this.Scale;
             T = this.Time.Tpulse/2;
             midpoint = this.Time.Tstart + (this.Period/2);
+
+            omegaX = this.Parameters;
            
             % Setup the parameters for the Hamiltonian
-            B1 = @(t) 2/(exp(s*(abs(t-midpoint)-abs(T)))+1);
+            B1 = @(t) 2*omegaX/(exp(s*(abs(t-midpoint)-abs(T)))+1);
             B2 = @(t) 0;
             B3 = @(t) 0;
             
@@ -70,7 +72,7 @@ classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
         function this = set.Scale(this, Scale)
             % Set the Scale used by this hamiltonian
             arguments
-                this Hamiltonians.OneVariableXgate
+                this Hamiltonians.SmoothOneVariableXgate
                 Scale(1,1) double {mustBeReal}
             end 
             
@@ -88,6 +90,14 @@ classdef OneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
             end
             
             valid = para;
+        end
+
+        function Period = periodGet(this)
+            arguments
+                this Hamiltonians.SmoothOneVariableXgate
+            end
+            
+            Period =  3*this.Time.Tpulse;
         end
     end
 end

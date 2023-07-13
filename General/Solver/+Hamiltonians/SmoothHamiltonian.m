@@ -60,7 +60,7 @@ classdef SmoothHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             % Setup the parameters for the Hamiltonian
             B1 = @(t) 2*omegaX/(exp(s*(abs(t-midpoint)-abs(T)))+1);
             B2 = @(t) 2*omegaY/(exp(s*(abs(t-midpoint)-abs(T)))+1);
-            B3 = @(t) 2*epsilon/(exp(s*(abs(t-midpoint)-abs(T)))+1);
+            B3 = @(t) epsilon/(exp(s*(abs(t-midpoint)-abs(T)))+1);
             
             % Creating the Hamiltonian
             H = this.pauliRotations(B1,B2,B3);
@@ -87,7 +87,7 @@ classdef SmoothHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
                 this Hamiltonians.SmoothHamiltonian
             end
             
-            Period =  2*this.Time.Tpulse;
+            Period =  3*this.Time.Tpulse;
         end
     end
 end

@@ -1,7 +1,4 @@
 classdef ConstantHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
-    properties
-        Phase double {mustBeReal}
-    end
 
     properties(Constant)
         matrixSize = 2;
@@ -14,7 +11,7 @@ classdef ConstantHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             % H =   [-epsilon/2    omega
             %        conj(omega)   epsilon/2]
             %
-            % Takes the optional name value parameters Time and Phase
+            % Takes the optional name value parameters Time
             % 
             % Time is the TimeOptions used by this hamiltonian
             %
@@ -48,29 +45,13 @@ classdef ConstantHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
             omegaY = this.Parameters(1,3);
             omega = omegaX + 1i*omegaY;
 
-%             % Setup parameters
-%             B1 = @(t) 2*omegaX*sin(phase*t);
-%             B2 = @(t) -2*omegaY*sin(phase*t);
-%             B3 = @(t) -epsilon;
-% 
+
 %             % Creating the hamiltonian
 %             H = this.pauliRotations(B1,B2,B3);
             H = @(t)  [-epsilon/2 omega;...
                    conj(omega) epsilon/2];
 
         end
-         
-
-        
-        function this = set.Phase(this, Phase)
-            % Set the Phase used by this hamiltonian
-            arguments
-                this Hamiltonians.ConstantHamiltonian
-                Phase(1,1) double {mustBeReal}
-            end 
-            
-            this.Phase = Phase;
-        end
-        
+               
     end
 end

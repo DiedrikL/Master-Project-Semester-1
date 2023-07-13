@@ -36,7 +36,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
                 options.Epsion(1,1) double {mustBeReal} = 1;
                 options.OmegaX(1,1) double {mustBeReal} = 1;
                 options.OmegaY(1,1) double {mustBeReal} = 1;
-                options.Parameters(1,3) double {mustBeReal} = zeros(1,1);
+                options.Parameters(1,1) double {mustBeReal} = 0;
             end
             
             this.Time = options.Time;
@@ -44,7 +44,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
             this.Epsilon = options.Epsion;
             this.OmegaX = options.OmegaX;
             this.OmegaY = options.OmegaY;
-            this.Parameters = 0;
+            this.Parameters = options.Parameters;
         end
         
         
@@ -99,7 +99,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
                 this Hamiltonians.SmoothHamiltonianTime
             end
             
-            Period =  2*this.Time.Tpulse;
+            Period =  3*this.Time.Tpulse;
         end
         
         function valid = parameterValidate(this,para)
@@ -112,7 +112,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
         end
 
         function setTime(this, timeOff)
-            this.Time.Tpulse = 2*pi + timeOff;
+            this.Time.Tpulse = 3*pi + timeOff;
         end
     end
 end
