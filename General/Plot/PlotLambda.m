@@ -3,7 +3,7 @@
 Time = TimeOptions(Tsize = 2000);
 
 % Setup parameters
-N = 30;
+N = 100;
 
 % Log distance
 % exponentStart = -5;
@@ -11,8 +11,8 @@ N = 30;
 % gamma = logspace(exponentStart, exponentEnd, N);
 
 % Linear distance
-startPoint = 0;
-endPoint = 0.1;
+startPoint = 0.02;
+endPoint = 0.04;
 gamma = linspace(startPoint, endPoint, N);
 
 learning = 1e-3;
