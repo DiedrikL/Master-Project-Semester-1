@@ -4,7 +4,7 @@ N = 10000;
 epsilon = 1;
 omegaX = 1;
 omegaY = 1;
-scale = 2;
+scale = 1;
 
 time = TimeOptions(Tpulse = 2*pi);
 timeTotal = zeros(1,N);
@@ -22,7 +22,7 @@ Smooth = Hamiltonians.SmoothHamiltonianTime(Time = time, Scale = scale, ...
 
 for n = 1:N
     timeTotal(n) = 1e-3*n;
-    Smooth.Time.Tpulse = timeTotal(n);
+    Smooth.Parameters = timeTotal(n);
     value = MeasureDiffGeneral(Smooth, Gate = gate);
     diff(n) = defaultValue - value;
 end
