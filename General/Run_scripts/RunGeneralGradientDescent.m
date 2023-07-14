@@ -1,6 +1,6 @@
 
 % Setup time
-T = 2*pi;
+T = 0.5*pi;
 
 %Time = TimeOptions(Tstart = -T, Tpulse = T);
 Time = TimeOptions;
@@ -10,9 +10,9 @@ Time = TimeOptions;
 % omegaY = rand*5;
 
 
-epsilon = 1;
+epsilon = 0;
 omegaX = 1;
-omegaY = 1;
+omegaY = 0;
 
 Beta = 0.1;
 learning = 1e-2;
@@ -23,14 +23,14 @@ y = 0;
 z = 0;
 
 parameters = [epsilon, omegaX, omegaY];
-scale = 200;
+scale = 1;
 
 % Create the hamiltonian
 Hamilt = Hamiltonians.SmoothHamiltonianTime(...
     Time = Time, Scale=scale);
 
 % set target gate
-HGate = Gates.GateOfOneConstant;
+HGate = Gates.Xgate;
 
 
 
