@@ -1,32 +1,39 @@
 
 
-N = 10000;
-epsilon = 1;
+N = 1000;
+epsilon = 0;
 omegaX = 1;
-omegaY = 1;
+omegaY = 0;
 scale = 1;
 
-time = TimeOptions(Tpulse = 2*pi);
-timeTotal = zeros(1,N);
+pulseLength = 0.5*pi;
+timeLine = linspace(-pulseLength+1e-10,pulseLength, N);
+
+time = TimeOptions(Tpulse = pulseLength);
 diff = zeros(1,N);
 
 
 parameters = [epsilon, omegaX, omegaY];
-gate = Gates.GateOfOneConstant;
+gate = Gates.Xgate;
 
 
 Hamilt = Hamiltonians.ConstantHamiltonian(Parameters = parameters, Time = time);
-defaultValue = MeasureDiffGeneral(Hamilt, Gate = gate);
-Smooth = Hamiltonians.SmoothHamiltonianTime(Time = time, Scale = scale, ...
-    Epsion = epsilon, OmegaX = omegaX, OmegaY = omegaY, Parameters = 0);
+ConstantPulseValue = MeasureDiffGeneral(Hamilt, Gate = gate) %#ok<NOPTS> 
+
+Smooth = Hamiltonians.SmoothHamiltonianTime(...
+    Time = time,...
+    Scale = scale,...
+    Epsilon = epsilon,...
+    OmegaX = omegaX,...
+    OmegaY = omegaY,...
+    Parameters = 0);
 
 for n = 1:N
-    timeTotal(n) = 1e-3*n;
-    Smooth.Parameters = timeTotal(n);
+    Smooth.Parameters = timeLine(n);
     value = MeasureDiffGeneral(Smooth, Gate = gate);
-    diff(n) = defaultValue - value;
+    diff(n) = value;
 end
 
 figure
-plot(timeTotal, abs(diff))
+plot(timeLine, abs(diff))
 
