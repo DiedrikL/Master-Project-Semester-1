@@ -136,7 +136,7 @@ classdef SmoothHamiltonianOffsets < Hamiltonians.Interfaces.HamiltonianInterface
             
             offset = this.minOffset + this.maxOffset;
                         
-            Period =  3*this.Time.Tpulse + offset;
+            Period =  2*this.Time.Tpulse + offset;
         end
 
 

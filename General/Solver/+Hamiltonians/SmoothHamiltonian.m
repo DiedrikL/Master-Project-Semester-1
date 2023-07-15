@@ -87,7 +87,7 @@ classdef SmoothHamiltonian < Hamiltonians.Interfaces.HamiltonianInterface
                 this Hamiltonians.SmoothHamiltonian
             end
             
-            Period =  3*this.Time.Tpulse;
+            Period =  2*this.Time.Tpulse;
         end
     end
 end
