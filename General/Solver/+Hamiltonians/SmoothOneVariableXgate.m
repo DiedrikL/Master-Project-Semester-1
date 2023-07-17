@@ -97,7 +97,7 @@ classdef SmoothOneVariableXgate < Hamiltonians.Interfaces.HamiltonianInterface
                 this Hamiltonians.SmoothOneVariableXgate
             end
             
-            Period =  3*this.Time.Tpulse;
+            Period =  2*this.Time.Tpulse;
         end
     end
 end

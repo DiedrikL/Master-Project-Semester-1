@@ -63,7 +63,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
             omegaY = this.OmegaY;
             
             s = this.Scale;
-            T = this.Time.Tpulse/2;
+            T = (this.Time.Tpulse + this.Parameters)/2;
             midpoint = this.Time.Tstart + (this.Period/2);
            
             % Setup the parameters for the Hamiltonian
@@ -99,7 +99,7 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
                 this Hamiltonians.SmoothHamiltonianTime
             end
             
-            Period =  3*this.Time.Tpulse;
+            Period =  2*(this.Time.Tpulse+this.Parameters);
         end
         
         function valid = parameterValidate(this,para)
@@ -107,12 +107,9 @@ classdef SmoothHamiltonianTime < Hamiltonians.Interfaces.HamiltonianInterface
                 this
                 para(1,1) double {mustBeReal}
             end
-            this.setTime(para)
             valid = para;
         end
 
-        function setTime(this, timeOff)
-            this.Time.Tpulse = 3*pi + timeOff;
-        end
+
     end
 end
