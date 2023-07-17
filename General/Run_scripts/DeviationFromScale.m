@@ -10,7 +10,6 @@ T = 0.5*pi;
 Time = TimeOptions(Tpulse = T);
 
 
-Beta = 0.1;
 learning = 1e-4;
 maxIter = 300;
 psi0 = [1;0];
@@ -21,8 +20,8 @@ iterChange = false;
 
 
 % Create the hamiltonian
-Hamilt = Hamiltonians.OneVariableXgate(...
-    Time = Time, Parameters = T, Scale = startScale);
+Hamilt = Hamiltonians.SmoothOneVariableXgate(...
+    Time = Time, Parameters = 1, Scale = startScale);
 
 % set target gate
 HGate = Gates.Xgate;
@@ -42,7 +41,7 @@ for n = 1:leng
     Hamilt.Parameters = para;
     
     [para, deviation] = GradientDescent.GradientDescent(...
-        Hamilt, HGate, Beta=Beta, learning=learning, maxIter = maxIter)
+        Hamilt, HGate)
     
     result(1,n) = para - T;
     result(2,n) = deviation;
@@ -53,7 +52,7 @@ for n = 1:leng
     end
 end
 
-z
+
 %piPeriods = para/pi
 
 
