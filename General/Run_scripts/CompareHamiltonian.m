@@ -18,8 +18,8 @@ parameters = [epsilon, omegaX, omegaY];
 
 % Set timelength
 T = 2*pi;
-TimePara1 = TimeOptions(Tpulse = T, Tsize = 50);
-TimePara2 = TimeOptions(Tstart = -T, Tpulse = T, Tsize = 200);
+TimePara1 = TimeOptions(Tpulse = T, Tsize = 500);
+TimePara2 = TimeOptions(Tstart = -T, Tpulse = T, Tsize = 2000);
 
 
 % Set up the hamiltonians
@@ -49,14 +49,14 @@ figure
 hold on
 plot(Time1, a)
 plot(Time2, c)
-legend('50', 'Smoot')
+legend('500', 'Smoot')
 
 pause
 figure
 hold on
 plot(Time1, b)
 plot(Time2, d)
-legend('50', 'Smoot')
+legend('500', 'Smoot')
 
 pause
 figure
@@ -64,5 +64,5 @@ hold on
 plot(Time1, norm1)
 plot(Time2, norm2)
 
-legend('50','Smoot')
+legend('500','Smoot')
 
