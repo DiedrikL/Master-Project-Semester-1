@@ -10,46 +10,44 @@ T = 0.5*pi;
 Time = TimeOptions(Tpulse = T);
 
 
-learning = 1e-4;
-maxIter = 300;
-psi0 = [1;0];
-startScale = 10;
-scaleStep = 1;
-scaleEnd = 18;
-iterChange = false;
+
+% Magnetic field strength
+epsilon = 0;
+omegaX = 1;
+omegaY = 0;
 
 
-% Create the hamiltonian
-Hamilt = Hamiltonians.SmoothOneVariableXgate(...
-    Time = Time, Parameters = 1, Scale = startScale);
 
 % set target gate
 HGate = Gates.Xgate;
 
+
+% Scale of ramp
+startScale = 1;
+scaleStep = 1;
+scaleEnd = 5;
 scaleVector = startScale:scaleStep:scaleEnd;
 leng = length(scaleVector);
 
 
-para = T;
-result = zeros(2,leng);
+para = 0;
+resParameter = zeros(1,leng);
+resDeviation = zeros(1,leng);
 
 
 
 % Run gradient descent
-for n = 1:leng
-    Hamilt.Scale = scaleVector(n);
-    Hamilt.Parameters = para;
+parfor n = 1:leng
+    scale = scaleVector(n);
+    Hamilt = Hamiltonians.SmoothHamiltonianTime(...
+    Time = Time, Parameters = 0, Scale = startScale);
+
     
     [para, deviation] = GradientDescent.GradientDescent(...
         Hamilt, HGate)
     
-    result(1,n) = para - T;
-    result(2,n) = deviation;
-    
-    if(~iterChange)
-       maxIter = 200;
-       iterChange = true;
-    end
+    resParameter(n) = para;
+    resDeviation(n) = deviation;
 end
 
 
@@ -57,6 +55,6 @@ end
 
 
 % Plot result of gradient descent
-plot(scaleVector, result(1,:))
+plot(scaleVector, resParameter)
 title('Difference from pi/2 with different values of scale')
 yline(0);
