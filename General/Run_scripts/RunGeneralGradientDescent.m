@@ -42,8 +42,8 @@ HGate = Gates.Xgate;
     Hamilt, HGate);
 
 disp('Gradient done')
-para
-result
+para %#ok<NOPTS> 
+result %#ok<NOPTS> 
 
 % Plot result of gradient descent
 
