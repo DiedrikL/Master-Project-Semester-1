@@ -1,5 +1,5 @@
 classdef SquareRootSwap < Gates.GateInterface
-    % The gate and rotation for the Hadamard gate
+    % The gate and rotation for the square root of SWAP gate
     
     methods(Access = public, Static)
         function rotate = rotation(U)
