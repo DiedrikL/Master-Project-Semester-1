@@ -51,15 +51,16 @@ for n = 1:S
 end
 legend(legendCell)
 
-figure
+fig1 = figure;
 plot(smoothTime,resSmooth)
 hold on
 plot(translateTime, resConst)
 legendCell{S+1} = 'Constant';
 legend(legendCell)
+fontsize(fig1, scale=2)
 
 
-figure
+fig2 = figure;
 subplot(1,2,1)
 plot(figTime, resConst)
 title("Constant pulse")
@@ -67,4 +68,6 @@ title("Constant pulse")
 subplot(1,2,2)
 plot(figTime, resSin)
 title("Sinus pulse")
+
+fontsize(fig2, scale=2)
 
