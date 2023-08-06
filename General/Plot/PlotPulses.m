@@ -71,3 +71,11 @@ title("Sinus pulse")
 
 fontsize(fig2, scale=2)
 
+fig3 = figure;
+plot(constTime, tmpSin)
+title("Sinus pulse")
+set(fig3.Children,'XTick',0:pi/2:2*pi) 
+set(fig3.Children,'XTickLabel',{'0','\pi/2','\pi','3\pi/2','2\pi'})
+ylabel("Strength")
+fontsize(fig3, scale=2)
+
