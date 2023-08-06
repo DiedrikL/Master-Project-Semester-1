@@ -11,7 +11,7 @@ classdef Measure
         end
     end
     enumeration
-        NormDistance(1)
+        NormDistance(0.5)
         AvgFidelity(0.5)
         ChoiFidelity(0.5)
     end

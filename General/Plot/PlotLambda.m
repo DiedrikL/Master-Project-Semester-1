@@ -3,7 +3,7 @@
 Time = TimeOptions(Tsize = 2000);
 
 % Setup parameters
-N = 100;
+N = 8;
 
 % Log distance
 % exponentStart = -5;
@@ -11,18 +11,18 @@ N = 100;
 % gamma = logspace(exponentStart, exponentEnd, N);
 
 % Linear distance
-startPoint = 0.02;
-endPoint = 0.04;
+startPoint = 0;
+endPoint = 0.875;
 gamma = linspace(startPoint, endPoint, N);
 
 learning = 1e-3;
 
 % Hamiltonian settings
 measure = Measure.ChoiFidelity;
-noise = HamiltSettings.TwoParticleNoises.GeneratedTraceless;
+noise = HamiltSettings.TwoParticleNoises.Tomography;
 
 paraUsed = 4;
-maxIter = 1000;
+maxIter = 1200;
 
 startvalue = ones(paraUsed,1);
 
@@ -60,9 +60,14 @@ parfor n=1:N
 end
 
 % plot result
+fig = figure;
 plot(gamma, result)
 hold on
 plot(gamma, referenceValue, 'r--')
+legend('Optimized', 'Reference')
+xlabel('$\gamma$', 'Interpreter','latex')
+ylabel('Infidelity')
+fontsize(fig, scale=2.5)
 
 gamma = transpose(gamma);
 

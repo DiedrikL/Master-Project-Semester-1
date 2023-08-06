@@ -30,6 +30,6 @@ U = SolveForStartValue(Hamiltonian, Psi0);
 U = Gate.rotation(U);
 
 % Measuring distance
-Diff = norm(U-targetGate);
+Diff = norm(U-targetGate)/2;
 
 
