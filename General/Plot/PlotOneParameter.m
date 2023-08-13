@@ -5,20 +5,20 @@ clear
 format short e
 
 % Parameter size and resolution
-L = 1;
+L = 2;
 N = 400;
 
 % Measure and Gate
 measure = Measure.AvgFidelity;
-Gate = Gates.SquareRootSwap;
-GateTwo = Gates.Swap;
+Gate = Gates.SGate;
+GateTwo = Gates.TGate;
 
 % Parameter names
-paraName = '$u$';
-firstGate = '$\sqrt{SWAP}$';
-secondGate = '$SWAP$';
+paraName = '$\epsilon$';
+firstGate = '$S gate$';
+secondGate = '$T gate$';
 
-%% Static parameters
+%% Known gate parameters
 
 % zero initialization values
 epsilon = 0;
@@ -57,7 +57,7 @@ lambda = 0.0;
 
 
 
-% Setup space
+%% Setup space
 parameter = linspace(-L/2,L/2,N);  
 
 LineOne = zeros(1,N);
@@ -66,9 +66,9 @@ LineTwo = zeros(1,N);
 parfor m = 1:N
     m
     % Hamiltonian
-    Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian;
+    Hamilt = Hamiltonians.SimpleHamiltonian;
     Hamilt.Measure = measure;
-    para = [epsilon, omegaX, omegaY, parameter(m)];
+    para = [parameter(m), omegaX, omegaY];
     Hamilt.Parameters = para;
 
     LineOne(m) = MeasureDiffGeneral(Hamilt, Gate = Gate);

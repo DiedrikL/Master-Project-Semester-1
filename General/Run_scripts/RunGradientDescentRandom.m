@@ -5,7 +5,7 @@ Time = TimeOptions;
 % Setup parameters
 range = 10;
 minimum = 0;
-repeats = 800;
+repeats = 50;
 learning = 1e-3;
 measure = Measure.AvgFidelity;
 
@@ -13,12 +13,12 @@ measure = Measure.AvgFidelity;
 treshold = 1e-1;
 
 % Gate
-HGate = Gates.Hadamard_Two;
+HGate = Gates.Ygate;
 HGate.gate
 
 
 % create result matrices
-parameters = rand(repeats,6).*range+minimum;
+parameters = rand(repeats,3).*range+minimum;
 result = ones(repeats, 1);
 
 % Setup for waitbar
@@ -28,7 +28,7 @@ afterEach(q, @(value)bar.updateBarValue(value));
 
 parfor n=1:repeats
     para = parameters(n,:);
-    Hamilt = Hamiltonians.TwoParticleMultiInteractionHamiltonian(Time=Time, Parameters = para);
+    Hamilt = Hamiltonians.SimpleHamiltonian(Time=Time, Parameters = para);
     Hamilt.Measure = measure;
     [para, result(n)] = GradientDescent.GradientDescent(...
     Hamilt, ...
