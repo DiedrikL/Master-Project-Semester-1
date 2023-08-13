@@ -1,4 +1,4 @@
-classdef TestGateOne < Gates.GateInterface
+classdef TestGateOneQubit < Gates.GateInterface
     % The gate and rotation for a gate created with parameter values of 5,
     % 4, 2
     
@@ -9,7 +9,7 @@ classdef TestGateOne < Gates.GateInterface
             end
 
             phi = angle(U(1,1));
-            theta = angle(Gates.OnesGate.gate(1,1));
+            theta = angle(Gates.TestGateOneQubit.gate(1,1));
             rotate = exp(-1i*phi+1i*theta)*U;
         end
     end
