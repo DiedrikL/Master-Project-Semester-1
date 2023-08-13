@@ -13,14 +13,14 @@ N = 200;
 
 % Measure and Gate
 measure = Measure.AvgFidelity;
-Gate = Gates.Hadamard_Two;
+Gate = Gates.Xgate;
 
 %% Known parameters for gates
 
 % zero initialization values
-% epsilon = 0;
-% omegaX = 0;
-% omegaY = 0;
+epsilon = 0;
+omegaX = 0;
+omegaY = 0;
 
 % Hadamard values
 % epsilon = 2.4210e+00;
@@ -31,7 +31,7 @@ Gate = Gates.Hadamard_Two;
 % epsilon = 2.460987392298953;
 % omegaX = 0.000091166808424;
 % omegaY = 5.017927547094168;
-lambda = 0.0;
+% lambda = 0.0;
 
 % Tautological 1 gate values
 % epsilon = 1;
@@ -47,10 +47,10 @@ lambda = 0.0;
 % u_y = 3.5352e-01;
 
 % Two particles interaction Hadamard
-epsilon = 4.108533266720993;
-omegaX = 0.559805913967558;
-omegaY = 9.093423892887524;
-u = 0.5002029547671575;
+% epsilon = 4.108533266720993;
+% omegaX = 0.559805913967558;
+% omegaY = 9.093423892887524;
+% u = 0.5002029547671575;
 
 
 % Setup space
@@ -60,19 +60,18 @@ Room = zeros(N,N);
 
 %% Names of parameter used
 firstPara = '$\epsilon$';
-secondPara = '$\u$';
+secondPara = '$\Omega_y$';
 
 
 %% Measuring the room
 parfor m = 1:N
     m
     % Hamiltonian
-    Hamilt = Hamiltonians.TwoParticleInteractionHamiltonian;
+    Hamilt = Hamiltonians.SimpleHamiltonian;
     Hamilt.Measure = measure;
 
     for n = 1:N
-%         para = [parameter(n), omegaX, omegaY, parameter(m)]; %#ok<PFBNS> 
-        para = [parameter(n), omegaX, omegaY, parameter(m)]; %#ok<PFBNS> 
+        para = [parameter(n), omegaX, parameter(m)]; %#ok<PFBNS> 
         Hamilt.Parameters = para;
 
         Room(m,n) = MeasureDiffGeneral(Hamilt, Gate = Gate)/2;
@@ -110,3 +109,12 @@ LowestPara1 = parameter(row) %#ok<NOPTS>
 LowestPara2 = parameter(col) %#ok<NOPTS> 
 
 LowestValue = Room(row, col) %#ok<NOPTS> 
+
+
+%% Save the figure
+nameString = class(Gate);
+stringForm = '%s_%s_%s_%d_%d';
+str = sprintf(stringForm, nameString, firstPara, secondPara, L, N);
+str = regexprep(str,'[^a-zA-Z_0-9]','');
+finalStr = strcat('Outputs/', str, '.pdf');
+exportgraphics(fig, finalStr)
