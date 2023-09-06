@@ -3,13 +3,16 @@
 format long
 
 % Solution matrices with large number of timesteps
-lindbladSolution = ...
-  [0.519454622371311 + 0.000000000000010i -0.049356818983445 - 0.497177455306254i;
- -0.049356818983437 + 0.497177455306253i  0.480545377628576 - 0.000000000000010i]
+% lindbladSolution = ...
+%   [0.519454622371311 + 0.000000000000010i -0.049356818983445 - 0.497177455306254i;
+%  -0.049356818983437 + 0.497177455306253i  0.480545377628576 - 0.000000000000010i]
+% 
+% hamiltSolution = ...
+%   [0.636246541797243 + 0.338592616958537i  0.384525833032538 + 0.576788749548769i;
+%  -0.384525833032496 + 0.576788749548762i  0.636246541797214 - 0.338592616958464i]
 
-hamiltSolution = ...
-  [0.636246541797243 + 0.338592616958537i  0.384525833032538 + 0.576788749548769i;
- -0.384525833032496 + 0.576788749548762i  0.636246541797214 - 0.338592616958464i]
+Gate = [0.658492352052115 + 0.747231741830378i -0.063374073458469 - 0.063374073458459i;
+  0.063374073458432 - 0.063374073458495i  0.658492352052048 - 0.747231741830290i];
 
 
 Rho = sparse(1, 1, 1, 2, 2);
@@ -17,19 +20,20 @@ RhoVector = reshape(Rho,[],1);
 
 
 % targetChoi = kron(lindbladSolution, Rho)
-lindbladRootMatrix = sqrtm(lindbladSolution);
-hamiltRootMatrix = sqrtm(hamiltSolution);
+% lindbladRootMatrix = sqrtm(lindbladSolution);
+% hamiltRootMatrix = sqrtm(hamiltSolution);
+rootGate = sqrtm(Gate);
 
 % parameters
 epsilon = 1;
-omegaX = 2;
-omegaY = 3;
+omegaX = 1;
+omegaY = 1;
 gamma = 0;
 parameters = [epsilon, omegaX, omegaY];
 
 
 % Starting timestep, and number of repetitions
-N = 100;
+N = 600;
 
 % Regular stepsizes
 % startSteps = 100;
@@ -39,7 +43,7 @@ N = 100;
 
 % logarithmic step sizes
 startExponent = 2;
-endExponent = 4;
+endExponent = 6;
 Timesteps = logspace(startExponent, endExponent, N);
 Timesteps = round(Timesteps);
 
@@ -52,19 +56,19 @@ lindbladResult = ones(N,1);
 
 % Solving the lindbladian for one posibility with different number of time
 % steps
-% for n = 1:N
-%     step = Timesteps(n);
-%     Lindbladian.Time.Tsize = step;
-% 
-%     [~, solutionMatrix] = UseSolver(RhoVector, Lindbladian);
-%     lindbladMatrix = reshape(solutionMatrix(:,end), 2, 2);
-%     lindbladMatrix = transpose(lindbladMatrix);
-%     lindbladMatrices(n,:,:) = lindbladMatrix;
-%     content = sqrtm(lindbladRootMatrix*lindbladMatrix*lindbladRootMatrix);
-% %     result = 1-trace(content)^2;
-% %     result = norm(lindbladMatrix-lindbladSolution);
-%     lindbladResult(n) = result;
-% end
+for n = 1:N
+    step = Timesteps(n);
+    Lindbladian.Time.Tsize = step;
+
+    [~, solutionMatrix] = UseSolver(RhoVector, Lindbladian);
+    lindbladMatrix = reshape(solutionMatrix(:,end), 2, 2);
+    lindbladMatrix = transpose(lindbladMatrix);
+    lindbladMatrices(n,:,:) = lindbladMatrix;
+    content = sqrtm(rootGate*lindbladMatrix*rootGate);
+%     result = 1-trace(content)^2;
+%     result = norm(lindbladMatrix-lindbladSolution);
+    lindbladResult(n) = result;
+end
 
 % Creating the hamiltonian
 Hamiltonian = Hamiltonians.SimpleHamiltonian(Parameters = parameters);
