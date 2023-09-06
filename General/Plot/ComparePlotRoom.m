@@ -7,28 +7,31 @@ format short e
 
 % Parameter size and resolution
 L = 8;
-N = 400;
+N = 50;
 
 startValue1 = -L/2;
 endValue1 = L/2;
+
+% Normalize values
+normalizeData = true;
 
 % Measure and Gate
 measure1 = Measure.NormDistance;
 measure2 = Measure.AvgFidelity;
 
-Gate = Gates.GateOfOne;
+Gate = Gates.Hadamard;
+
 
 % Setup space
 parameter = linspace(startValue1, endValue1,N);  
-
 Room1 = zeros(N,N);
 
 %% Known parameters for gates
 
 % Hadamard values
-% epsilon = 2.4210e+00;
-% omegaX = 0;
-% omegaY = -1.6971e+00;
+epsilon = 2.4210e+00;
+omegaX = 0;
+omegaY = -1.6971e+00;
 
 % X gate values
 % epsilon = 2.460987392298953;
@@ -37,9 +40,9 @@ Room1 = zeros(N,N);
 % lambda = 0.0;
 
 % Tautological 1 gate values
-epsilon = 1;
-omegaX = 1;
-omegaY = 1;
+% epsilon = 1;
+% omegaX = 1;
+% omegaY = 1;
 
 % Two particle multiple interactions Hadamard
 % epsilon = 4.0668+00;
@@ -78,6 +81,16 @@ parfor m = 1:N
         Room2(m,n) = MeasureDiffGeneral(Hamilt2, Gate = Gate);
     end
 end
+
+%% Normalize avg
+if(normalizeData)
+    firstMax = max(Room1,[],'all');
+    secondMax = max(Room2,[],'all');
+    scale = secondMax*firstMax;
+    Room2 = Room2./scale;
+end
+
+
 
 %% Plot room
 firstPara = '$\epsilon$';
